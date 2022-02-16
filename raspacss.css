@@ -1,0 +1,381 @@
+body {
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    
+}
+
+.wrapper {
+    position: absolute;
+    border: 2px solid black;
+    margin: 10px auto;
+    width: 65%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.wrapper .search_box{
+    width: 100%;
+    border: 2px solid black;
+    background:#fff;
+    border-radius: 5px;
+    height: 65px;
+    display: flex;
+    padding: 10px;
+    box-shadow: 0 8px 6px -10px #b3c6ff; 
+}
+.wrapper .search_box .dropdown .default_option {
+    text-transform: uppercase;
+    padding: 13px 15px;
+    font-size: 14px;
+}
+.wrapper .search_box .dropdown ul {
+    position: absolute;
+    top: 70px;
+    left: -10px;
+    background: #fff;
+    width: 150px;
+    border-radius: 5px;
+    padding: 20px;
+    display: none;
+    box-shadow: 8px 8px 6px -10px #b3c6ff;
+}
+.wrapper .search_box .dropdown ul.active {
+    display: block;
+}
+.wrapper .search_box .dropdown ul li {
+    padding-bottom: 20px;
+}
+.wrapper .search_box .dropdown ul li:last-child {
+    padding-bottom: 0;
+}
+.wrapper .search_box .dropdown ul li:hover {
+    color: #6f768d
+}
+.wrapper .search_box .dropdown:before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    border: 8px solid;
+    border-color: #5078ef transparent transparent transparent;
+}
+.wrapper .search_box .search_field .input {
+    width: 100%;
+    height: 100%;
+    border: 0px;
+    font-size: 16px;
+    padding-left: 20px;
+    padding-right: 38px;
+    color: #6f768d;
+}
+.wrapper .search_box .search_field .fas {
+    position: absolute;
+    top:10px;
+    right: 10px;
+    font-size: 22px;
+    color: #5078ef;
+    cursor: pointer;
+}
+
+
+
+
+
+
+header {
+    width: 95%;
+    background-color: #EDECEC;
+    margin: 0 auto;    
+}
+.header {
+    width: 100%;
+    max-width: 95%;
+    min-width: 30%;
+    height: 60px;
+    max-height: 150%;
+    min-height: 30%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.wrap {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+h1 {
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;   
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+p {
+    margin-top: 0px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.search {
+    width: 100%;
+    max-width: 885px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+.searchbar {
+    width: 90%;
+    max-width: 700px;
+}
+
+.sbtsearchbar {
+    width: 20%;
+    max-width: 185px;
+    height: 50px;
+}
+
+input {
+    height: 45px;
+}
+.nav {
+    display: flex;
+    list-style-type: none;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nav>li {
+    margin-left: 15px;
+}
+
+.nav_btn {
+    background-color: #053663;
+    border-radius: 9px;
+    width: 100px;
+    height: 30px;
+    color: white;
+    
+}
+
+
+
+
+
+
+
+
+.explore {
+    display: flex;
+    margin: 30px;
+    
+    
+}
+
+.leftsidebar {
+    border: 1px solid black;
+    width: 25%;
+    
+    
+         
+}
+.elogo {
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+    width: 40%;
+    height: 50px;
+    padding: 20px;
+}
+.services {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #D1D7DC;
+    width: 70%;
+    border-radius: 50px;
+    height: 35px;
+    font-size: 20px;
+    padding-top: 5px;
+    
+}
+
+.searchfilter {
+    display: block;
+    margin: 8px;
+    background-color: #D1D7DC;
+    padding: 10px;
+    
+}
+
+.propertytype {
+    display: block;
+}
+
+.filtertype {
+    font-weight: 500;
+}
+.propertytypes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 90%;
+    grid-gap: 10px;
+    margin-top: 5px;
+}
+.bedrooms, .bathrooms {
+    display: flex;
+    justify-content: space-evenly;
+}
+.searchresults {
+    margin: 0 auto;
+    background-color: #053663;
+    width: 90%;
+    height: 40px;
+    font-size: 20px;
+    align-content: center;
+    color: white;
+    margin-top: 10px;
+}
+.result {
+    font-weight: 500;
+    padding-left: 30px;
+    
+}
+
+
+
+
+.results {
+    width: 760px;
+    margin-left: 10px;
+    display: block;
+}
+.resultcard {
+    width:auto;
+    height: 150px;
+    border: 1px solid #c4c4c4;
+    background-color: #c4c4c4;
+    background: linear-gradient(blue, white);
+    display: grid;
+    grid-template-columns: 1fr 3.5fr;
+    grid-gap: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.propimg {
+    background-color: black;
+    border: 1px solid black;
+}
+.propfeatures {
+    background-color: none;
+    position: relative;
+    
+}
+.propprice {
+    width: 20%;
+    height: 30px;
+    font:bold;
+    color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: #053663;
+    border: 1px solid black;
+    text-align: center;
+}
+
+
+
+.rightsidebar {
+    border: 1px solid black;
+    width: 280px;
+    margin-left: 5px;
+    display: block;
+}
+.map {
+    width: 100%;
+    height: 40%;
+    background-color: whitesmoke;
+}
+
+.ads {
+    width: 100%;
+    height: 60%;
+    background-color: azure;
+}
+
+
+
+
+
+
+.listingform {
+    margin: 0 auto;
+    width: 550px;
+    max-width: 500px;
+    min-width: 300px;
+    border: 1px solid black;
+    position: relative;
+    margin-top: 50px;
+    padding-left: 15px;
+    
+    
+    
+}
+.propinfo {
+    display: block;
+}
+.proptypebtns {
+    margin: 0 auto;
+    width: 500px;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+.proptypebtns button {
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    align-content: center;
+    background-color: white;
+}
+.lheading1 {
+    font-size: 36px;
+    font-weight: normal;
+    margin-bottom: 0px;
+}
+.lheading2 {
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 0px;
+}
+.cancelbutton {
+    border: 1px solid black;    
+    width: 20px;
+    height: 20px;
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.infodes {
+    display: flex;
+    margin-bottom: 3px;
+}
+.propinfotextinp, .descriptiontextarea {
+    width: 450px;
+    height: 25px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+.propinfocountinp {
+    width: 40px;
+    height: 25px;
+    margin-top: 10px;
+}

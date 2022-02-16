@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>RASPA HOME</title>
+        <link rel="stylesheet" href="raspacss.css">
+
+        <script src="https://kit.fontawesome.com/b99e675b6e.js"> </script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"> </script>
+
+        <script>
+            $(document).ready(function() {
+                $(".default_option").click(function() {
+                    $(".dropdown").addClass("active");
+                });
+
+                $(".dropdown ul li").click(function() {
+                    var text= $(this).text();
+                    $(".default_option").text(text);
+                    $(".dropdown ul").removeClass("active");
+                });
+            });
+        </script>
+        
+    </head>
+    
+    <body>
+        <header>
+            <div class="header">
+                <a href="" class="logo"> <img src="logo.svg"> </a>
+
+                <nav>
+                    <ul class="nav">
+                        <li> <a href="RASPAFIGMAEXPLORE.html"> Explore</a> </li>
+                        <li> <a href=""> Our Services </a> </li>
+                        <li> <a href=""> Blog </a> </li>
+                        <li> <a href=""> About Us.</a> </li>
+                        <li> <a href="RASPAFIGMALISTING.html"> List A Property</a> </li>
+                        <li> <button type="button" class="nav_btn"> Sign Up</button> </li>
+    
+                    </ul>
+                </nav>
+            </div>            
+        </header>
+
+        <div class="page">
+            <div class="wrap">
+                <h1> Discover Spaces</h1>
+                <h1>That Suit Your Needs</h1>
+                <p> Connecting renters, buyers and investors to avaliable properties</p>
+            </div>
+
+            <div class="wrapper">
+                <div class="search_box">
+                    <div class="dropdown">
+                        <div class="default-option">
+                            Budget Range
+                        </div>
+
+                        <ul>
+                            <li>$40 -- $100</li>
+                            <li>$100 -- $300</li>
+                            <li>$300 -- $600</li>
+                        </ul>
+                    </div>
+
+                    <div class="search_field">
+                        <input type="text" placeholder="Search by City or Street">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </body>
+</html>
