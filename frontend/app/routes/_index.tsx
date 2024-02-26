@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import Header from "~/components/header";
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
 
 export const meta: MetaFunction = () => {
@@ -11,8 +12,17 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div className="w-full h-full">
-      <div id="Land" className="w-full h-screen bg-purple-600">
-        <p> This is RASPA</p>
+      <div id="Land" className="w-full h-screen bg-purple-500  bg-blend-multiply  bg-[url('/images/rendering-house-model.png')] ">
+      
+      <div className="w-full h-full  ">
+        <Header />
+
+        <span className="text-5xl font-bold">
+          Discover Spaces That Suit Your Need
+        </span>
+      
+      </div>  
+      
 
       </div>
 
