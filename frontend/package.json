@@ -4,8 +4,10 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "prebuild": "tailwindcss -i ./app/styles/base.css -o ./app/styles/tailwind.css",
     "build": "remix build",
-    "dev": "remix dev --manual",
+    "dev:css": "tailwindcss -i ./app/styles/base.css -o ./app/styles/tailwind.css -w",
+    "dev": "concurrently \"yarn run dev:css\" \"remix dev --manual\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/index.js",
     "typecheck": "tsc"
@@ -15,6 +17,7 @@
     "@remix-run/node": "^2.5.1",
     "@remix-run/react": "^2.5.1",
     "@remix-run/serve": "^2.5.1",
+    "concurrently": "^8.2.2",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -31,6 +34,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.1.6"
   },
   "engines": {
