@@ -72,7 +72,7 @@ export default function Index() {
             </div>
           </div>   
 
-          <div className="w-full flex justify-center p-2 h-16">
+          <div id="search-bar" className="w-full flex justify-center p-2 h-16">
             <div className="w-1/2 p-2 flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
             <button
               className={`p-2 flex-grow justify-center items-center rounded-full transition-all ${
