@@ -13,10 +13,12 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "@remix-run/css-bundle": "^2.5.1",
     "@remix-run/node": "^2.5.1",
     "@remix-run/react": "^2.5.1",
     "@remix-run/serve": "^2.5.1",
+    "@vis.gl/react-google-maps": "^0.7.1",
     "concurrently": "^8.2.2",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
