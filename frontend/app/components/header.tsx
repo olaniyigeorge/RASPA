@@ -14,7 +14,8 @@ export default function Header() {
             <Link className="p-2 text-xs md:text-md hover:underline transition-all" to="/about-us"> About </Link>
             <Link className="p-2 text-xs md:text-md hover:underline transition-all" to="/blog"> Blog </Link>
             <Link className="p-2 text-xs md:text-md hover:underline transition-all" to="/contact"> Contact</Link>
-        </span>
+            <Link className="p-2 text-xs md:text-md hover:underline transition-all" to="/explore/map/?action=buy&search="> Explore</Link>
+        </span> 
 
         <span className="text-xs md:text-md text-white">
             <p>Get Started</p>
