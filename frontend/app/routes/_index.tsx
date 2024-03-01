@@ -1,10 +1,13 @@
-import type { MetaFunction } from "@remix-run/node";
+import { ActionFunctionArgs, DataFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
+import { useSubmit, useNavigate  } from "@remix-run/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "~/components/header";
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
+import { storage } from "~/session.server";
 
 export const meta: MetaFunction = () => {
+  
   return [
     { title: "Rent A Space Akure" },
     { name: "description", content: "Welcome to RASP, Akure!" },
@@ -12,7 +15,35 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState<string>('buy');
+  const [searchQuery, setSearchQUery] = useState<string>("")
+  const submit = useSubmit()
+  console.log(selectedButton)
+  console.log(searchQuery)
+  function handleSearch() {
+    console.log("Handling search")
+
+    try {
+      const formData = new FormData()
+      // if selectedButton not in ['buy','sell','invest','rent'] raise error
+      // if 
+      formData.append('action', selectedButton)
+      formData.append('search', searchQuery)
+      console.log("Values appended to formData")
+
+      // submit(formData, { method: 'post', replace: true })
+      const en = `/explore/map/?action=${selectedButton}&search=${searchQuery}/`
+
+      console.log("Redirecting to: ", en)
+      // console log constructed url 
+      // ....and redirect to it
+    
+      return navigate(en, { replace: true })
+    } catch {
+      console.log("Error submitting form to action")
+    }
+  }
 
   const handleButtonClick = (button: string) => {
     setSelectedButton(button);
@@ -75,16 +106,16 @@ export default function Index() {
           </div>   
 
           <div id="search-bar" className="w-full flex justify-center mt-4 p-2 h-16">
-            <div className="w-5/6 md:w-2/3 flex items-center space-x-2  rounded-full">
-            <input type="text" className="w-full h-full flex-1 p-3 ring-0 active:ring-0 rounded-full active:border-none" placeholder="Search for street name, city, property type, zip code... "/>
+            <form  className="w-5/6 md:w-2/3 flex items-center space-x-2  rounded-full">
+            <input type="text" onChange={(e) => {setSearchQUery(e.target.value)}} className="w-full h-full flex-1 p-3 ring-0 active:ring-0 rounded-full active:border-none" placeholder="Search for street name, city, property type, zip code... "/>
             <button
               className="border-2 text-xs md:text-md border-white shadow-md bg-purple-600 rounded-full text-white text-bold h-full  p-2 md:px-5 "
               // On click contruct a url with search params and useNavigate to it
-              onClick={() => handleButtonClick('invest')}
+              onClick={() => handleSearch()}
             >
               Search
             </button>
-            </div>
+            </form>
           </div> 
         </div>
 
@@ -164,4 +195,23 @@ export default function Index() {
       
     </div>
   );
+}
+
+
+
+export async function action({request,}: ActionFunctionArgs) {
+  const currUrl = new URL(request.url)
+  const form = await request.formData()
+  // const destination: string = currUrl.searchParams.get('destination') ?? '/'
+  const action = (form.get("action") || "").toString();
+  const search = (form.get("search") || "").toString();
+  
+  // const en = `https://wta-api-build.onrender.com/directory/service-locations/?action=${action}&search=${search}`
+  const en = `/explore/map/?action=${action}&search=${search}`
+
+  console.log("Redirecting to: ", en)
+  // console log constructed url 
+  // ....and redirect to it
+
+  return redirect(en)
 }
