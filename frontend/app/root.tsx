@@ -1,4 +1,4 @@
-import { json, LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, json, LinksFunction, LoaderFunctionArgs, redirect } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
+import { AnimatePresence } from "framer-motion";
 import stylesheet from "~/styles/tailwind.css";
 import { fetchNewAccessToken, UserContextProvider } from "./api/auth";
 import { UserContext } from "./api/interfaces";
@@ -30,7 +31,7 @@ export default function App() {
       scripts={
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data?.ENV)}`,
+            __html: `window.ENV = ${JSON.stringify(data?.ENVR)}`,
           }}
         />
       }
@@ -110,16 +111,21 @@ export async function loader({request,}: LoaderFunctionArgs){
 
   
 
-  const ENV = {
+  const ENVR = {
     APP_COOKIE_NAME: process.env.APP_COOKIE_NAME,
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     APP_SECRET: process.env.APP_SECRET,
-
   }
 
   const context_ep = getUrl('context');
   return json({
     userContext,
-    ENV,
+    ENVR,
   })
+}
+
+
+export async function action({request,}: ActionFunctionArgs ){
+  console.log("Root action")
+  return {}
 }
