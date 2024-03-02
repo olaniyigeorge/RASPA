@@ -1,38 +1,30 @@
-# Welcome to Remix!
+# Rent A Space, [Akure]
 
-- [Remix Docs](https://remix.run/docs)
+## Mission
+My goal for this is to a solution to address three major problems, namely;
+- reduce the house hunting time for clients
+- reduce the enourmous stress house hunting is known to cause
+- build a comprehensive database of properties 
 
-## Development
+## Target Users
+Generally speaking, we expect most of our clients to be people who are looking to either rent, buy, sell or invest a property. From the mission of this project its evident that of all our clients we'll be building majorly for home renters and home owners.
 
-From your terminal:
+## Approach 
+To profer solutions to these problems, RASP is an app that lets users explore all available properties in their region. Armed with this, and a host of other requirements they deem fit, they can make a choice to rent, buy or invest in a property through a very seamless click-through procedure on our platform. This process might include booking an appointment to see the property, paying for the property online [long shot: tale an immersive tour of the property], putting up a flag for requirements.
 
-```sh
-npm run dev
-```
 
-This starts your app in development mode, rebuilding assets on file changes.
 
-## Deployment
 
-First, build your app for production:
 
-```sh
-npm run build
-```
 
-Then run the app in production mode:
 
-```sh
-npm start
-```
+### Development 
 
-Now you'll need to pick a host to deploy it to.
+This is a Remix app with more info about/with dependencies in the package.json file.
+To contribute/ run locally, make sure to have => 'node.v18' and => 'yarn.v12'. Run the following commands
 
-### DIY
+'yarn install' -- install dependencies 
+'yarn dev' -- start development server 
 
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
 
-Make sure to deploy the output of `remix build`
 
-- `build/`
-- `public/build/`
