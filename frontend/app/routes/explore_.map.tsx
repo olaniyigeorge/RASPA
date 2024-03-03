@@ -4,7 +4,7 @@
 import {
     APIProvider,
     Map,
-    AdvancedMarker,
+    Marker,
     Pin, 
     InfoWindow
 
@@ -17,6 +17,7 @@ export default function ExploreMaps() {
     const position = { lat: 7.256, lng: 5.206 }
     const [MarkerOpen, setMarkerOpen] = useState<boolean>(false)
     const GOOGLE_API_KEY = getEnvVar('GOOGLE_MAPS_API_KEY')
+    console.log(GOOGLE_API_KEY)
     return (
         <APIProvider apiKey={GOOGLE_API_KEY}>
             <div className="w-full h-screen ">
@@ -24,19 +25,21 @@ export default function ExploreMaps() {
                     zoom={10} 
                     center={position}
                 >
-                <AdvancedMarker position={position}>
-                        <Pin>@</Pin>
-                </AdvancedMarker>
+                
+                        
+                
                 {/* {selectedLocations.map(locatn => (
                     <Marker
                         position={locatn.coordinates}
                         onClick={() => setSelectedMarker(locatn)} // Set the selected marker when clicked}
                         icon={locatn.serviceIcon}
-                    /> */}
-                    {MarkerOpen && <InfoWindow position={position} onCloseClick={() => {setMarkerOpen(!MarkerOpen)}}> 
+                    /> 
+                    
+             */}
+
+                    {MarkerOpen && <InfoWindow position={position}> 
                         <p> This marker</p>
                     </InfoWindow>}
-            
                 </Map>
             </div>
         </APIProvider>
@@ -52,5 +55,7 @@ export async function loader({request,}: LoaderFunctionArgs) {
 
     // if the 
     console.log(currUrl)
+    console.log(`Action ${action}`)
+    console.log(`Search ${search}`)
     return {currUrl}
 }
