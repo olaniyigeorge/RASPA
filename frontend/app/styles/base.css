@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@import url("https://fonts.googleapis.com/css2?family=Inika:wght@400;700&family=Madimi+One&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+
+
+/* .inika-regular {
+    font-family: "Inika", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+  
+.inika-bold {
+font-family: "Inika", serif;
+font-weight: 700;
+font-style: normal;
+}
+*/
+
+
+/* * {
+    font-family: "Inika", serif;
+}  */
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
