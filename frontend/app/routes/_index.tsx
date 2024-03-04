@@ -1,11 +1,11 @@
-import { ActionFunctionArgs, DataFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { ActionFunctionArgs, DataFunctionArgs, LinksFunction, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { useSubmit, useNavigate  } from "@remix-run/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "~/components/header";
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
 import { storage } from "~/session.server";
-
 export const meta: MetaFunction = () => {
   
   return [
@@ -13,6 +13,11 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to RASP, Akure!" },
   ];
 };
+
+
+export const links: LinksFunction = () => [
+  // { rel: "stylesheet", href: styles },
+];
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -53,16 +58,16 @@ export default function Landing() {
   return (
     <div className="w-full h-full">
       <div id="Land" className="w-full h-auto md:h-screen  bg-blend-multiply  bg-[url('/images/rendering-house-model.png')] ">
-        <div className="w-full h-full bg-gradient-to-r from-purple-800 bg-blend-overlay  big-[url('/images/landed-properties.png')">
+        <div className="w-full relative h-full bg-gradient-to-r from-purple-800 bg-blend-overlay  big-[url('/images/landed-properties.png')">
 
           <Header />
 
           <div className="w-full h-auto">
             <div className="mt-20 md:mt-36 md:ml-10 items-start space-y-4">
-              <h1 className="w-full md:w-2/3  text-center md:text-start  text-3xl sm:text-7xl font-extrabold text-white ">
+              <h1 className="w-full md:w-2/3 text-center tracking-tighter drop-shadow-lg md:text-start text-3xl md:text-7xl font-extrabold  text-white ">
                 Discover Spaces That Suit Your Needs
               </h1>
-              <h2 className="mx-2 text-white text-center md:text-start  text-xl md:text-2xl ">
+              <h2 className="mx-2 text-white text-lg text-center md:text-start">
                 Connecting renters, buyers, and investors to 
                 available properties
               </h2>
@@ -120,9 +125,9 @@ export default function Landing() {
             </div> 
           </div>
 
-          <div className="w-full flex mb-10 md:mb-0 justify-end">
-              <Link to="/#property-types" className="flex justify-center items-center mr-5 rounded-full p-3 text-white text-xl hover:text-purple-600 hover:bg-white">
-                  ^
+          <div className="absolute bottom-3 right-3 w-full flex mb-10 md:mb-0 justify-end">
+              <Link to="/#property-types" className="flex justify-center items-center mr-5 rounded-full p-3 text-white text-xl  hover:bg-white">
+                  <ChevronDownIcon className="w-5 h-5 flex text-white border-2 rounded-full p-2 border-purple-800 hover:drop-shadow-lg items-center" />
               </Link>
           </div>
         </div>
