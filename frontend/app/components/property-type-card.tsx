@@ -12,7 +12,7 @@ export default function PropertyTypeCard(props: PTCP) {
     return <div className="w-full h-full hover:text-purple-600 hover:scale-105 transition-all">
         <Link 
             to={link_url}
-            className="w-full h-full">
+            className="w-full h-full space-y-3">
             <img src={image_src} alt={title} className="w-full h-full object-cover"/>
             <p className="font-bold text-xl">{title}</p>
         </Link>
