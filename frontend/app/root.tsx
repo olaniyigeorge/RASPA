@@ -110,8 +110,9 @@ export async function loader({request,}: LoaderFunctionArgs){
 
   }
 
-
-  
+  console.log("Node env: ", process.env["NODE_ENV"])
+  console.log("Cookie name: ", process.env["APP_COOKIE_NAME"])
+  console.log("Cookie name: ", process.env.APP_COOKIE_NAME)
 
   const ENVR = {
     APP_COOKIE_NAME: process.env.APP_COOKIE_NAME,
