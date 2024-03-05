@@ -30,8 +30,8 @@ export default function Login() {
       <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-md">
         <a href="/" className="flex p-2 justify-center">
               <img
-                className="h-8 w-56"
-                src="/images/logo.png"
+                className="h-auto w-56"
+                src="/images/rasp-logo-purple.png"
                 alt="RASPA"
               />
                 
@@ -76,7 +76,7 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="w-full border p-2 rounded-md hover:bg-orange-600 bg-orange-500 text-white"
+            className="w-full border p-2 rounded-md hover:bg-purple-700 bg-purple-600 text-white"
             // onClick={handleSubmit}
           >
             Submit
@@ -88,7 +88,7 @@ export default function Login() {
         >
             <button
                 type="button"
-                className="hover:text-orange-500 hover:border-b hover:border-b-orange-500 hover:transition-all"
+                className="hover:text-purple-600 hover:border-b hover:border-b-purple-600 hover:transition-all"
                 onClick={handleToggle}
             >
              {title === 'sign-in' ? 'Switch to Sign Up' : 'Switch to Sign In'}
