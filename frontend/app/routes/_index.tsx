@@ -4,6 +4,7 @@ import { useSubmit, useNavigate  } from "@remix-run/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "~/components/header";
+import PropertyCard, { akure_property, IProperty } from "~/components/property-card";
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
 import { storage } from "~/session.server";
 export const meta: MetaFunction = () => {
@@ -24,8 +25,8 @@ export default function Landing() {
   const [selectedButton, setSelectedButton] = useState<string>('buy');
   const [searchQuery, setSearchQUery] = useState<string>("")
   const submit = useSubmit()
-  console.log(selectedButton)
-  console.log(searchQuery)
+  // console.log(selectedButton)
+  // console.log(searchQuery)
   
   function handleSearch() {
     console.log("Handling search")
@@ -77,8 +78,8 @@ export default function Landing() {
             <div className="w-full flex justify-center p-2 h-16 mt-4">
               <div className="w-4/6 md:w-1/2 p-2 flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
                 <button
-                  className={`p-2 flex-grow justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'buy' ? 'bg-white shadow-md font-bold' : ''
+                  className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
+                    selectedButton === 'buy' ? 'bg-white shadow-md font-bold' : 'font-medium '
                   }`}
                   onClick={() => handleButtonClick('buy')}
                 >
@@ -86,23 +87,23 @@ export default function Landing() {
                 </button>
                 <button
                   className={`p-2 flex-grow justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'sell' ? 'bg-white shadow-md font-bold' : 'bg-transparent'
+                    selectedButton === 'sell' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
                   }`}
                   onClick={() => handleButtonClick('sell')}
                 >
                   Sell
                 </button>
                 <button
-                  className={`p-2  flex-grow justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'rent' ? 'bg-white shadow-md font-bold' : 'bg-transparent'
+                  className={`p-2  flex-grow  justify-center items-center rounded-full transition-all ${
+                    selectedButton === 'rent' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
                   }`}
                   onClick={() => handleButtonClick('rent')}
                 >
                   Rent
                 </button>
                 <button
-                  className={`p-2 flex-grow justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'invest' ? 'bg-white shadow-md font-bold' : 'bg-transparent'
+                  className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
+                    selectedButton === 'invest' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
                   }`}
                   onClick={() => handleButtonClick('invest')}
                 >
@@ -125,17 +126,17 @@ export default function Landing() {
             </div> 
           </div>
 
-          <div className="absolute bottom-3 right-3 w-full flex mb-10 md:mb-0 justify-end">
+          <div className="md:absolute bottom-3 right-3 w-full flex mb-10 md:mb-0 justify-end">
               <Link to="/#property-types" className="flex justify-center items-center mr-5 rounded-full p-3 text-white text-xl  hover:bg-white">
-                  <ChevronDownIcon className="w-5 h-5 flex text-white border-2 rounded-full p-2 border-purple-800 hover:drop-shadow-lg items-center" />
+                  <ChevronDownIcon className="w-5 h-5 flex text-purple-600 border-2 rounded-full p-2 border-purple-800 hover:drop-shadow-lg items-center" />
               </Link>
           </div>
         </div>
       </div>
 
-      <div id="property-types" className="flex-col justify-center mt-8">
+      <div id="property-types" className="flex-col font-sans justify-center mt-8">
         <div className="p-3 w-full flex-col justify-center items-center">
-          <h1 className="text-3xl flex justify-center font-bold"> Explore The Luxuries Of RASPA</h1>
+          <h1 className="text-3xl  flex justify-center font-bold"> Explore The Luxuries Of RASPA</h1>
           <h1 className="text-purple-600 font-semibold flex justify-center"> Explore The Luxuries Of RASPA</h1>
         </div>
 
@@ -151,8 +152,10 @@ export default function Landing() {
           <h1 className="text-3xl font-bold"> New Listed Homes In RASP Akure, Nigeria </h1>
         </div>
 
-        <div className="p-3 h-40">
-          Property type cards
+        <div className="md:flex md:flex-grow md:space-x-3 md:items-start w-full px-2 h-auto">
+          {akure_property.map((property: IProperty) => (
+            <PropertyCard key={property.address} {...property} />
+          ))}
         </div>
 
         <span className="flex justify-end text-rasppurple">
