@@ -158,9 +158,9 @@ export default function Landing() {
           ))}
         </div>
 
-        <span className="flex justify-end text-rasppurple">
+        <Link to="/explore?search=Akure" className="text-sm italic text-purple-600 flex justify-end text-rasppurple">
           View all...
-        </span>
+        </Link>
 
       </div>
 
