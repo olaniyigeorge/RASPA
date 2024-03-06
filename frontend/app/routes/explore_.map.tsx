@@ -9,12 +9,15 @@ import {
     InfoWindow
 
 } from "@vis.gl/react-google-maps"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { LoaderFunctionArgs } from "react-router"
 import { getEnvVar } from "~/api/util"
 
+type LatLngLiteral = google.maps.LatLngLiteral
+
 export default function ExploreMaps() {
-    const position = { lat: 7.256, lng: 5.206 }
+    // const position = { lat: 7.256, lng: 5.206 }
+    const center = useMemo<LatLngLiteral>(() => ({ lat: 7.256, lng: 5.206 }), [])
     const [MarkerOpen, setMarkerOpen] = useState<boolean>(false)
     const GOOGLE_API_KEY = getEnvVar('GOOGLE_MAPS_API_KEY')
     console.log(GOOGLE_API_KEY)
@@ -23,7 +26,7 @@ export default function ExploreMaps() {
             <div className="w-full h-screen ">
                 <Map 
                     zoom={10} 
-                    center={position}
+                    center={center}
                 >
                 
                         
@@ -37,9 +40,9 @@ export default function ExploreMaps() {
                     
              */}
 
-                    {MarkerOpen && <InfoWindow position={position}> 
+                    {/* {MarkerOpen && <InfoWindow position={center}> 
                         <p> This marker</p>
-                    </InfoWindow>}
+                    </InfoWindow>} */}
                 </Map>
             </div>
         </APIProvider>
