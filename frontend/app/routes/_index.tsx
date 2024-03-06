@@ -68,10 +68,10 @@ export default function Landing() {
 
           <div className="w-full h-auto">
             <div className="mt-20 md:mt-36 md:ml-10 items-start space-y-4">
-              <h1 className="w-full md:w-2/3 text-center tracking-tighter drop-shadow-lg md:text-start text-3xl md:text-7xl font-extrabold  text-white ">
+              <h1 className="w-full md:w-2/3 text-center tracking-tighter drop-shadow-lg md:text-start text-5xl md:text-7xl font-extrabold  text-white ">
                 Discover Spaces That Suit Your Needs
               </h1>
-              <h2 className="mx-2 text-white text-lg text-center md:text-start">
+              <h2 className="mx-2 text-white text-md md:text-lg text-center md:text-start">
                 Connecting renters, buyers, and investors to 
                 available properties
               </h2>
@@ -116,10 +116,13 @@ export default function Landing() {
             </div>   
 
             <div id="search-bar" className="w-full flex justify-center mt-4 p-2 h-16">
-              <form  className="w-5/6 md:w-2/3 flex items-center space-x-2  rounded-full">
-              <input type="text" onChange={(e) => {setSearchQUery(e.target.value)}} className="w-full h-full flex-1 p-3 ring-0 active:ring-0 rounded-full active:border-none" placeholder="Search for street name, city, property type, zip code... "/>
+              <form  className="bg-white w-5/6 md:w-2/3 flex items-center rounded-full">
+              <input 
+                type="text" 
+                onChange={(e) => {setSearchQUery(e.target.value)}} 
+                className="w-full h-full text-sm md:text-md flex-1 p-3 focus:outline-none ring-0 active:ring-0 rounded-full active:border-none" placeholder="Search for street name, city, property type, zip code... "/>
               <button
-                className="border-2 text-xs md:text-md border-white shadow-md bg-purple-600 rounded-full text-white text-bold h-full  p-2 md:px-5 "
+                className="border-2 text-xs md:text-md border-white bg-purple-600 hover:bg-purple-800 rounded-full text-white text-bold h-full  px-3 md:px-5 "
                 // On click contruct a url with search params and useNavigate to it
                 onClick={() =>  handleSearch()}
               >
@@ -130,8 +133,8 @@ export default function Landing() {
           </div>
 
           <div className="md:absolute bottom-3 right-3 w-full flex mb-10 md:mb-0 justify-end">
-              <Link to="/#property-types" className="flex justify-center items-center mr-5 rounded-full p-3 text-white text-xl  hover:bg-white">
-                  <ChevronDownIcon className="w-5 h-5 flex text-purple-600 border-2 rounded-full p-2 border-purple-800 hover:drop-shadow-lg items-center" />
+              <Link to="/#property-types" className="flex justify-center items-center mr-5 rounded-full p-3 text-white text-xl transition ease-in hover:bg-white">
+                  <ChevronDownIcon className="w-8 h-8 flex text-purple-600 border-2 rounded-full border-white items-center" />
               </Link>
           </div>
         </div>
@@ -198,7 +201,7 @@ export default function Landing() {
 
       <div id="newsletter-signup" className="w-full flex-col justify-center py-20 ">
         <div className="flex w-full justify-center p-2">
-          <p className="text-purple-600 text-3xl font-medium">Sign up for exciting updates on RASPA</p>
+          <p className="text-purple-600 text-xl md:text-3xl font-medium">Sign up for exciting updates on RASPA</p>
         </div>
 
         <div className="flex w-full justify-center">
