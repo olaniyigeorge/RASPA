@@ -23,9 +23,11 @@ export default function ServiceDescriptionCard(props: IService) {
 
             <p className="line-clamp-5 text-sm tracking-wide text-gray-800"> {service.description} </p>
 
-            <Link to={service.url} className="flex hover:scale-105 transition ease-in-out   justify-center hover:bg-purple-800 items-center mt-3 p-2 bg-purple-600 rounded-md text-white">
-                Learn More
-            </Link>
+            <span className="w-full h-auto flex justify-center items-center">
+                <Link to={service.url} className="w-2/3 flex hover:scale-105 transition ease-in-out  justify-center hover:bg-purple-800 items-center mt-3 p-2 bg-purple-600 rounded-md text-white">
+                    Learn More
+                </Link>
+            </span>
 
 
 
