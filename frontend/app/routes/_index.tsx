@@ -3,9 +3,12 @@ import { ActionFunctionArgs, DataFunctionArgs, LinksFunction, LoaderFunctionArgs
 import { useSubmit, useNavigate  } from "@remix-run/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Footer from "~/components/footer";
 import Header from "~/components/header";
+import NewsLetterForm from "~/components/news-letter";
 import PropertyCard, { akure_property, IProperty } from "~/components/property-card";
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
+import ServiceDescriptionCard, { IService, our_services } from "~/components/service-description-cards";
 import { storage } from "~/session.server";
 export const meta: MetaFunction = () => {
   
@@ -134,7 +137,7 @@ export default function Landing() {
         </div>
       </div>
 
-      <div id="property-types" className="flex-col font-sans justify-center mt-8">
+      <div id="property-types" className="flex-col font-sans justify-center py-10">
         <div className="p-3 w-full flex-col justify-center items-center">
           <h1 className="text-3xl  flex justify-center font-bold"> Explore The Luxuries Of RASPA</h1>
           <h1 className="text-purple-600 font-semibold flex justify-center"> Explore The Luxuries Of RASPA</h1>
@@ -147,8 +150,8 @@ export default function Landing() {
         </div>
       </div>
 
-      <div className="flex-col justify-center mt-4">
-        <div className="p-3">
+      <div className="flex-col justify-center py-10">
+        <div className="p-3 w-full flex justify-center mb-5">
           <h1 className="text-3xl font-bold"> New Listed Homes In RASP Akure, Nigeria </h1>
         </div>
 
@@ -164,43 +167,47 @@ export default function Landing() {
 
       </div>
 
-      <div className="flex-col justify-center">
-        <div className="p-3">
+      <div className="flex-col justify-center bg-purple-50 pt-2 pb-5">
+        <div className="p-3 flex justify-center items-center">
           <h1 className="text-3xl font-bold"> See how RASP can help you  </h1>
         </div>
 
-        <div className="p-3 h-40">
-          Service Desciption Cards
+        <div className="md:flex space-y-2 md:space-y-0 md:flex-grow md:space-x-3 md:items-start w-full px-2 h-auto">
+          {our_services.map((service: IService) => (
+            <ServiceDescriptionCard key={service.url} {...service} />
+          ))}
         </div>
       </div>
 
-      <div id="our-mission" className="flex-col justify-center h-40">
+      <div id="our-mission" className="my-5 p-3 flex-col justify-center space-y-3">
         <img 
-          className="p-3"
-          src=""
+          className=""
+          src="/images/our-mission.png"
           alt="our-mission"
         />
 
-        <div className="md:flex">
-          <p>RASPA</p>
-          <p>RASP is your one-stop website, empowering you to seamlessly buy, sell, rent a home, and invest in properties, offering a comprehensive platform for all your real estate needs</p>
+        <div className="< flex items-center space-x-3 p-3">
+          <div className="< w-1/4 flex justify-center items-center">
+            <h1 className="text-3xl md:text-5xl font-bold drop-shadow border-b border-purple-600 text-purple-600">RASPA</h1>
+          </div>  
+          
+          <p className="< tracking-wide w-3/4 text-lg text-gray-800">RASP is your one-stop website, empowering you to seamlessly buy, sell, rent a home, and invest in properties, offering a comprehensive platform for all your real estate needs</p>
           
         </div>
       </div>
 
-      <div id="newsletter-signup" className="flex-col justify-center h-20">
-        <p>Sign up for exciting updates on RASPA</p>
+      <div id="newsletter-signup" className="w-full flex-col justify-center py-20 ">
+        <div className="flex w-full justify-center p-2">
+          <p className="text-purple-600 text-3xl font-medium">Sign up for exciting updates on RASPA</p>
+        </div>
 
-        <div className="md:flex">
-          Email form for newsletter
+        <div className="flex w-full justify-center">
+          <NewsLetterForm />
         </div>
       </div>
 
       <div id="footer" className="bg-purple-600 w-full h-40">
-        <div className="bg-rasppurple">
-            Footer
-        </div>
-
+        <Footer />
       </div>
       
     </div>
