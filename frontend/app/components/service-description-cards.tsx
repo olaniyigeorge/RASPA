@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 
 
-interface IService {
+export interface IService {
     service_logo: string;
     action: string;
     description: string;
@@ -15,15 +15,16 @@ export default function ServiceDescriptionCard(props: IService) {
     const service = {...props}
 
     return <>
-        <div className="w-full h-full rounded-lg">
-            <img src={service.service_logo} alt={} className={} />
+        <div className="w-full h-full flex-grow rounded-lg shadow-md p-2 flex-col items-center justify-center space-y-2 bg-white">
+            <div className="flex w-full h-auto items-center justify-center">
+                <img src={service.service_logo} alt={service.action} className="max-h-40 w-auto justify-center" />
+            </div>
+            <h1 className="mt-2 text-xl font-bold w-full flex justify-center"> {service.action} properties</h1>
 
-            <h1 className=""> {service.action.split(' ')[0]}</h1>
+            <p className="line-clamp-5 text-sm tracking-wide text-gray-800"> {service.description} </p>
 
-            <p> {service.description}</p>
-
-            <Link to={service.url} className="">
-                
+            <Link to={service.url} className="flex hover:scale-105 transition ease-in-out   justify-center hover:bg-purple-800 items-center mt-3 p-2 bg-purple-600 rounded-md text-white">
+                Learn More
             </Link>
 
 
