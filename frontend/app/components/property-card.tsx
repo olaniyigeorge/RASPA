@@ -23,17 +23,17 @@ export default function PropertyCard(props: IProperty){
     
     return <>
         <div className="w-full h-full rounded-lg relative">
-            <img src={property.cover_image} alt="" className="" />
+            <img src={property.cover_image} alt="" className="h-60 w-full" />
 
             <div className="">
-                <p>{property.property_name}</p>
-                <p>{property.amenities.length}</p>
-                <p>{property.address}</p>
-                <p>{property.agent}</p>
+                <p className="">{property.property_name}</p>
+                <p className="">{property.amenities.length}</p>
+                <p className="">{property.address}</p>
+                <p className="">{property.agent}</p>
             </div>
 
-            <p className="absolute p-2 top-1 left-1 rounded-md bg-white shadow">Action</p>
-            <p className="absolute p-2 top-1 right-1 rounded-md bg-white shadow">City</p>
+            <p className="absolute p-2 top-2 left-2 rounded-md bg-white capitalize shadow">{property.action}</p>
+            <p className="absolute p-2 top-2 right-2 rounded-md bg-white shadow">City</p>
 
         </div>
     </>
@@ -42,7 +42,7 @@ export default function PropertyCard(props: IProperty){
 
 export const akure_property = [
     {
-        cover_image: "images/residential-properties.png",
+        cover_image: "images/frame-15.png",
         property_name: "Olukayode Complex",
         price: 150000,
         action: "rent",
@@ -51,7 +51,7 @@ export const akure_property = [
         amenities: "Fenced, Gated",
     },
     {
-        cover_image: "images/commercial-properties.png",
+        cover_image: "images/frame-16.png",
         property_name: "RealPlus",
         price: 1000000,
         action: "rent",
@@ -60,7 +60,7 @@ export const akure_property = [
         amenities: "Fenced, Gated",
     },
     {
-        cover_image: "images/industrial-properties.png",
+        cover_image: "images/frame-17.png",
         property_name: "RayBus",
         price: 50000000,
         action: "sale",
