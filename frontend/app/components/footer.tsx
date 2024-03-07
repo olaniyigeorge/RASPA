@@ -147,7 +147,7 @@ export default function Footer() {
                         md:flex-row md:space-x-2"
                     >
                         <span className="flex w-full items-center justify-center md:w-auto">
-                        &copy; 2020 - {new Date().getFullYear()} &nbsp; RASPA
+                        &copy; 2021 - {new Date().getFullYear()} &nbsp; RASPA
                         Ltd.
                         </span>
                         <span className="flex w-full items-center justify-center md:w-auto">
