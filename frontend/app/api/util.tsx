@@ -38,4 +38,5 @@ const api_paths: Record<string, string> = {
     'sign-in-refresh': 'accounts/auth/login/refresh/',
     'sign-up': 'accounts/users/',
     'developed-properties': 'api/developed-properties/',
+    'service-locations': 'directory/service-locations'
   };
