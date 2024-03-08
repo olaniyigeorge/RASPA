@@ -635,12 +635,12 @@ video {
   top: 0.5rem;
 }
 
-.z-\[150\] {
-  z-index: 150;
-}
-
 .z-20 {
   z-index: 20;
+}
+
+.z-\[150\] {
+  z-index: 150;
 }
 
 .mx-2 {
@@ -656,11 +656,6 @@ video {
 .my-5 {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
-}
-
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 
 .mb-10 {
@@ -681,6 +676,10 @@ video {
 
 .mb-5 {
   margin-bottom: 1.25rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .ml-8 {
@@ -717,10 +716,6 @@ video {
 
 .mt-4 {
   margin-top: 1rem;
-}
-
-.ml-2 {
-  margin-left: 0.5rem;
 }
 
 .line-clamp-5 {
@@ -1175,6 +1170,11 @@ video {
   padding-right: 1rem;
 }
 
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 .px-\[2px\] {
   padding-left: 2px;
   padding-right: 2px;
@@ -1193,11 +1193,6 @@ video {
 .py-20 {
   padding-top: 5rem;
   padding-bottom: 5rem;
-}
-
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 
 .py-3 {
@@ -1404,10 +1399,6 @@ video {
   opacity: 0.75;
 }
 
-.opacity-50 {
-  opacity: 0.5;
-}
-
 .bg-blend-multiply {
   background-blend-mode: multiply;
 }
@@ -1572,6 +1563,10 @@ font-style: normal;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.hover\:font-bold:hover {
+  font-weight: 700;
+}
+
 .hover\:text-gray-500:hover {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
@@ -1716,11 +1711,6 @@ font-style: normal;
     padding: 0.75rem;
   }
 
-  .sm\:px-8 {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
   .sm\:pb-2 {
     padding-bottom: 0.5rem;
   }
@@ -1824,11 +1814,6 @@ font-style: normal;
   .md\:py-0 {
     padding-top: 0px;
     padding-bottom: 0px;
-  }
-
-  .md\:py-3 {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
   }
 
   .md\:pt-0 {
