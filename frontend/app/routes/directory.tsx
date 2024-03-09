@@ -49,12 +49,64 @@ export default function Directory() {
                 >
                     {dataa.map((place) => (
                         <AdvancedMarker position={{lat: parseFloat(place.latitude), lng: parseFloat(place.longitude)}}>
-                                    {place.service === "fibre" && <img src="images/fibre-pin.png" className="w-5 h-5" alt="" />}
-                                    {place.service === "p2p/ptmp" && <img src="images/tower-pin.png" className="w-5 h-5" alt="" />}
-                                    {place.service === "wifi" && <img src="images/wifi-pin.png" className="w-5 h-5" alt="" />}
+                                    {place.service === "fibre" && <img src="images/fibre-pin.png" className="w-10 h-10" alt="" />}
+                                    {place.service === "p2p/ptmp" && <img src="images/tower-pin.png" className="w-10 h-10" alt="" />}
+                                    {place.service === "wifi" && <img src="images/wifi-pin.png" className="w-10 h-10" alt="" />}
                         </AdvancedMarker>  
                     ))}
                   
+                    {/* Render InfoWindow */}
+                {selectedMarker && (
+                <InfoWindow
+                    position={selectedMarker.coordinates}
+                    onCloseClick={() => setSelectedMarker(null)} // Close the InfoWindow
+                >
+                    {/* Render the content inside the InfoWindow */}
+                    <div className="w-60 space-y-1 rounded-lg p-1 shadow-lg">
+                    <div className="flex items-start justify-between">
+                        <img
+                        src={selectedMarker.ispLogo}
+                        alt={selectedMarker.ispName}
+                        />
+                        <p className="text-2xl font-medium">
+                        {selectedMarker.serviceSpeed}
+                        </p>
+                    </div>
+                    <div className="text-lg font-bold">
+                        <h2>ISP: {selectedMarker.ispName}</h2>
+                    </div>
+                    <div className="whitespace-normal font-light">
+                        <p className="sm:text-md whitespace-normal text-sm">
+                        {selectedMarker.serviceDescription}
+                        </p>
+                    </div>
+                    <div className="flex justify-around space-x-2 font-medium">
+                        <button className="flex items-center justify-center space-x-1 rounded-lg bg-wtaorange p-2">
+                        <img className="h-2 w-2" src="/images/contact.png" />
+                        <p>Contact Us</p>
+                        </button>
+                        <button className="flex items-center justify-center space-x-1 rounded-lg border border-wtaorange p-2">
+                        <p> Explore service</p>
+                        <img className="h-2 w-2" src="/images/explore.png" />
+                        </button>
+                    </div>
+                    </div>
+                </InfoWindow>
+                )}
+        
+            {location && (
+              <Marker
+                icon="images/location-marker-pin.png"
+                position={location}
+              />
+            )}
+            {coverage && service && (
+              <Circle
+                center={location}
+                radius={coverage}
+                options={circleOptions}
+              />
+            )}
                 
 
 
