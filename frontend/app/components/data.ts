@@ -1,3 +1,15 @@
+export interface serviceLocation {
+    id : string;
+    description: string;
+    address: string;
+    latitude: string;
+    longitude: string;
+    service: string;
+    speed: number;
+    sl_operator_info: Record<string, string>;
+
+}
+
 export const dataa = [
     {
         "id": "f90514cb-5c66-4a64-9a0e-335384dae654",
