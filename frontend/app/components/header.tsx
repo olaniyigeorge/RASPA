@@ -20,7 +20,7 @@ export default function Header() {
                 <Link className="transition ease-in-out delay-100 hover:border-b " to="/about-us"> About </Link>
                 <Link className="transition ease-in-out delay-100 hover:border-b " to="/blog"> Blog </Link>
                 <Link className="transition ease-in-out delay-100 hover:border-b " to="/contact"> Contact</Link>
-                <Link className="transition ease-in-out delay-100 hover:border-b " to="/explore/map/?action=buy&search="> Explore</Link>
+                <Link className="transition ease-in-out delay-100 hover:border-b " to="/explore"> Explore</Link>
             </span> 
 
             <span className="hidden md:flex items-center ">
@@ -63,7 +63,7 @@ export default function Header() {
                     <Link className="block transition ease-in-out delay-100 hover:font-bold hover:scale-105 " to="/about-us"> About </Link>
                     <Link className="block transition ease-in-out delay-100 hover:font-bold hover:scale-105 " to="/blog"> Blog </Link>
                     <Link className="block transition ease-in-out delay-100 hover:font-bold hover:scale-105 " to="/contact"> Contact</Link>
-                    <Link className="block transition ease-in-out delay-100 hover:font-bold hover:scale-105 " to="/explore/map/?action=buy&search="> Explore</Link>
+                    <Link className="block transition ease-in-out delay-100 hover:font-bold hover:scale-105 " to="/explore"> Explore</Link>
                 </div>
         </div>
 
