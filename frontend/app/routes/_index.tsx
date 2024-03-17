@@ -116,19 +116,26 @@ export default function Landing() {
             </div>   
 
             <div id="search-bar" className="w-full flex justify-center mt-4 p-2 h-16">
-              <form  className="bg-white w-5/6 md:w-2/3 flex items-center rounded-full">
+              <span  className="bg-white w-5/6 md:w-2/3 flex items-center rounded-full">
               <input 
                 type="text" 
                 onChange={(e) => {setSearchQUery(e.target.value)}} 
-                className="w-full h-full text-sm md:text-md flex-1 p-3 focus:outline-none ring-0 active:ring-0 rounded-full active:border-none" placeholder="Search for street name, city, property type, zip code... "/>
-              <button
+                className="w-full h-full text-sm md:text-md flex-1 p-3 focus:outline-none ring-0 active:ring-0 rounded-full active:border-none" placeholder="Search for street name, city, property type, zip code... "
+              />
+              {/* <button
                 className="border-2 text-xs md:text-md border-white bg-purple-600 hover:bg-purple-800 rounded-full text-white text-bold h-full  px-3 md:px-5 "
                 // On click contruct a url with search params and useNavigate to it
                 onClick={() =>  handleSearch()}
               >
                 Search
-              </button>
-              </form>
+              </button> */}
+              <Link 
+                  to={`/explore/map?action=${selectedButton}&search=${searchQuery}`}  
+                  className="flex items-center justify-center border-2 text-xs md:text-md border-white bg-purple-600 hover:bg-purple-800 rounded-full text-white text-bold h-full  px-3 md:px-5 "
+              > 
+                Search
+              </Link>
+              </span>
             </div> 
           </div>
 
