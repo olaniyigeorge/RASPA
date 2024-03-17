@@ -11,6 +11,7 @@ import {
     AdvancedMarker
 
 } from "@vis.gl/react-google-maps"
+import { AnimatePresence, motion } from "framer-motion"
 import { useMemo, useState } from "react"
 import { LoaderFunctionArgs } from "react-router"
 import { getEnvVar, isServer } from "~/api/util"
@@ -38,23 +39,31 @@ export default function ExploreMaps() {
     console.log("isServer(): ", isServer())
     if (!isServer()) {       
         return (
-        <APIProvider apiKey={GOOGLE_API_KEY}>
-            <div className="w-full h-screen ">
-                <Map 
-                    zoom={8.5} 
-                    center={center}
-                    mapId= {GOOGLE_MAP_ID}
+        <AnimatePresence> 
+            <APIProvider apiKey={GOOGLE_API_KEY}>
+                <motion.div 
+                    initial={{ opacity: 0.5, y: -50}}
+                    animate= {{ opacity: 1, y: 0}}
+                    exit={{opacity:0}}
+                    transition={{ease: "easeInOut", duration: 1.5}}
+                    className="w-full h-screen "
+                    
                 >
-                
-                <AdvancedMarker position={center}>
-                    <Pin />
-                </AdvancedMarker>    
-                
+                    <Map 
+                        defaultCenter={center}
+                        defaultZoom={8.5}
+                        mapId= {GOOGLE_MAP_ID}
+                    >
+                    
+                    <AdvancedMarker position={center}>
+                        <Pin />
+                    </AdvancedMarker>    
+                    
 
-                </Map>
-            </div>
-        </APIProvider>
-
+                    </Map>
+                </motion.div>
+            </APIProvider>
+        </AnimatePresence>
     )
 }
 }
