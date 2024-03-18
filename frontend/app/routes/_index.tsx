@@ -1,6 +1,7 @@
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { ActionFunctionArgs, DataFunctionArgs, LinksFunction, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { useSubmit, useNavigate  } from "@remix-run/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Footer from "~/components/footer";
@@ -25,7 +26,7 @@ export const links: LinksFunction = () => [
 
 export default function Landing() {
   const navigate = useNavigate();
-  const [selectedButton, setSelectedButton] = useState<string>('buy');
+  const [selectedButton, setSelectedButton] = useState<string>('sale');
   const [searchQuery, setSearchQUery] = useState<string>("")
   const submit = useSubmit()
   // console.log(selectedButton)
@@ -60,39 +61,52 @@ export default function Landing() {
 
   
   return (
+    <AnimatePresence>
+
+    
     <div className="w-full h-full">
       <div id="Land" className="w-full h-auto md:h-screen  bg-blend-multiply  bg-[url('/images/rendering-house-model.png')] ">
-        <div className="w-full relative h-full bg-gradient-to-r from-purple-800 bg-blend-overlay  big-[url('/images/landed-properties.png')">
+        <motion.div 
+          initial={{ opacity: 0.2, y: -50}}
+          animate= {{ opacity: 1, y: 0}}
+          exit={{opacity:0}}
+          transition={{ease: "easeInOut", duration: 1}}
+          className="w-full relative h-full bg-gradient-to-r from-purple-800 bg-blend-overlay  big-[url('/images/landed-properties.png')">
 
           <Header />
 
           <div className="w-full h-auto">
-            <div className="mt-20 md:mt-36 md:ml-10 items-start space-y-4">
-              <h1 className="w-full md:w-2/3 text-center tracking-tighter drop-shadow-lg md:text-start text-5xl md:text-7xl font-extrabold  text-white ">
+            <motion.div 
+              initial={{ scale: 0 }}
+              animate= {{ scale: [1.1,1]}}
+              exit={{opacity:0}}
+              transition={{ease: "easeInOut", duration: 1}}
+              className="mt-20 md:mt-36 md:ml-10 items-start space-y-4 ">
+              <h1 className="w-full md:w-2/3 text-center font-extrabold font-outline-6 font-outline-2  tracking-tighter drop-shadow-lg md:text-start text-5xl md:text-7xl font  text-white ">
                 Discover Spaces That Suit Your Needs
               </h1>
-              <h2 className="mx-2 text-white text-md md:text-lg text-center md:text-start">
+              <h2 className="mx-2 text-white text-md md:text-lg inika-regular text-center md:text-start">
                 Connecting renters, buyers, and investors to 
                 available properties
               </h2>
-            </div>
+            </motion.div>
             
 
-            <div className="w-full flex justify-center p-2 h-16 mt-4">
+            <div className="w-full flex justify-center p-2 h-16 inika-regular mt-4">
               <div className="w-4/6 md:w-1/2 p-2 flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
                 <button
                   className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'buy' ? 'bg-white shadow-md font-bold' : 'font-medium '
+                    selectedButton === 'sale' ? 'bg-white shadow-md font-bold' : 'font-medium '
                   }`}
-                  onClick={() => handleButtonClick('buy')}
+                  onClick={() => handleButtonClick('sale')}
                 >
                   Buy
                 </button>
                 <button
                   className={`p-2 flex-grow justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'sell' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
+                    selectedButton === 'SALE' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
                   }`}
-                  onClick={() => handleButtonClick('sell')}
+                  onClick={() => handleButtonClick('SALE')}
                 >
                   Sell
                 </button>
@@ -144,7 +158,7 @@ export default function Landing() {
                   <ChevronDownIcon className="w-8 h-8 flex text-purple-600 border-2 rounded-full border-white items-center" />
               </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <div id="property-types" className="flex-col font-sans justify-center py-10">
@@ -221,6 +235,8 @@ export default function Landing() {
       </div>
       
     </div>
+
+    </AnimatePresence>
   );
 }
 
