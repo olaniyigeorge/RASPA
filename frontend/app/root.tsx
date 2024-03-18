@@ -10,7 +10,7 @@ import {
 } from "@remix-run/react";
 import { AnimatePresence } from "framer-motion";
 import stylesheet from "~/styles/tailwind.css";
-
+import tailwindStyles from '~/styles/app.css'
 import { fetchNewAccessToken, UserContextProvider } from "./api/auth";
 import { UserContext } from "./api/interfaces";
 import { getUrl } from "./api/util";
@@ -20,6 +20,7 @@ import { DomWrapper } from "./ui/dom-wrapper";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: tailwindStyles},
   // { rel: "stylesheet", href: styles },
   // ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
