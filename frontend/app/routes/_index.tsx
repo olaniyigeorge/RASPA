@@ -11,6 +11,9 @@ import PropertyCard, { akure_property, IProperty } from "~/components/property-c
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
 import ServiceDescriptionCard, { IService, our_services } from "~/components/service-description-cards";
 import { storage } from "~/session.server";
+
+
+
 export const meta: MetaFunction = () => {
   
   return [
@@ -73,7 +76,7 @@ export default function Landing() {
           transition={{ease: "easeInOut", duration: 1}}
           className="w-full relative h-full bg-gradient-to-r from-purple-800 bg-blend-overlay  big-[url('/images/landed-properties.png')">
 
-          <Header />
+          <Header mode={""}/>
 
           <div className="w-full h-auto">
             <motion.div 
@@ -81,10 +84,13 @@ export default function Landing() {
               animate= {{ scale: [1.1,1]}}
               exit={{opacity:0}}
               transition={{ease: "easeInOut", duration: 1}}
-              className="mt-20 md:mt-36 md:ml-10 items-start space-y-4 ">
-              <h1 className="w-full md:w-2/3 text-center font-extrabold font-outline-6 font-outline-2  tracking-tighter drop-shadow-lg md:text-start text-5xl md:text-7xl font  text-white ">
-                Discover Spaces That Suit Your Needs
-              </h1>
+              className="mt-16 w-full md:mt-36 px-2 md:px-10 items-start space-y-4 ">
+              <span className="w-full md:w-2/3 text-center text-pretty    font-extrabold tracking-tighter drop-shadow-lg md:text-start text-5xl md:text-7xl text-white ">
+                <h1 className=" ">
+                  Discover Spaces
+                </h1>
+                <p>That  Suit Your Needs</p>
+              </span>
               <h2 className="mx-2 text-white text-md md:text-lg inika-regular text-center md:text-start">
                 Connecting renters, buyers, and investors to 
                 available properties
