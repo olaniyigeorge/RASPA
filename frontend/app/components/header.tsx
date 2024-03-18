@@ -3,20 +3,22 @@ import { UserIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Link } from "@remix-run/react";
 import { useState } from "react";
 
+interface IHeader {
+    mode?: string
+}
 
-
-export default function Header() {
+export default function Header(props: IHeader) {
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
+    const { mode } = props
 
 
-
-    return <header className="w-full h-auto shadow">
+    return <header className={`w-full h-auto shadow ${mode === 'light'? 'text-gray-900' : 'text-white'} `}>
         <div className="hidden md:flex w-full  justify-between py-3 px-8 items-center ">
-            <Link to="/" className="text-white">
+            <Link to="/" className="">
                 <img className="h-10 w-auto drop-shadow" src="images/rasp-logo-white.png" alt="rasp" />
             </Link>
 
-            <span className="hidden md:flex text-white text-xs md:text-md space-x-1 md:space-x-4">
+            <span className="hidden md:flex  text-xs md:text-md space-x-1 md:space-x-4">
                 <Link className="transition ease-in-out delay-100 hover:border-b " to="/about-us"> About </Link>
                 <Link className="transition ease-in-out delay-100 hover:border-b " to="/blog"> Blog </Link>
                 <Link className="transition ease-in-out delay-100 hover:border-b " to="/contact"> Contact</Link>
@@ -24,7 +26,7 @@ export default function Header() {
             </span> 
 
             <span className="hidden md:flex items-center ">
-                <Link to="/login" className="mx-2 h-auto flex  text-xs md:text-md items-start text-start text-white ">Get Started</Link>
+                <Link to="/login" className="mx-2 h-auto flex  text-xs md:text-md items-start text-start">Get Started</Link>
                 <span className="w-8 h-8 border-2 border-black rounded-full p-1">
                     <UserIcon className="w-full h-full text-black" />
                 </span>
