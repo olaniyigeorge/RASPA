@@ -47,15 +47,29 @@ export default function ExploreMap() {
                     animate= {{ opacity: 1, y: 0}}
                     exit={{opacity:0}}
                     transition={{ease: "easeInOut", duration: 1.5}}
-                    className="w-full h-screen "
+                    className="w-full h-screen relative"
                     
                 >
                     <Map 
                         defaultCenter={center}
                         defaultZoom={8.5}
                         mapId= {GOOGLE_MAP_ID}
+                        fullscreenControl= {false}
                     >
                     
+                    <div className="absolute p-2 top-3 right-3 w-[400px] h-[100px] bg-gray-950 drop-shadow rounded">
+                        <div className="w-full space-x-1 flex justify-between">
+                            <button className="w-full rounded-full p-2 text-white bg-purple-700">
+                                Rent
+                            </button>
+                            <button className="w-full rounded-full p-2 text-white bg-purple-700">
+                                Sale
+                            </button>
+                            <button className="w-full rounded-full p-2 text-white bg-purple-700">
+                                Invest
+                            </button>
+                        </div>
+                    </div>
                     <AdvancedMarker position={center}>
                         <Pin />
                     </AdvancedMarker>    
