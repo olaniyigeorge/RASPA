@@ -34,12 +34,12 @@ export default function App() {
       scripts={
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data?.ENVR)}`,
+            __html: `window.ENV = ${JSON.stringify(data.ENVR)}`,
           }}
         />
       }
     >
-      <UserContextProvider usrContext={data?.userContext}>
+      <UserContextProvider usrContext={data.userContext}>
         <AnimatePresence mode="wait">
           <Outlet />
         </AnimatePresence>
@@ -111,9 +111,7 @@ export async function loader({request,}: LoaderFunctionArgs){
 
   }
 
-  console.log("Node env: ", process.env["NODE_ENV"])
-  console.log("Cookie name: ", process.env["APP_COOKIE_NAME"])
-  console.log("Cookie name: ", process.env.APP_COOKIE_NAME)
+
 
   const ENVR = {
     APP_COOKIE_NAME: process.env.APP_COOKIE_NAME,
