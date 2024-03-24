@@ -22,7 +22,7 @@ export default function PropertyCard(props: IProperty){
     const property = {...props}
     
     return <>
-        <div className="w-full h-full rounded-lg relative">
+        <div className="w-full h-full rounded-lg relative border shadow">
             <img src={property.cover_image} alt="" className="h-60 w-full" />
 
             <div className="">
