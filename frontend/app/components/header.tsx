@@ -37,7 +37,7 @@ export default function Header(props: IHeader) {
         {/* Mobile header  TODO:  {dropdownOpen ? style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}}*/}
         <div className="flex md:hidden w-full  px-4  py-2   justify-between items-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
             <Link to="/" className="text-white">
-                <img className="h-10 w-auto drop-shadow" src="images/rasp-logo-white.png" alt="rasp" />
+            <img className="h-10 w-auto drop-shadow" src={mode=== 'light' ? "images/rasp-logo-purple.png":"images/rasp-logo-white.png"} alt="rasp" />
             </Link>
 
 
