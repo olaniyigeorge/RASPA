@@ -9,6 +9,7 @@ import Header from "~/components/header";
 import NewsLetterForm from "~/components/news-letter";
 import PropertyCard, { akure_property, IProperty } from "~/components/property-card";
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
+import ScrollDownAnimation from "~/components/scroll-down";
 import ServiceDescriptionCard, { IService, our_services } from "~/components/service-description-cards";
 import { storage } from "~/session.server";
 
@@ -160,9 +161,9 @@ export default function Landing() {
           </div>
 
           <div className="md:absolute bottom-3 right-3 w-full flex mb-10 md:mb-0 justify-end">
-              <Link to="/#property-types" className="flex justify-center items-center mr-5 rounded-full p-3 text-white text-xl transition ease-in hover:bg-white">
-                  <ChevronDownIcon className="w-8 h-8 flex text-purple-600 border-2 rounded-full border-white items-center" />
-              </Link>
+              <span className="flex justify-center items-center mr-5 rounded-full p-3 text-white text-xl transition ease-in hover:bg-white">
+                  <ScrollDownAnimation scrollTopValue={300} />
+              </span>
           </div>
         </motion.div>
       </div>
