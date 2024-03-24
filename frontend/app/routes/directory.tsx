@@ -134,7 +134,7 @@ export default function Directory() {
 
 
 
-const circleOptions = {
+const circleOptions = { 
     fillColor: '#FBC02D',
     fillOpacity: 0.1,
     zIndex: 2,
