@@ -805,6 +805,10 @@ video {
   height: 100vh;
 }
 
+.h-5 {
+  height: 1.25rem;
+}
+
 .max-h-40 {
   max-height: 10rem;
 }
@@ -887,6 +891,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-5 {
+  width: 1.25rem;
 }
 
 .min-w-\[20rem\] {
@@ -1192,11 +1200,6 @@ video {
   background-color: rgb(254 252 232 / var(--tw-bg-opacity));
 }
 
-.bg-black {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
-}
-
 .bg-\[url\(\'\/images\/rendering-house-model\.png\'\)\] {
   background-image: url('/images/rendering-house-model.png');
 }
@@ -1387,6 +1390,34 @@ video {
   line-height: 1rem;
 }
 
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
+.text-9xl {
+  font-size: 8rem;
+  line-height: 1;
+}
+
+.text-sm\/\[17px\] {
+  font-size: 0.875rem;
+  line-height: 17px;
+}
+
+.text-7xl\/\[300px\] {
+  font-size: 4.5rem;
+  line-height: 300px;
+}
+
+.text-\[300px\] {
+  font-size: 300px;
+}
+
+.text-\[150px\] {
+  font-size: 150px;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1493,6 +1524,23 @@ video {
 .text-yellow-400 {
   --tw-text-opacity: 1;
   color: rgb(250 204 21 / var(--tw-text-opacity));
+}
+
+.text-purple-700 {
+  --tw-text-opacity: 1;
+  color: rgb(126 34 206 / var(--tw-text-opacity));
+}
+
+.text-\[\] {
+  color: ;
+}
+
+.text-\[38pts\] {
+  color: 38pts;
+}
+
+.text-\[100pts\] {
+  color: 100pts;
 }
 
 .no-underline {
