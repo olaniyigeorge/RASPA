@@ -24,11 +24,10 @@ export default function ScrollDownAnimation(props: ScrollDownAnimationProps) {
 
   return (
     <> 
-
-<button onClick={scrollDown} className="">
-        <ChevronDownIcon className="w-8 h-8 flex text-purple-600 border-2 rounded-full border-white items-center" />
-    </button>
-</>
+        <button onClick={scrollDown} className="">
+            <ChevronDownIcon className="w-8 h-8 flex text-purple-600 border-2 rounded-full border-white items-center" />
+        </button>
+    </>
 
   );
 };
