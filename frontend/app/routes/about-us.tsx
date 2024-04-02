@@ -10,11 +10,11 @@ export default function AboutUs() {
     return <div className="p-10 w-full h-screen flex justify-center">
         <AnimatePresence>
             <motion.div
-            animate={{ opacity: 1, x: 0}}
-                className="p-10 text-sm text-white bg-gradient-to-r from-purple-700 to-purple-900 w-full rounded-[40px] shadow"
-            exit={{ opacity: 0 }}
-            initial={{ opacity: 0, x: -50}}
-            transition={{ease: "easeOut", duration: 1.5}}
+                animate={{ opacity: 1, x: 0}}
+                className="p-10 text-sm text-white overflow-y-auto bg-gradient-to-r from-purple-900 to-purple-700 w-full rounded-r rounded-[40px] shadow"
+                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, x: -50}}
+                transition={{ease: "easeOut", duration: 1.5}}
 
             >
                 
