@@ -22,8 +22,10 @@ export default function ExploreMap() {
     // const position = { lat: 7.256, lng: 5.206 }
     const center = useMemo<LatLngLiteral>(() => ({ lat: 7.255280705482117, lng: 5.188536256860319 }), [])
     const [MarkerOpen, setMarkerOpen] = useState<boolean>(false)
-    const GOOGLE_API_KEY = getEnvVar('GOOGLE_MAPS_API_KEY')
-    const GOOGLE_MAP_ID= getEnvVar('GOOGLE_MAP_ID')
+    // const GOOGLE_API_KEY = getEnvVar('GOOGLE_MAPS_API_KEY') | "AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU"
+    const GOOGLE_API_KEY = "AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU"
+    // const GOOGLE_MAP_ID= getEnvVar('GOOGLE_MAP_ID') | "a67eb23d2ec410cd"
+    const GOOGLE_MAP_ID = "a67eb23d2ec410cd"
     console.log(GOOGLE_API_KEY)
     console.log(GOOGLE_MAP_ID)
 
