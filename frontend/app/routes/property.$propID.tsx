@@ -1,4 +1,5 @@
 import { LoaderFunctionArgs } from "@remix-run/node"
+import { useParams } from "@remix-run/react"
 
 
 
@@ -17,7 +18,6 @@ export default function ThisProperty() {
 
 
 export async function loader({request,}: LoaderFunctionArgs) {
-    
 
     return {}
 }
