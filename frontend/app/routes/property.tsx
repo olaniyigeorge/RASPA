@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from "@remix-run/node"
 import { Outlet } from "@remix-run/react"
+import Header from "~/components/header"
 
 
 
@@ -8,11 +9,13 @@ export default function Property() {
 
 
     return <>
-        <h1 className="text-3xl font-bold">
-            Property layout
-        </h1>
+        <Header mode={'light'} />
 
-        <Outlet />
+
+        <div className="">
+            <Outlet />
+        </div>
+        
     </>
 } 
 
