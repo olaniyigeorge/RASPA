@@ -198,7 +198,7 @@ export default function Landing() {
 
       </div>
 
-      <div className="flex-col justify-center bg-purple-50 pt-2 pb-5">
+      <div className="flex-col justify-center bg-purple-50 py-10">
         <div className="p-3 flex justify-center items-center">
           <h1 className="text-3xl font-bold"> See how RASP can help you  </h1>
         </div>
