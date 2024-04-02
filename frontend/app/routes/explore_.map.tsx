@@ -54,7 +54,7 @@ export default function ExploreMap() {
                 >
                     <Map 
                         defaultCenter={center}
-                        defaultZoom={8.5}
+                        defaultZoom={11.5}
                         mapId= {GOOGLE_MAP_ID}
                         fullscreenControl= {false}
                     >
