@@ -8,8 +8,8 @@ export default function Blog() {
     <Header mode={'light'} />
     <div className="p-2 md:p-10 md:flex justify-around gap-4 w-full h-auto items-center text-3xl">
         <motion.div
-            initial={{ scale: 0, opacity:0 }}
-            animate= {{ scale: [0.9,1.1,1], opacity:1}}
+            initial={{opacity:0.8}}
+            animate= {{ opacity:1}}
             exit={{opacity:0, }}
             transition={{ease: "easeInOut", duration: 1}}
             className="w-full md:w-1/2 text-5xl md:text-5xl  text-gray-900 font-extrabold flex justify-center items-center rounded-lg h-full "
