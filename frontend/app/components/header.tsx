@@ -71,7 +71,7 @@ export default function Header(props: IHeader) {
 
                 className="w-full h-auto z-20" style={{backgroundColor: 'rgba(255, 255, 255, 0.1)'}}>
                     <div className="w-full py-2 px-4 flex justify-between  items-center">
-                        <Link to="/login" className="h-auto flex  text-xs md:text-md items-start text-start font-medium text-purple-600 ">Get Started</Link>
+                        <Link to="/get-started" className="h-auto flex  text-xs md:text-md items-start text-start font-medium text-purple-600 ">Get Started</Link>
                         <span className="w-8 h-8 border-2 border-black rounded-full p-1">
                             <UserIcon className="w-full h-full text-black" />
                         </span>
