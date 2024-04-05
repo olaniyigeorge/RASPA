@@ -35,7 +35,7 @@ export default function Explore() {
                 </div>
             </section>
     
-            <section className=" bg-slate-100 top-0 left-0 relative flex flex-1 justify-start items-start">
+            <section className="bg-slate-50  top-0 left-0 relative flex flex-1 justify-start items-start">
               <Outlet />
             </section>
           </section>
