@@ -24,18 +24,20 @@ export default function PropertyCard(props: IProperty){
     const property = {...props}
     
     return <>
-        <Link to={`/property/${property.id}`} className="w-full h-full rounded-lg relative border shadow p-1">
-            <p className="absolute p-2 top-2 left-2 rounded-md bg-white capitalize shadow">{property.action}</p>
-            <p className="absolute p-2 top-2 right-2 rounded-md bg-white shadow">City</p>
+        <Link to={`/property/${property.id}`} className="w-[400px] h-[500px] rounded-lg relative border  p-1">
+            <div className="h-[200px] w-full">
+                <button className="absolute bg-purple-600 text-white p-2 top-2 z-10 left-2 rounded-md capitalize shadow">{property.action}</button>
+                <button className="absolute bg-purple-600 text-white p-2 top-2 z-10 right-2 rounded-md  shadow">City</button>
             
-            <img src={property.cover_image} alt="" className="h-60 w-full" />
+                <img src={property.cover_image} alt="" className="rounded-lg h-[200px] w-auto" />
+            </div>
 
-            <div className="">
+            <div className="h-[300px] w-full">
                 <p className="">{property.property_name}</p>
                 <p className="">{property.amenities.length}</p>
                 <p className="">{property.address}</p>
                 <p className="">{property.agent}</p>
-            </div>
+            </div> 
 
             
         </Link>
