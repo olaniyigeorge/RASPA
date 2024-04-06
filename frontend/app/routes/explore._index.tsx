@@ -22,7 +22,7 @@ export default function ExploreIndex() {
 
                     <ListingsFilter />
                 </div>
-                <div id="properties" className="w-full flex space-x-2 px-2">
+                <div id="properties" className="w-full md:flex space-x-2 px-2">
                     <ListingContainier {...akure_property} />
                     
                     <iframe
