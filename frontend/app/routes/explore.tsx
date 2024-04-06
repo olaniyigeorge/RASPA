@@ -2,6 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { Link, Outlet } from "@remix-run/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Footer from "~/components/footer";
 import Header from "~/components/header";
 import PropertyCard, { akure_property, IProperty } from "~/components/property-card";
 import Sidebar from "~/components/sidebar";
@@ -39,6 +40,8 @@ export default function Explore() {
               <Outlet />
             </section>
           </section>
+
+ app/routes/explore.tsx
         </section>
       
       </>
