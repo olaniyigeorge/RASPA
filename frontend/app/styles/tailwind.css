@@ -1338,6 +1338,11 @@ video {
   background-color: rgb(254 252 232 / var(--tw-bg-opacity));
 }
 
+.bg-purple-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(168 85 247 / var(--tw-bg-opacity));
+}
+
 .bg-\[url\(\'\/images\/rendering-house-model\.png\'\)\] {
   background-image: url('/images/rendering-house-model.png');
 }
