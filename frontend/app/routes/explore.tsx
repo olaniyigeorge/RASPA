@@ -26,7 +26,7 @@ export default function Explore() {
               isSidebarOpen ? "" : ""
             }`}
           >
-            <section className="w-full flex transparent absolute z-20 top-0 left-0 items-center justify-between p-1">
+            <section className="w-full flex transparent absolute z-20 top-0 left-0 items-center justify-between">
                 <Header mode="light" />
               <div 
                 className="w-fit h-fit bg-purple-600 text-white opacity-100 rounded-lg p-2 hover:bg-purple-700"
