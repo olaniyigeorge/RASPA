@@ -52,7 +52,7 @@ export default function PropertyCard(props: IProperty){
                 <div className="flex justify-between items-center">
                     <div className="w-[200px]">
                         <p className="font-medium">NGN {" "}{property.price}</p>
-                        <p className="text-sm">Spread payments across 6 months</p>
+                        <p className="text-xs ">Spread payments across 6 months</p>
                     </div>
 
                     <div className="w-[150px] flex flex-col text-sm gap-1 ">
@@ -63,9 +63,20 @@ export default function PropertyCard(props: IProperty){
                         </Link>
  
                         <Link 
-                            className=" p-1 flex justify-center items-center w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
-                            to={`/property/${property.id}/payment-plans/buy-now`}>
-                            Buy Now
+                            className=" p-1 flex capitalize justify-center items-center w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
+                            to={
+                                `/property/${property.id}/payment-plans/${
+                                    property.action === "sale" ? "buy-now" : 
+                                    property.action ==="rent"? "rent" : 
+                                    property.action ==="invest"? "invest"
+                                    : ""}`
+                                }
+                        >
+                            {
+                                    property.action === "sale" ? "buy-now" : 
+                                    property.action ==="rent"? "rent" : 
+                                    property.action ==="invest"? "invest": ""
+                            }
                         </Link>
                     </div>
                 </div>
@@ -86,7 +97,7 @@ export const akure_property :IProperty[] = [
         id: "rasp-1",
         cover_image: "images/frame-15.png",
         property_name: "Olukayode Complex",
-        price: 150000,
+        price: 150000000,
         size: 1250,
         bdr: 5,
         btr: 4,
@@ -103,65 +114,39 @@ export const akure_property :IProperty[] = [
         size: 1250,
         bdr: 5,
         btr: 4,
-        action: "sale",
-        address: "Adj High Court",
-        agent: "Faye Property",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-2",
-        cover_image: "images/frame-16.png",
-        property_name: "RealPlus",
-        price: 1000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
-        address: "Adj High Court",
-        agent: "Faye Property",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-2",
-        cover_image: "images/frame-16.png",
-        property_name: "RealPlus",
-        price: 1000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
-        address: "Adj High Court",
-        agent: "Faye Property",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-2",
-        cover_image: "images/frame-16.png",
-        property_name: "RealPlus",
-        price: 1000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
-        address: "Adj High Court",
-        agent: "Faye Property",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-2",
-        cover_image: "images/frame-16.png",
-        property_name: "RealPlus",
-        price: 1000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
+        action: "rent",
         address: "Adj High Court",
         agent: "Faye Property",
         amenities: "Fenced, Gated",
     },
     {
         id: "rasp-3",
+        cover_image: "images/frame-16.png",
+        property_name: "RealPlus",
+        price: 1000000,
+        size: 668.9,
+        bdr: 5,
+        btr: 4,
+        action: "sale",
+        address: "Adj High Court",
+        agent: "Faye Property",
+        amenities: "Fenced, Gated",
+    },
+    {
+        id: "rasp-4",
+        cover_image: "images/frame-16.png",
+        property_name: "RayBus",
+        price: 1000000,
+        size: 1250,
+        bdr: 5,
+        btr: 4,
+        action: "invest",
+        address: "Opp Mobil filling station, Arakale",
+        agent: "Zalasoft",
+        amenities: "Fenced, Gated",
+    },
+    {
+        id: "rasp-5",
         cover_image: "images/frame-17.png",
         property_name: "RayBus",
         price: 50000000,
@@ -174,14 +159,14 @@ export const akure_property :IProperty[] = [
         amenities: "Fenced, Gated",
     },
     {
-        id: "rasp-4",
+        id: "rasp-6",
         cover_image: "images/frame-17.png",
         property_name: "Olukayode House",
-        price: 150000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
+        price: 112000,
+        size: 47,
+        bdr: 2,
+        btr: 1,
+        action: "rent",
         address: "No.2, Oba Adesida road, Akure",
         agent: "Zalasoft",
         amenities: "floored compound, gated",
