@@ -1,14 +1,23 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { UserIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IHeader {
     mode?: string
 }
 
 export default function Header(props: IHeader) {
+    const location = useLocation()
+    const [activeLink, setActiveLink] = useState<string>()
+
+    useEffect(() => {
+        setActiveLink(location.pathname)
+        ,[location.pathname]
+    })
+
+
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
     const { mode } = props
 
@@ -24,10 +33,10 @@ export default function Header(props: IHeader) {
             </Link>
 
             <span className="hidden md:flex space-x-1 md:space-x-4">
-                <Link className="transition ease-in-out delay-100 hover:border-b " to="/about-us"> About </Link>
-                <Link className="transition ease-in-out delay-100 hover:border-b " to="/blog"> Blog </Link>
-                <Link className="transition ease-in-out delay-100 hover:border-b " to="/contact"> Contact</Link>
-                <Link className="transition ease-in-out delay-100 hover:border-b " to="/explore"> Explore</Link>
+                <Link className={`transition ease-in-out delay-100 hover:border-b ${activeLink === "/about-us" ? " text-purple-600 border-b" : ""}`} to="/about-us"> About </Link>
+                <Link className={`transition ease-in-out delay-100 hover:border-b ${activeLink === "/blog" ? "  text-purple-600 border-b" : ""}`} to="/blog"> Blog </Link>
+                <Link className={`transition ease-in-out delay-100 hover:border-b ${activeLink === "/contact" ? " text-purple-600 border-b" : ""}`} to="/contact"> Contact</Link>
+                <Link className={`transition ease-in-out delay-100 hover:border-b ${activeLink === "/explore" ? " text-purple-600 border-b" : ""}`} to="/explore"> Explore</Link>
             </span> 
 
             <span className="hidden md:flex items-center ">
