@@ -37,6 +37,16 @@ export default function ExploreIndex() {
                             <PropertyCard key={property.address} {...property} />
                         ))} 
                     </div>
+                    <iframe
+                        width="600"
+                        height="450"
+                        className="border-0"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU
+                            &q=Space+Needle,Seattle+WA">
+                    </iframe>
                     {/* <motion.div
                         // initial={{ scale: 0 }}
                         // animate={{ scale: [1.7, 1] }}
