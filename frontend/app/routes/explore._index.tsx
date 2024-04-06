@@ -20,7 +20,7 @@ export default function ExploreIndex() {
 
                     <section className="w-full border-b border-gray-200 py-3 md:flex justify-start space-y-2 md:space-y-0 md:space-x-4 items-center ">
                         <input type="text" placeholder="Search properties" className="border border-gray-500 focus:outline-purple-600 p-2 rounded h-10 w-[350px] border-white"/>
-                        <div className="flex justify-start space-x-5">
+                        <div className="flex-1 flex justify-between w-full ">
                             <button className="rounded-md border bg-white text-gray-800 p-2"> Houses and Apartments </button>
                             <button className="rounded-md border bg-white text-gray-800 p-2"> Location </button>
                             <button className="rounded-md border bg-white text-gray-800 p-2"> Min Price </button>
@@ -45,7 +45,7 @@ export default function ExploreIndex() {
                         allowFullScreen
                         referrerPolicy="no-referrer-when-downgrade"
                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU
-                            &q=Lagos,state+NG">
+                            &q=Akure,+Ondo+state+NG">
                     </iframe>
                     {/* <motion.div
                         // initial={{ scale: 0 }}
