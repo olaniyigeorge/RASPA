@@ -24,21 +24,54 @@ export default function PropertyCard(props: IProperty){
     const property = {...props}
     
     return <>
-        <Link to={`/property/${property.id}`} className="w-[400px] h-[500px] rounded-lg relative border  p-1">
+        <Link to={`/property/${property.id}`} className="shadow bg-white w-full md:w-[350px] h-[400px] rounded-lg relative  p-1">
             <div className="h-[200px] w-full">
-                <button className="absolute bg-purple-600 text-white p-2 top-2 z-10 left-2 rounded-md capitalize shadow">{property.action}</button>
-                <button className="absolute bg-purple-600 text-white p-2 top-2 z-10 right-2 rounded-md  shadow">City</button>
-            
-                <img src={property.cover_image} alt="" className="rounded-lg h-[200px] w-auto" />
+                <img src={property.cover_image} alt="" className="hover:scale-[102%] rounded-lg h-[200px] w-full" />
             </div>
 
-            <div className="h-[300px] w-full">
-                <p className="">{property.property_name}</p>
-                <p className="">{property.amenities.length}</p>
-                <p className="">{property.address}</p>
-                <p className="">{property.agent}</p>
+            <div className="h-auto w-full space-y-1 text-gray-900 mt-2">
+                <span className="flex justify-between items-center space-x-2">
+                    <p className="w-2/3 font-bold text-lg">{property.property_name}</p>
+                    <p className="w-1/3 text-sm">{property.agent}</p>
+                </span>
+                
+                <span className="flex justify-start space-x-2">
+                    <p className=""><b>{property.amenities.length}</b> sqft</p>
+                    <p className=""><b>{property.amenities.length}</b> Bedrooms</p>
+                    <p className=""><b>{property.amenities.length}</b> Bathrooms</p>
+                </span>
+
+                <div className="">
+                    <p className="font-medium"> Address</p>
+                    <p className="line-clamp-2">{property.address}</p>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                    <div className="w-[200px]">
+                        <p className="font-medium">NGN {" "}{property.amenities.length}</p>
+                        <p className="text-sm">Spread payments across 6 months</p>
+                    </div>
+
+                    <div className="w-[150px] flex flex-col text-sm gap-1 ">
+                        <Link
+                            className=" p-1 flex justify-center items-center w-full rounded-full bg-gray-200 hover:bg-gray-300 text-gray-900"
+                            to={`/property/${property.id}/payment-plans/installments`}>
+                            Pay in installments
+                        </Link>
+ 
+                        <Link 
+                            className=" p-1 flex justify-center items-center w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
+                            to={`/property/${property.id}/payment-plans/buy-now`}>
+                            Buy Now
+                        </Link>
+                    </div>
+                </div>
+
+                
             </div> 
 
+            <button className="absolute shadow bg-purple-600 text-white p-2 md:top-2 z-10 md:left-2 rounded-md capitalize shadow">{property.action}</button>
+            <button className="absolute shadow bg-purple-600 text-white p-2 md:top-2 z-10 md:right-2 rounded-md  shadow">City</button>
             
         </Link>
     </>
@@ -75,5 +108,15 @@ export const akure_property = [
         address: "Opp Mobil filling station, Arakale",
         agent: "The King Condos",
         amenities: "Fenced, Gated",
+    },
+    {
+        id: "rasp-4",
+        cover_image: "images/frame-17.png",
+        property_name: "Olukayode House",
+        price: 150000000,
+        action: "sale",
+        address: "No.2, Oba Adesida road, Akure",
+        agent: "Zalasoft",
+        amenities: "floored compound, gated",
     },
 ]
