@@ -1,14 +1,16 @@
 import { LoaderFunctionArgs } from "@remix-run/node"
-
+import { useParams } from "@remix-run/react"
 
 export default function PaymentPlanInstallements() {
-
+    const params = useParams()
 
     return <>
-        <div className="bg-blue-600 w-10 h-10">
-
+        <div className="w-full h-screen flex justify-center items-center ">
+            <div className="bg-red-500 w-1/2 h-[500px] rounded-lg ">
+                <p className="p-10 text-white"> Pay for  {params.propID} in installments</p>
+            </div>
         </div>
-    
+
     </>
 
 }
