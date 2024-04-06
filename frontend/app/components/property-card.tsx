@@ -36,9 +36,9 @@ export default function PropertyCard(props: IProperty){
                 </span>
                 
                 <span className="flex justify-start space-x-2">
-                    <p className=""><b>{property.amenities.length}</b> sqft</p>
-                    <p className=""><b>{property.amenities.length}</b> Bedrooms</p>
-                    <p className=""><b>{property.amenities.length}</b> Bathrooms</p>
+                    <p className=""><b>{property.size}</b> sqft</p>
+                    <p className=""><b>{property.bdr}</b> Bedrooms</p>
+                    <p className=""><b>{property.btr}</b> Bathrooms</p>
                 </span>
 
                 <div className="">
@@ -48,7 +48,7 @@ export default function PropertyCard(props: IProperty){
                 
                 <div className="flex justify-between items-center">
                     <div className="w-[200px]">
-                        <p className="font-medium">NGN {" "}{property.amenities.length}</p>
+                        <p className="font-medium">NGN {" "}{property.price}</p>
                         <p className="text-sm">Spread payments across 6 months</p>
                     </div>
 
@@ -84,7 +84,10 @@ export const akure_property = [
         cover_image: "images/frame-15.png",
         property_name: "Olukayode Complex",
         price: 150000,
-        action: "rent",
+        size: 1250,
+        bdr: 5,
+        btr: 4,
+        action: "sale",
         address: "Oba Adesida road",
         agent: "Zalasoft",
         amenities: "Fenced, Gated",
@@ -94,7 +97,10 @@ export const akure_property = [
         cover_image: "images/frame-16.png",
         property_name: "RealPlus",
         price: 1000000,
-        action: "rent",
+        size: 1250,
+        bdr: 5,
+        btr: 4,
+        action: "sale",
         address: "Adj High Court",
         agent: "Faye Property",
         amenities: "Fenced, Gated",
@@ -104,6 +110,9 @@ export const akure_property = [
         cover_image: "images/frame-17.png",
         property_name: "RayBus",
         price: 50000000,
+        size: 1250,
+        bdr: 5,
+        btr: 4,
         action: "sale",
         address: "Opp Mobil filling station, Arakale",
         agent: "The King Condos",
@@ -114,6 +123,9 @@ export const akure_property = [
         cover_image: "images/frame-17.png",
         property_name: "Olukayode House",
         price: 150000000,
+        size: 1250,
+        bdr: 5,
+        btr: 4,
         action: "sale",
         address: "No.2, Oba Adesida road, Akure",
         agent: "Zalasoft",
