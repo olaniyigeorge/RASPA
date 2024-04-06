@@ -39,22 +39,12 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
             <img src="images/rasp-logo-purple.png" alt="logo" className="w-auto h-12 " />
           </Link>
   
-          <section className="w-full  border grid grid-cols-3 grid-flow-col ">
-            {sideBarCardData.map((data, index) => (
-              <Link
-                to={data.link}
-                key={index}
-                className={`w-1/2 p-4 rounded-md duration-300 border ${
-                  activeLink === data.linkText
-                    ? ""
-                    : ""
-                }`}
-              >
-                  <img src="images/invest-in-properties.png" className="w-5 h-5" alt="logo" />
-                  <p className=""> {data.linkText} </p>
+          <section className="w-full border mt-20 grid grid-rows-2 gap-2 grid-flow-col ">
+            <div className="p-2 bg-gray-100 rounded w-20 h-20">Map</div>
+            <div className="p-2 bg-gray-100 rounded w-20 h-20">Explore</div>
+            <div className="p-2 bg-gray-100 rounded w-20 h-20">This</div>
 
-              </Link>
-            ))}
+ 
           </section>
         </section>
       </>
