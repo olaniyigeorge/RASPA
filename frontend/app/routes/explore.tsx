@@ -49,6 +49,4 @@ export default function Explore() {
 
         
 
-    //     <Link to="/explore/map" > Explore properties on map</Link>    
-    // </div>)
 }
