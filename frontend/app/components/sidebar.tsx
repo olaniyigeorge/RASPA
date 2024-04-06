@@ -39,21 +39,20 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
             <img src="images/rasp-logo-purple.png" alt="logo" className="w-auto h-12 " />
           </Link>
   
-          <section className="w-full flex flex-col ">
+          <section className="w-full  border grid grid-cols-3 grid-flow-col ">
             {sideBarCardData.map((data, index) => (
               <Link
                 to={data.link}
                 key={index}
-                className={`w-full py-4 pl-10 duration-300 ${
+                className={`w-1/2 p-4 rounded-md duration-300 border ${
                   activeLink === data.linkText
-                    ? "bg-purple-200 text-purple-600 border-r-8 border-r-purple-600 hover:bg-purple-200 hover:text-white"
-                    : "hover:bg-purple-200 hover:text-purple-600 hover:border-r-8 hover:border-r-purple-600"
+                    ? ""
+                    : ""
                 }`}
               >
-                <section className="flex items-center gap-4">
                   <img src="images/invest-in-properties.png" className="w-5 h-5" alt="logo" />
                   <p className=""> {data.linkText} </p>
-                </section>
+
               </Link>
             ))}
           </section>
