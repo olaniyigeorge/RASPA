@@ -41,7 +41,7 @@ export default function Explore() {
             </section>
           </section>
 
- app/routes/explore.tsx
+
         </section>
       
       </>
