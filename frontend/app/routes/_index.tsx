@@ -186,7 +186,7 @@ export default function Landing() {
           <h1 className="text-3xl font-bold"> New Listed Homes In RASP Akure, Nigeria </h1>
         </div>
 
-        <div className="md:flex md:flex-grow md:space-x-3 md:items-start w-full px-2 h-auto">
+        <div className="md:flex md:flex-grow md:space-x-3 md:items-start w-full overflow-x-aut px-2 h-auto">
           {akure_property.map((property: IProperty) => (
             <PropertyCard key={property.address} {...property} />
           ))}
