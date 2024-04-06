@@ -81,7 +81,7 @@ export default function PropertyCard(props: IProperty){
 }
 
 
-export const akure_property = [
+export const akure_property :IProperty[] = [
     {
         id: "rasp-1",
         cover_image: "images/frame-15.png",
@@ -93,6 +93,58 @@ export const akure_property = [
         action: "sale",
         address: "Oba Adesida road",
         agent: "Zalasoft",
+        amenities: "Fenced, Gated",
+    },
+    {
+        id: "rasp-2",
+        cover_image: "images/frame-16.png",
+        property_name: "RealPlus",
+        price: 1000000,
+        size: 1250,
+        bdr: 5,
+        btr: 4,
+        action: "sale",
+        address: "Adj High Court",
+        agent: "Faye Property",
+        amenities: "Fenced, Gated",
+    },
+    {
+        id: "rasp-2",
+        cover_image: "images/frame-16.png",
+        property_name: "RealPlus",
+        price: 1000000,
+        size: 1250,
+        bdr: 5,
+        btr: 4,
+        action: "sale",
+        address: "Adj High Court",
+        agent: "Faye Property",
+        amenities: "Fenced, Gated",
+    },
+    {
+        id: "rasp-2",
+        cover_image: "images/frame-16.png",
+        property_name: "RealPlus",
+        price: 1000000,
+        size: 1250,
+        bdr: 5,
+        btr: 4,
+        action: "sale",
+        address: "Adj High Court",
+        agent: "Faye Property",
+        amenities: "Fenced, Gated",
+    },
+    {
+        id: "rasp-2",
+        cover_image: "images/frame-16.png",
+        property_name: "RealPlus",
+        price: 1000000,
+        size: 1250,
+        bdr: 5,
+        btr: 4,
+        action: "sale",
+        address: "Adj High Court",
+        agent: "Faye Property",
         amenities: "Fenced, Gated",
     },
     {
