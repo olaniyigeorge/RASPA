@@ -13,6 +13,9 @@ export interface IProperty {
     cover_image: string;
     property_name: string;
     price: number;
+    size: number;
+    bdr: number;
+    btr: number;
     action: string; // Action[];
     address: string;
     agent: string;
