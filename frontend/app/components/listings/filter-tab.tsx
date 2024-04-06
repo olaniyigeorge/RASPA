@@ -5,6 +5,10 @@ import { useState } from "react";
 
 export default function ListingsFilter() {
     const [selectedAction, setSelectedAction] = useState<string>('sale')
+
+    const baseEndpoint = "/api/listings/?property__size=&price=&property__features__name=&property__type=&property__features__count=&listing_type=&price__lte=&price__gte="
+
+
     // Gets filter options and generates endpoint
     // search-query, city(location), action(rent,sale,invest), size, min-price, max-price
 
