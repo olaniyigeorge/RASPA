@@ -3,6 +3,8 @@ import PropertyCard from "~/components/property-card";
 import { AnimatePresence, motion } from "framer-motion";
 import { IProperty } from "~/components/property-card";         
 import { akure_property } from "~/components/property-card";
+import ListingContainier from "~/components/listings/listings-container";
+import ListingsFilter from "~/components/listings/filter-tab";
 
 export default function ExploreIndex() {
     return (
@@ -18,25 +20,11 @@ export default function ExploreIndex() {
                         Filter your search result
                     </h1>
 
-                    <section className="w-full border-b border-gray-200 py-3 md:flex justify-start space-y-2 md:space-y-0 md:space-x-4 items-center ">
-                        <input type="text" placeholder="Search properties" className="border border-gray-500 focus:outline-purple-600 p-2 rounded h-10 w-[350px] border-white"/>
-                        <div className="flex-1 flex justify-between w-full ">
-                            <button className="rounded-md border bg-white text-gray-800 p-2"> Houses and Apartments </button>
-                            <button className="rounded-md border bg-white text-gray-800 p-2"> Location </button>
-                            <button className="rounded-md border bg-white text-gray-800 p-2"> Min Price </button>
-                            <button className="rounded-md border bg-white text-gray-800 p-2"> Max Price </button>
-                        </div>
-                    </section>
+                    <ListingsFilter />
                 </div>
                 <div id="properties" className="w-full flex space-x-2 px-2">
-                    <div className="w-full md:w-4/5 md:grid grid-cols-3 gap-3 justify-between">
-                        {/* Map over akure_property array and render PropertyCard components      md:flex md:flex-grow md:space-x-3 md:items-start w-3/5 px-2 h-auto */}
-                        {/* Make sure akure_property is defined and is an array of IProperty objects */}
-                        {/* Example: */}
-                        {akure_property.map((property: IProperty) => (
-                            <PropertyCard key={property.address} {...property} />
-                        ))} 
-                    </div>
+                    <ListingContainier {...akure_property} />
+                    
                     <iframe
                         width="600"
                         height="450"
