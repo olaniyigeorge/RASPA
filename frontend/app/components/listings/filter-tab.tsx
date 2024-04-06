@@ -58,7 +58,7 @@ export default function ListingsFilter() {
 
 
             <div className=" flex justify-start space-x-3 md:space-x-10 w-full ">
-                <button className="rounded-md border bg-white p-2"> Houses and Apartments </button>
+                <button className="rounded-md border bg-white p-2 line-clamp-1"> Houses/Land  </button>
                 <button className="rounded-md border bg-white p-2"> Location </button>
                 <button className="rounded-md border bg-white p-2"> Min Price </button>
                 <button className="rounded-md border bg-white p-2"> Max Price </button>
