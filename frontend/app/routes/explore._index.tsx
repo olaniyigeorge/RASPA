@@ -13,12 +13,12 @@ export default function ExploreIndex() {
             transition={{ ease: "easeIn", duration: 1 }}
         >
             <div className="mt-16">
-                <div id="listing-filters" className="p-4">
+                <div id="listing-filters" className="p-4 text-sm md:text-md ">
                     <h1 className="text-xl font-medium text-gray-900">
                         Filter your search result
                     </h1>
 
-                    <section className="w-full border-b border-gray-200 py-3 md:flex justify-start md:space-x-4 items-center ">
+                    <section className="w-full border-b border-gray-200 py-3 md:flex justify-start space-y-2 md:space-y-0 md:space-x-4 items-center ">
                         <input type="text" placeholder="Search properties" className="border border-gray-500 focus:outline-purple-600 p-2 rounded h-10 w-[350px] border-white"/>
                         <div className="flex justify-start space-x-5">
                             <button className="rounded-md border bg-white text-gray-800 p-2"> Houses and Apartments </button>
@@ -28,8 +28,8 @@ export default function ExploreIndex() {
                         </div>
                     </section>
                 </div>
-                <div id="properties" className=" flex px-1">
-                    <div className="w-full grid grid-row3 grid-col-3 justify-between">
+                <div id="properties" className="w-full flex space-x-2 px-2">
+                    <div className="w-full md:w-4/5 md:grid grid-cols-3 gap-3 justify-between">
                         {/* Map over akure_property array and render PropertyCard components      md:flex md:flex-grow md:space-x-3 md:items-start w-3/5 px-2 h-auto */}
                         {/* Make sure akure_property is defined and is an array of IProperty objects */}
                         {/* Example: */}
@@ -40,12 +40,12 @@ export default function ExploreIndex() {
                     <iframe
                         width="600"
                         height="450"
-                        className="border-0"
+                        className="border hidden md:flex border-gray-300 w-1/5"
                         loading="lazy"
                         allowFullScreen
                         referrerPolicy="no-referrer-when-downgrade"
                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU
-                            &q=Space+Needle,Seattle+WA">
+                            &q=Lagos,state+NG">
                     </iframe>
                     {/* <motion.div
                         // initial={{ scale: 0 }}
