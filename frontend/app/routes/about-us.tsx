@@ -1,4 +1,5 @@
 import { MetaFunction } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 
 
@@ -7,7 +8,8 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function AboutUs() {
 
 
-    return <div className="p-10 w-full h-screen flex justify-center">
+    return <div className="p-10 w-full h-screen flex flex-col justify-center">
+        <Link to="/">Home</Link>
         <AnimatePresence>
             <motion.div
                 animate={{ opacity: 1, x: 0}}
