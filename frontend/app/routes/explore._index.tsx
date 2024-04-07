@@ -7,13 +7,16 @@ import ListingContainier from "~/components/listings/listings-container";
 import ListingsFilter from "~/components/listings/filter-tab";
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import { useEffect, useState } from "react";
+import { useLocation } from "@remix-run/react";
 
 export default function ExploreIndex() {
+    const location = useLocation()
+    console.log(location.pathname)
     const [listingsURL, setListingsURL] = useState<any>()
-    useEffect(() => {
+    // useEffect(() => {
         
 
-    }, [listingsURL])
+    // }, [listingsURL])
 
     return (
         <motion.div
