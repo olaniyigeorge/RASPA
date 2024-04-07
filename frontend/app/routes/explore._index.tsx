@@ -5,8 +5,16 @@ import { IProperty } from "~/components/property-card";
 import { akure_property } from "~/components/property-card";
 import ListingContainier from "~/components/listings/listings-container";
 import ListingsFilter from "~/components/listings/filter-tab";
+import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { useEffect, useState } from "react";
 
 export default function ExploreIndex() {
+    const [listingsURL, setListingsURL] = useState<any>()
+    useEffect(() => {
+        
+
+    }, [listingsURL])
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -36,3 +44,24 @@ export default function ExploreIndex() {
         </motion.div>
     );
 }
+
+
+
+
+
+export async function action({request,}: ActionFunctionArgs) {
+    const currUrl = new URL(request.url)
+    const form = await request.formData()
+    // const destination: string = currUrl.searchParams.get('destination') ?? '/'
+    const action = (form.get("action") || "").toString();
+    const search = (form.get("search") || "").toString();
+    
+    // const en = `https://wta-api-build.onrender.com/directory/service-locations/?action=${action}&search=${search}`
+    const en = `/explore/map/?action=${action}&search=${search}`
+  
+    console.log("Redirecting to: ", en)
+    // console log constructed url 
+    // ....and redirect to it
+  
+    return redirect(en)
+  }
