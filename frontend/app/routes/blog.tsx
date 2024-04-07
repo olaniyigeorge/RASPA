@@ -24,7 +24,7 @@ export default function Blog() {
             animate= {{ scale: [1.7,1]}}
             exit={{opacity:0}}
             transition={{ease: "easeInOut", duration: 1}}
-            className="w-full md:w-1/2 flex text-white justify-center items-center rounded-lg h-full w-1/2"
+            className="w-full md:w-1/2 flex text-white justify-center items-center rounded-lg h-full "
         >
             <img src={`images/rasp-logo-purple.png`} alt="logo" />
         </motion.div>
