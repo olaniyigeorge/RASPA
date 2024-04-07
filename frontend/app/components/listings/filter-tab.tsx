@@ -1,5 +1,5 @@
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 
@@ -7,33 +7,56 @@ import { useEffect, useState } from "react";
 export default function ListingsFilter() {
     const [selectedAction, setSelectedAction] = useState<string>('sale')
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const [propertyType, setPropertyType] = useState<string>('')
     const [size, setSize] = useState<number | string>()
     const [minPrice, setMinPrice] = useState<number | any>("")
     const [maxPrice, setMaxPrice] = useState<number | any >("")
     
-
+    const [filterEndpoint,setfilterEndpoint] = useState<string>();
 
     const [minPriceDropDown, setminPriceDropDown] = useState<boolean>(false)
     const [maxPriceDropDown, setmaxPriceDropDown] = useState<boolean>(false)
     const [sizeInputVisible, toggleSizeInput] = useState<boolean>(false)
+    const [propertyTypeInputVisible, togglePropertyTypeInputVisible] = useState<boolean>(false)
 
 
     const baseEndpoint = "/api/listings/?search=&property__size=&price=&property__features__name=&property__type=&property__features__count=&listing_type=&price__lte=&price__gte="
 
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+      const handleClickOutsideDropdown = (event: { target: any; }) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+          toggleSizeInput(false)
+          togglePropertyTypeInputVisible(false)
+          setminPriceDropDown(false);
+          setmaxPriceDropDown(false);
 
-    // Gets filter options and generates endpoint
+        }
+    };
+    
+      document.addEventListener('mousedown', handleClickOutsideDropdown);
+    
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutsideDropdown);
+      };
+    }, []);
+    // Gets filter options and generates endpoint send submit(url) to form, redirect to explore/urlsEndpoint stub
     // search-query, city(location), action(rent,sale,invest), size, min-price, max-price
 
-    const filterEndpoint = `/api/listings/?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`
+    setfilterEndpoint(`/api/listings/?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`)
+
+
     const handleButtonClick = (button: string) => {
         setSelectedAction(button);
       };
 
     useEffect(() => {
+      
+    setfilterEndpoint(`/api/listings/?search=&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${""}price__gte=${""}`)
 
-    const filterEndpoint = `/api/listings/?search=&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${""}price__gte=${""}`
+    
 
-    }, [selectedAction, searchQuery, minPrice, maxPrice, size])
+    }, [selectedAction, filterEndpoint, searchQuery, minPrice, maxPrice, size])
 
     return <>
 
@@ -81,21 +104,49 @@ export default function ListingsFilter() {
 
 
             <div className=" flex justify-start space-x-3 md:space-x-10 w-full ">
-                <button className="rounded-md border bg-white p-2 line-clamp-1"> Houses/Land  </button>
-                <button className="rounded-md border  p-2" onClick={() => {toggleSizeInput(!sizeInputVisible)}}>
-                  {sizeInputVisible? <>
-                    <input type="number" className="w-[12px] auto-focus focus:outline-none" onChange={(e) => {setSize(e.target.value)}} />
-                    </>:<p>Size</p>}  </button>
+                
+                
+                <button className="rounded-md border bg-white p-2">
+                  {propertyTypeInputVisible ? <div className="">
+                    <div ref={dropdownRef} className="">
+                      <input type="text" className=" text-gray-900 focus:outline-none" onChange={(e) => {setSearchQuery(e.target.value)}} />                  
+                    
+                    </div>
+                    
+                  </div>
+                    :
+                    <><span className="flex items-center space-x-2 ">
+                    <p>Houses/Land </p> 
+                    <ChevronDownIcon onClick={() => {togglePropertyTypeInputVisible(!propertyTypeInputVisible)}} className="w-4 h-4" />
+                    </span></>}
+                  </button>
+
+
+                <button className="rounded-md border bg-white p-2">
+                  {sizeInputVisible ? <div className="">
+                    <div ref={dropdownRef} className="">
+                      <input type="number" className="text-gray-900 focus:outline-none" onChange={(e) => {setSize(e.target.value)}} />                  
+                    
+                    </div>
+                    
+                  </div>
+                    :
+                    <><span className="flex items-center space-x-2 ">
+                    <p>Size</p> 
+                    <ChevronDownIcon onClick={() => {toggleSizeInput(!sizeInputVisible)}} className="w-4 h-4" />
+                    </span></>}
+                  </button>
+                  
 
 
                 <button className="rounded-md border bg-white p-2 relative">
-                  <div className="w-full flex justify-start space-x-2 items-center">
+                  <div ref={dropdownRef} className="w-full flex justify-start space-x-2 items-center">
                     <span className={` justify-start items-center ${minPriceDropDown ? "hidden": "flex"}`}>Min Price</span>
   
                     <span className={`justify-start items-center  ${minPriceDropDown ? "flex": "hidden"}`}>
                       <input type="number" className="w-[12px] focus:outline-none" onChange={(e) => {setMinPrice(e.target.value)}} />
                     </span>
-                    <ChevronDownIcon onClick={() => {setminPriceDropDown(!minPriceDropDown)}} className="w-4 h-4" />
+                    <ChevronDownIcon  onClick={() => {setminPriceDropDown(!minPriceDropDown)}} className="w-4 h-4" />
                   </div>
                   
               
