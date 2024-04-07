@@ -8,11 +8,11 @@ export default function ListingsFilter() {
     const [selectedAction, setSelectedAction] = useState<string>('sale')
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [propertyType, setPropertyType] = useState<string>('')
-    const [size, setSize] = useState<number | string>()
+    const [size, setSize] = useState<any>("")
     const [minPrice, setMinPrice] = useState<number | any>("")
     const [maxPrice, setMaxPrice] = useState<number | any >("")
     
-    const [filterEndpoint,setfilterEndpoint] = useState<string>();
+    const [filterEndpoint,setfilterEndpoint] = useState<string>("");
 
     const [minPriceDropDown, setminPriceDropDown] = useState<boolean>(false)
     const [maxPriceDropDown, setmaxPriceDropDown] = useState<boolean>(false)
@@ -39,11 +39,11 @@ export default function ListingsFilter() {
       return () => {
         document.removeEventListener('mousedown', handleClickOutsideDropdown);
       };
-    }, []);
+    }, [selectedAction, filterEndpoint, propertyType, searchQuery, minPrice, maxPrice, size]);
     // Gets filter options and generates endpoint send submit(url) to form, redirect to explore/urlsEndpoint stub
     // search-query, city(location), action(rent,sale,invest), size, min-price, max-price
 
-    setfilterEndpoint(`/api/listings/?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`)
+    // setfilterEndpoint(`/api/listings/?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`)
 
 
     const handleButtonClick = (button: string) => {
@@ -51,12 +51,12 @@ export default function ListingsFilter() {
       };
 
     useEffect(() => {
-      
-    setfilterEndpoint(`/api/listings/?search=&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${""}price__gte=${""}`)
+    const en = `/api/listings/?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${propertyType}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`
+    setfilterEndpoint(en)
 
     
 
-    }, [selectedAction, filterEndpoint, searchQuery, minPrice, maxPrice, size])
+    }, [selectedAction, filterEndpoint, propertyType, searchQuery, minPrice, maxPrice, size])
 
     return <>
 
@@ -66,7 +66,7 @@ export default function ListingsFilter() {
             Filter your search result
           </h1>
 
-          <p className="text-xs">{filterEndpoint}</p>
+          <p className="text-xs hidden md:flex">{filterEndpoint}</p>
         </span>
             
         <section className=" w-full text-gray-800  border-b border-gray-200 py-1 md:flex justify-start space-y-1 md:space-y-0 md:space-x-10 items-center ">
@@ -106,20 +106,27 @@ export default function ListingsFilter() {
             <div className=" flex justify-start space-x-3 md:space-x-10 w-full ">
                 
                 
-                <button className="rounded-md border bg-white p-2">
-                  {propertyTypeInputVisible ? <div className="">
-                    <div ref={dropdownRef} className="">
-                      <input type="text" className=" text-gray-900 focus:outline-none" onChange={(e) => {setSearchQuery(e.target.value)}} />                  
-                    
-                    </div>
-                    
-                  </div>
-                    :
+                <button className="rounded-md border bg-white p-2 relative">
                     <><span className="flex items-center space-x-2 ">
-                    <p>Houses/Land </p> 
-                    <ChevronDownIcon onClick={() => {togglePropertyTypeInputVisible(!propertyTypeInputVisible)}} className="w-4 h-4" />
-                    </span></>}
-                  </button>
+                      <p>Houses/Land </p> 
+                      <ChevronDownIcon onClick={() => {togglePropertyTypeInputVisible(!propertyTypeInputVisible)}} className="w-4 h-4" />
+                    </span></>
+                  {propertyTypeInputVisible ?( <div  ref={dropdownRef} className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
+                  
+
+                    
+                      <p onClick={() => {setPropertyType("industrial")}}>Industrial</p>
+                      <p onClick={() => {setPropertyType("commercial")}}>Commercial</p>
+                      <p onClick={() => {setPropertyType("residential")}}>Residential</p>
+                      <p onClick={() => {setPropertyType("land")}}>Land</p>
+                      
+                  
+                      {/* <input type="text" className=" text-gray-900 focus:outline-none" onChange={(e) => {setSearchQuery(e.target.value)}} />                  
+                     */}  
+                    </div>)
+                    :
+                    ""}
+                </button>
 
 
                 <button className="rounded-md border bg-white p-2">
@@ -135,8 +142,8 @@ export default function ListingsFilter() {
                     <p>Size</p> 
                     <ChevronDownIcon onClick={() => {toggleSizeInput(!sizeInputVisible)}} className="w-4 h-4" />
                     </span></>}
-                  </button>
-                  
+                  </button> 
+
 
 
                 <button className="rounded-md border bg-white p-2 relative">
@@ -152,7 +159,7 @@ export default function ListingsFilter() {
               
 
                   {minPriceDropDown? (
-                    <div className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
+                    <div ref={dropdownRef} className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
                       <p onClick={() => {setMinPrice(100000)}}>100000</p>
                       <p onClick={() => {setMinPrice(200000)}}>200000</p>
                       <p onClick={() => {setMinPrice(300000)}}>300000</p>
@@ -174,7 +181,7 @@ export default function ListingsFilter() {
                   </div>
 
                   {maxPriceDropDown? (
-                    <div className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
+                    <div ref={dropdownRef} className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
                       <p onClick={() => {setMaxPrice(minPrice*1.5)}}>{minPrice*1.5}</p>
                       <p onClick={() => {setMaxPrice(200000)}}>200000</p>
                       <p onClick={() => {setMaxPrice(75000000)}}>75 million</p>
