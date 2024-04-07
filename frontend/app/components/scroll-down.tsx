@@ -7,7 +7,7 @@ interface ScrollDownAnimationProps {
 }
 
 export default function ScrollDownAnimation(props: ScrollDownAnimationProps) {
-    const { scrollTopValue }= props
+  const { scrollTopValue }= props
   const scrollDown = () => {
     window.scrollBy({
       top: scrollTopValue,
