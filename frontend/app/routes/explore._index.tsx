@@ -12,6 +12,9 @@ import { useLocation } from "@remix-run/react";
 export default function ExploreIndex() {
     const location = useLocation()
     console.log(location.pathname)
+    console.log()
+    // console.log()      add listing url to location.pathname and redirect to url
+    // console.log()
     const [listingsURL, setListingsURL] = useState<any>()
     // useEffect(() => {
         
