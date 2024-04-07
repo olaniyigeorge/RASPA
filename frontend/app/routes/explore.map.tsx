@@ -31,12 +31,6 @@ export default function ExploreMap() {
 
      
 
-    // const response = fetch(ep, {method: 'get'})
-    // const tokenRefreshResponse = await fetch(ep, {
-    //     method: 'GET',
-    // });
-
-    // console.log(response)
 
 
     console.log("isServer(): ", isServer())
