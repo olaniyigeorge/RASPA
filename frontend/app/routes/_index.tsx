@@ -86,7 +86,7 @@ export default function Landing() {
               exit={{opacity:0}}
               transition={{ease: "easeInOut", duration: 1}}
               className="mt-16 w-full md:mt-36 px-2 md:px-10 items-start space-y-4 ">
-              <span className="w-full md:w-2/3 text-center text-pretty    font-extrabold tracking-tighter drop-shadow-lg md:text-start text-5xl md:text-7xl text-white ">
+              <span className="w-full md:w-2/3 text-center text-pretty  font-extrabold tracking-tighter drop-shadow-lg md:text-start text-5xl md:text-7xl text-white ">
                 <h1 className=" ">
                   Discover Spaces
                 </h1>
