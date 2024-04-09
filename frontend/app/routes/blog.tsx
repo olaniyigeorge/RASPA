@@ -14,7 +14,7 @@ export default function Blog() {
             transition={{ease: "easeInOut", duration: 1}}
             className="w-full md:w-1/2 text-5xl md:text-5xl  text-gray-900 font-extrabold flex justify-center items-center rounded-lg h-full "
         >
-            <h1 className="tracking-tighter leading-tight">
+            <h1 className="text-center text-pretty  font-extrabold tracking-tighter drop-shadow md:text-start text-5xl md:text-7xl  ">
                 Stay Informed, Stay Ahead: Explore Our <span className="text-purple-700">Real Estate Blog</span> 
             </h1>
         </motion.div>  
