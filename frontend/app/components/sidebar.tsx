@@ -39,12 +39,18 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
             <img src="images/rasp-logo-purple.png" alt="logo" className="w-auto h-12 " />
           </Link>
   
-          <section className="w-full border mt-20 grid grid-rows-2 gap-2 grid-flow-col ">
-            <div className="p-2 bg-gray-100 rounded w-20 h-20">Map</div>
-            <div className="p-2 bg-gray-100 rounded w-20 h-20">Explore</div>
-            <div className="p-2 bg-gray-100 rounded w-20 h-20">This</div>
+          <section className="w-full  mt-16 grid grid-rows-2 gap-2 justify-around grid-flow-col ">
+            <Link to="/explore/map" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Residential</Link>
+            <Link to="/explore/" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Industrial</Link>
+            <Link to="/explore/" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Commercial</Link>
+            <Link to="/explore/map" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Land</Link>
+          </section>
 
- 
+          <section className="w-full  mt-16 grid grid-rows-2 justify-around gap-2 grid-flow-col ">
+            <Link to="/explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">Map</Link>
+            <Link to="/explore/" className="p-2 bg-gray-100 rounded w-20 h-20">Explore</Link>
+            <Link to="explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">This</Link>
+            <Link to="explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">This</Link>
           </section>
         </section>
       </>
