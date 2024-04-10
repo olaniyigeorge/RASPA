@@ -30,7 +30,7 @@ export const links: LinksFunction = () => [
 
 export default function Landing() {
   const navigate = useNavigate();
-  const [selectedButton, setSelectedButton] = useState<string>('sale');
+  const [selectedButton, setSelectedButton] = useState<string>('rent');
   const [searchQuery, setSearchQUery] = useState<string>("")
   const submit = useSubmit()
   // console.log(selectedButton)
@@ -107,15 +107,7 @@ export default function Landing() {
                   }`}
                   onClick={() => handleButtonClick('sale')}
                 >
-                  Buy
-                </button>
-                <button
-                  className={`p-2 flex-grow justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'SALE' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
-                  }`}
-                  onClick={() => handleButtonClick('SALE')}
-                >
-                  Sell
+                  Sale
                 </button>
                 <button
                   className={`p-2  flex-grow  justify-center items-center rounded-full transition-all ${
