@@ -722,6 +722,10 @@ video {
   margin-right: 1.25rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .mt-16 {
   margin-top: 4rem;
 }
@@ -752,6 +756,13 @@ video {
   -webkit-line-clamp: 5;
 }
 
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
 .block {
   display: block;
 }
@@ -774,6 +785,10 @@ video {
 
 .hidden {
   display: none;
+}
+
+.h-1\/2 {
+  height: 50%;
 }
 
 .h-10 {
@@ -853,8 +868,8 @@ video {
   height: 100vh;
 }
 
-.h-1\/2 {
-  height: 50%;
+.h-3\/5 {
+  height: 60%;
 }
 
 .max-h-40 {
@@ -1149,6 +1164,14 @@ video {
   overflow-y: auto;
 }
 
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
+
+.text-wrap {
+  text-wrap: wrap;
+}
+
 .text-pretty {
   text-wrap: pretty;
 }
@@ -1202,6 +1225,10 @@ video {
   border-bottom-width: 1.5px;
 }
 
+.border-r {
+  border-right-width: 1px;
+}
+
 .border-t {
   border-top-width: 1px;
 }
@@ -1212,10 +1239,6 @@ video {
 
 .border-t-\[1\.5px\] {
   border-top-width: 1.5px;
-}
-
-.border-r {
-  border-right-width: 1px;
 }
 
 .border-black {
@@ -1277,6 +1300,11 @@ video {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
 .bg-gray-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
@@ -1305,11 +1333,6 @@ video {
 .bg-purple-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(250 245 255 / var(--tw-bg-opacity));
-}
-
-.bg-purple-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(168 85 247 / var(--tw-bg-opacity));
 }
 
 .bg-purple-600 {
@@ -1354,11 +1377,6 @@ video {
 .bg-yellow-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 252 232 / var(--tw-bg-opacity));
-}
-
-.bg-green-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(21 128 61 / var(--tw-bg-opacity));
 }
 
 .bg-\[url\(\'\/images\/rendering-house-model\.png\'\)\] {
@@ -1802,30 +1820,6 @@ video {
 /* * {
     font-family: "DM Sans", sans-serif;
 } */
-
-.marker\:selection\:border-r * *::-moz-selection::marker {
-  border-right-width: 1px;
-}
-
-.marker\:selection\:border-r * *::selection::marker {
-  border-right-width: 1px;
-}
-
-.marker\:selection\:border-r *::-moz-selection::marker {
-  border-right-width: 1px;
-}
-
-.marker\:selection\:border-r *::selection::marker {
-  border-right-width: 1px;
-}
-
-.marker\:selection\:border-r::-moz-selection::marker {
-  border-right-width: 1px;
-}
-
-.marker\:selection\:border-r::selection::marker {
-  border-right-width: 1px;
-}
 
 .hover\:scale-105:hover {
   --tw-scale-x: 1.05;
