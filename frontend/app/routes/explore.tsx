@@ -14,7 +14,7 @@ export default function Explore() {
         setIsSidebarOpen(!isSidebarOpen);
       };
       
-    return <div className="w-full relative border-2 border-red-500">
+    return <div className="w-full relative ">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
           
         <Header mode="light" />
