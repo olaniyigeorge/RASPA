@@ -99,8 +99,8 @@ export default function Landing() {
             </motion.div>
             
 
-            <div className="w-full flex justify-center p-2 h-16 inika-regular mt-4">
-              <div className="w-4/6 md:w-1/2 p-2 flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
+            <div className="w-full flex justify-center p-2 h-16 mt-4">
+              <div className="w-4/6 md:w-1/2 p-2 text-gray-800 flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>
                 <button
                   className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
                     selectedButton === 'sale' ? 'bg-white shadow-md font-bold' : 'font-medium '

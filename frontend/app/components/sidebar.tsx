@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@remix-run/react";
 import { useEffect, useState } from "react";
-
+import { MapIcon } from "@heroicons/react/24/outline";
 
 
 interface Props {
@@ -28,7 +28,7 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
           ></div>
         )}
         <section
-          className={`fixed top-0 left-0 bg-white text-gray-900 h-screen w-[300px] duration-500 z-50 transform ${
+          className={`fixed top-0 left-0 bg-white duration-500 text-gray-900 h-screen w-[300px] z-50 transform ${
             isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -47,7 +47,10 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
           </section>
 
           <section className="w-full  mt-16 grid grid-rows-2 justify-around gap-2 grid-flow-col ">
-            <Link to="/explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">Map</Link>
+            <Link to="/explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">
+              <MapIcon className="w-5 h-5 text-purple-600" />
+              Map
+            </Link>
             <Link to="/explore/" className="p-2 bg-gray-100 rounded w-20 h-20">Explore</Link>
             <Link to="explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">This</Link>
             <Link to="explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">This</Link>

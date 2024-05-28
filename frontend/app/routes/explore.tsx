@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
+import { DeviceTabletIcon } from "@heroicons/react/24/solid";
 import { Link, Outlet } from "@remix-run/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -14,39 +14,32 @@ export default function Explore() {
         setIsSidebarOpen(!isSidebarOpen);
       };
       
-    return <>
-        <section className="flex w-full duration-500">
-          <Sidebar
-            isOpen={isSidebarOpen}
-            toggleSidebar={toggleSidebar}
-          />
-    
-          <section
-            className={`flex flex-col flex-grow relative h-screen duration-500 ${
-              isSidebarOpen ? "" : ""
-            }`}
-          >
-            <section className="w-full flex transparent absolute z-20 top-0 left-0 items-center justify-between">
-                <Header mode="light" />
-              <div 
-                className="w-fit h-fit bg-purple-600 text-white opacity-100 rounded-lg p-2 hover:bg-purple-700"
-                onClick={toggleSidebar}
-              >
-                {isSidebarOpen ? <ChevronDownIcon className="w-5 h-5 text-white"/>: <ChevronUpIcon className="w-5 h-5 text-white"/>}
-                </div>
-            </section>
-    
-            <section className="bg-slate-50  top-0 left-0 relative flex flex-1 justify-start items-start">
-              <Outlet />
-            </section>
-          </section>
+    return <div className="w-full relative border-2 border-red-500">
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          
+        <Header mode="light" />
 
-
+        <button 
+          className="bg-purple-600 absolute z-400 top-3 right-12 md:right-36 text-white opacity-100 rounded-lg p-2 hover:bg-purple-700"
+          onClick={toggleSidebar}
+        >
+          {isSidebarOpen ? <DeviceTabletIcon className="w-4 h-4 rotate-90 text-white"/>: <DeviceTabletIcon className="w-4 h-5 rotate-90 text-white"/>}
+        </button>
+        <section className="bg-slate-50 w-full flex  ">
+          <Outlet />
         </section>
       
-      </>
-
-
-        
-
+      </div>
 }
+
+
+
+{/* <section
+className={`flex flex-col flex-grow relative h-screen duration-500 ${
+  isSidebarOpen ? "" : ""
+}`}
+>
+<section className="w-full flex transparent absolute z-20 top-0 left-0 items-center justify-between">
+    
+
+</section> */}

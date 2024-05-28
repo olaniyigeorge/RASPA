@@ -58,23 +58,23 @@ export default function ListingsFilter() {
 
     }, [selectedAction, filterEndpoint, propertyType, searchQuery, minPrice, maxPrice, size])
 
-    return <>
+    return <div id="listing-filters" className="w-full border-b flex justify-between">
 
-      <div id="listing-filters" className="p-4 text-sm md:text-md ">
+      <div className="px-4 py-1 w-full  text-sm md:text-md ">
         <span className="w-full flex space-x-3 justify-start items-center">
           <h1 className="text-xl font-medium text-gray-900">
             Filter your search result
           </h1>
 
-          <p className="text-xs hidden md:flex">{filterEndpoint}</p>
+          <p className="text-xs hidden text-justify">{filterEndpoint}</p>
         </span>
             
-        <section className=" w-full text-gray-800  border-b border-gray-200 py-1 md:flex justify-start space-y-1 md:space-y-0 md:space-x-10 items-center ">
+        <section className="w-full b text-gray-800   border-gray-200 py-1 lg:flex justify-start space-y-2 lg:space-y-0 lg:space-x-3 xl:space-x-10 items-center ">
             <input type="text" onChange={(e) => {setSearchQuery(e.target.value)}} placeholder="Search properties" className="border  border-purple-300 focus:outline-purple-600 p-2 rounded h-10 w-full md:w-[400px] "/>
             
 
-            <div className="  flex justify-center mt-4">
-              <div className=" p-1 flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>            
+            <div className="text-xs  md:text-sm lg:text-md flex justify-center ">
+              <div className="p-1 w-2/3 lg:w-auto shadow flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>            
                 <button
                   className={`p-2  flex-grow  justify-center items-center rounded-full transition-all ${
                     selectedAction === 'rent' ? 'bg-purple-600 text-white shadow-md font-medium' : ''
@@ -102,10 +102,7 @@ export default function ListingsFilter() {
               </div>
             </div>  
 
-
-            <div className=" flex justify-start space-x-3 md:space-x-10 w-full ">
-                
-                
+            <div className="w-full justify-between  text-xs md:text-sm lg:text-md flex lg:justify-start lg:space-x-10">  
                 <button className="rounded-md border bg-white p-2 relative">
                     <><span className="flex items-center space-x-2 ">
                       <p>Houses/Land </p> 
@@ -128,7 +125,6 @@ export default function ListingsFilter() {
                     ""}
                 </button>
 
-
                 <button className="rounded-md border bg-white p-2">
                   {sizeInputVisible ? <div className="">
                     <div ref={dropdownRef} className="">
@@ -142,9 +138,7 @@ export default function ListingsFilter() {
                     <p>Size</p> 
                     <ChevronDownIcon onClick={() => {toggleSizeInput(!sizeInputVisible)}} className="w-4 h-4" />
                     </span></>}
-                  </button> 
-
-
+                </button> 
 
                 <button className="rounded-md border bg-white p-2 relative">
                   <div ref={dropdownRef} className="w-full flex justify-start space-x-2 items-center">
@@ -170,6 +164,7 @@ export default function ListingsFilter() {
                   
                    
                 </button>
+                
                 <button className="rounded-md border bg-white p-2 relative">
                   <div className="w-full flex justify-start space-x-2 items-center">
                     <span className={` justify-start items-center ${maxPriceDropDown ? "hidden": "flex"}`}>Max Price</span>
@@ -195,7 +190,7 @@ export default function ListingsFilter() {
             </div>
         </section>
       </div>
-    </>
+    </div>
 }
 
 
