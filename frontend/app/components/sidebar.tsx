@@ -41,8 +41,8 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
   
           <section className="w-full  mt-16 grid grid-rows-2 gap-2 justify-around grid-flow-col ">
             <Link to="/explore/map" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Residential</Link>
-            <Link to="/explore/" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Industrial</Link>
-            <Link to="/explore/" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Commercial</Link>
+            <Link to="/explore" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Industrial</Link>
+            <Link to="/explore" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Commercial</Link>
             <Link to="/explore/map" className="p-2 bg-gray-100 flex justify-center items-center rounded w-24 h-24">Land</Link>
           </section>
 
@@ -51,7 +51,7 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
               <MapIcon className="w-5 h-5 text-purple-600" />
               Map
             </Link>
-            <Link to="/explore/" className="p-2 bg-gray-100 rounded w-20 h-20">Explore</Link>
+            <Link to="/explore" className="p-2 bg-gray-100 rounded w-20 h-20">Explore</Link>
             <Link to="explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">This</Link>
             <Link to="explore/map" className="p-2 bg-gray-100 rounded w-20 h-20">This</Link>
           </section>

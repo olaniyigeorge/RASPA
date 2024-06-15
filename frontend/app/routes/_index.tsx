@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { ActionFunctionArgs, DataFunctionArgs, LinksFunction, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
+import { ActionFunctionArgs,  LinksFunction, MetaFunction, redirect } from "@remix-run/node";
 import { useSubmit, useNavigate  } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 import Footer from "~/components/footer";
 import Header from "~/components/header";
 import NewsLetterForm from "~/components/news-letter";
-import PropertyCard, { akure_property, IProperty } from "~/components/property-card";
+import PropertyCard, { IProperty } from "~/components/property-card";
 import PropertyTypeCard, { property_types, PTCP } from "~/components/property-type-card";
 import ScrollDownAnimation from "~/components/scroll-down";
 import ServiceDescriptionCard, { IService, our_services } from "~/components/service-description-cards";
+import { akure_property } from "~/data";
 import { storage } from "~/session.server";
 
 
@@ -178,7 +179,7 @@ export default function Landing() {
           <h1 className="text-3xl font-bold"> New Listed Homes In RASP Akure, Nigeria </h1>
         </div>
 
-        <div className="md:flex md:flex-grow md:space-x-3 md:items-start w-full overflow-x-aut px-2 h-auto">
+        <div className="md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:items-start w-full overflow-x-aut px-2 h-auto">
           {akure_property.map((property: IProperty) => (
             <PropertyCard key={property.address} {...property} />
           ))}

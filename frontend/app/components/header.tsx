@@ -24,10 +24,10 @@ export default function Header(props: IHeader) {
 
     return (
     <header 
-        className={`w-full h-auto  ${mode === 'light'? 'text-gray-900' : 'text-white'} `} 
+        className={`w-full h-auto  ${mode === 'light'? 'text-gray-900 shadow' : 'text-white'} `} 
         
     >
-        <div className="hidden md:flex w-full  justify-between py-3 px-8 items-center ">
+        <div className="hidden md:flex w-full container mx-auto justify-between py-3 items-center ">
             <Link to="/" className="">
                 <img className="h-10 w-auto drop-shadow" src={mode === 'light' ? "/images/rasp-logo-purple.png":"images/rasp-logo-white.png"} alt="rasp" />
             </Link>

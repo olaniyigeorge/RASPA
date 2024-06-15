@@ -2,12 +2,12 @@ import Header from "~/components/header";
 import PropertyCard from "~/components/property-card";
 import { AnimatePresence, motion } from "framer-motion";
 import { IProperty } from "~/components/property-card";         
-import { akure_property } from "~/components/property-card";
 import ListingContainier from "~/components/listings/listings-container";
 import ListingsFilter from "~/components/listings/filter-tab";
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import { useEffect, useState } from "react";
 import { useLocation } from "@remix-run/react";
+import { akure_property } from "~/data";
 
 export default function ExploreIndex() {
     const location = useLocation()

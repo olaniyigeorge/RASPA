@@ -11,6 +11,7 @@ interface Amenity {
 export interface IProperty {
     id: string;
     cover_image: string;
+    description: string;
     property_name: string;
     price: number;
     size: number;
@@ -28,14 +29,14 @@ export default function PropertyCard(props: IProperty){
     
     return <div className="shadow items-start flex flex-col justify-between bg-white relative w-full rounded-lg  p-1">
         <Link to={`/property/${property.id}`} className="w-full">
-            <div className="w-full h-[40% object-contin">
+            <div className="w-full h-[180px] object-contin">
                 <img src={property.cover_image} alt="" className="w-full h-full object-filll hover:scale-[102%] rounded-lg " />
             </div>
 
             <div className=" w-full space-y-1  text-gray-900 mt-2">
-                <span className="flex justify-between items-center space-x-2">
-                    <p className="w-2/3 font-bold text-lg">{property.property_name}</p>
-                    <p className="w-1/3 text-sm">{property.agent}</p>
+                <span className="w-full flex justify-between items-center ">
+                    <p className="font-bold text-lg">{property.property_name}</p>
+                    <p className=" text-sm">{property.agent}</p>
                 </span>
                 
                 <span className="flex justify-start space-x-2">
@@ -82,10 +83,11 @@ export default function PropertyCard(props: IProperty){
                 </div>
             </div>
 
-            <button className="absolute  bg-purple-600 text-white p-2 md:top-2 z-10 md:left-2 rounded-md capitalize shadow">{property.action}</button>
-            <button className="absolute bg-purple-600 text-white p-2 md:top-2 z-10 md:right-2 rounded-md  shadow">City</button>
             
         </Link>
+        <button className="absolute  bg-purple-600 text-white p-2 top-2 z-10 left-2 rounded-md capitalize shadow">{property.action}</button>
+        <button className="absolute bg-purple-600 text-white p-2 top-2 z-10 right-2 rounded-md  shadow">City</button>
+            
     </div>
 }
 
@@ -161,83 +163,3 @@ export default function PropertyCard(props: IProperty){
 
 
 
-export const akure_property :IProperty[] = [
-    {
-        id: "rasp-1",
-        cover_image: "images/frame-15.png",
-        property_name: "Olukayode Complex",
-        price: 150000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
-        address: "Oba Adesida road",
-        agent: "Zalasoft",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-2",
-        cover_image: "images/frame-16.png",
-        property_name: "RealPlus",
-        price: 1000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "rent",
-        address: "Adj High Court",
-        agent: "Faye Property",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-3",
-        cover_image: "images/frame-16.png",
-        property_name: "RealPlus",
-        price: 1000000,
-        size: 668.9,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
-        address: "Adj High Court",
-        agent: "Faye Property",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-4",
-        cover_image: "images/frame-16.png",
-        property_name: "RayBus",
-        price: 1000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "invest",
-        address: "Opp Mobil filling station, Arakale",
-        agent: "Zalasoft",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-5",
-        cover_image: "images/frame-17.png",
-        property_name: "RayBus",
-        price: 50000000,
-        size: 1250,
-        bdr: 5,
-        btr: 4,
-        action: "sale",
-        address: "Opp Mobil filling station, Arakale",
-        agent: "The King Condos",
-        amenities: "Fenced, Gated",
-    },
-    {
-        id: "rasp-6",
-        cover_image: "images/frame-17.png",
-        property_name: "Olukayode House",
-        price: 112000,
-        size: 47,
-        bdr: 2,
-        btr: 1,
-        action: "rent",
-        address: "No.2, Oba Adesida road, Akure",
-        agent: "Zalasoft",
-        amenities: "floored compound, gated",
-    },
-]

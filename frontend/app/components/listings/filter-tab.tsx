@@ -74,7 +74,7 @@ export default function ListingsFilter() {
             
 
             <div className="text-xs  md:text-sm lg:text-md flex justify-center ">
-              <div className="p-1 w-2/3 lg:w-auto shadow flex items-center space-x-2 rounded-full" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}>            
+              <div className="p-1 bg-opacity-30 md:space-x-2 bg-white  w-2/3 lg:w-auto shadow flex items-center space-x-2 rounded-full" >            
                 <button
                   className={`p-2  flex-grow  justify-center items-center rounded-full transition-all ${
                     selectedAction === 'rent' ? 'bg-purple-600 text-white shadow-md font-medium' : ''
