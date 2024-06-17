@@ -25,7 +25,7 @@ export default function ThisProperty() {
     console.log(id)
 
     return <div className="w-full gap-3 py-2 flex flex-col-reverse md:flex-row transition-all ease-in-out duration-300  container mx-auto justify-between ">
-        <div className="w-full md:w-3/5  space-y-3 rounded-md">    
+        <div className="w-full md:w-3/5  space-y-4 rounded-md">    
             <div className="w-full flex flex-col justify-between items-start gap-2 rounded-md h-[400px]">
                 <div className="w-full border rounded-md h-4/5">
                     <img src="/images/frame-16.png" className="object-cover rounded-md w-full h-full "/>
@@ -41,7 +41,7 @@ export default function ThisProperty() {
                 </div>
             </div>
 
-            <div className="">
+            <div className="space-y-3">
                 <div className="flex gap-2 overflow-auto">
                     {
                         ['neighbouhood', 'market', 'schools', 'gyms', 'parks'].map((lm) => (
@@ -54,6 +54,19 @@ export default function ThisProperty() {
                         </button>
                         ))
                     }
+                </div>
+
+                <div className="w-full min-h-[180px] overflow-auto rounded-lg">
+                    <iframe
+                        width="600"
+                        height="450"
+                        className="border rounded-lg w-full h-full md:flex border-gray-300"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU
+                            &q=Akure,+Ondo+state+NG">
+                    </iframe>
                 </div>
 
             </div>
