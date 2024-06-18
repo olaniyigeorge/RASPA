@@ -906,20 +906,12 @@ video {
   min-height: 100px;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
-
-.min-h-\[450px\] {
-  min-height: 450px;
-}
-
-.min-h-\[px\] {
-  min-height: px;
-}
-
 .min-h-\[180px\] {
   min-height: 180px;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-1\/2 {
@@ -1446,6 +1438,11 @@ video {
 .bg-yellow-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+}
+
+.bg-purple-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(168 85 247 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-30 {

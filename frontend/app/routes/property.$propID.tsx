@@ -109,7 +109,7 @@ export default function ThisProperty() {
             <div className="flex py-2 justify-between items-baseline w-full">
                 <div className="">
                     <span className="flex font-medium items-baseline text-gray-900">
-                        ₦<p className="font-bold text-purple-800 text-2xl"> {akure_property[id].price}</p> <p>/month</p>
+                        ₦<p className="font-bold text-purple-800 text-2xl"> {akure_property[id].price}</p> <p>/year</p>
                     </span>
                 </div>
                 <div className="flex space-x-2">

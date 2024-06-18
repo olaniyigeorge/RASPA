@@ -87,4 +87,18 @@ export const akure_property :IProperty[] = [
         agent: "Zalasoft",
         amenities: "floored compound, gated",
     },
+    {
+        id: "6",
+        cover_image: "images/frame-17.png",
+        property_name: "Zalasoft Residentials",
+        description: "A very conducive two bedroom flat with POP all through in Alagabka GRA with three toilets, water heater installed, water running, kitchen cabinets, wardrobe, tiled all through, floored compound, fenced, gated and just three appartments in the compound.",
+        price: 1400000,
+        size: 47,
+        bdr: 2,
+        btr: 3,
+        action: "rent",
+        address: "Off Alagbaka GRA, Akure",
+        agent: "Zalasoft",
+        amenities: "floored compound, gated",
+    },
 ]
