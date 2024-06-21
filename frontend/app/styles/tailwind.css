@@ -1425,6 +1425,10 @@ video {
   --tw-bg-opacity: 0.3;
 }
 
+.bg-opacity-50 {
+  --tw-bg-opacity: 0.5;
+}
+
 .bg-\[url\(\'\/images\/rendering-house-model\.png\'\)\] {
   background-image: url('/images/rendering-house-model.png');
 }
@@ -1779,6 +1783,10 @@ video {
 
 .opacity-75 {
   opacity: 0.75;
+}
+
+.opacity-50 {
+  opacity: 0.5;
 }
 
 .bg-blend-multiply {

@@ -14,7 +14,7 @@ export default function Explore() {
         setIsSidebarOpen(!isSidebarOpen);
       };
       
-    return <div className="w-full relative ">
+    return <div className="w-full h-screen relative bg-slate-50">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
           
         <Header mode="light" />
@@ -28,7 +28,6 @@ export default function Explore() {
         <section className="bg-slate-50 w-full flex  ">
           <Outlet />
         </section>
-      
       </div>
 }
 

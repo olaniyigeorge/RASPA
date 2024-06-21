@@ -24,7 +24,7 @@ export default function Header(props: IHeader) {
 
     return (
     <header 
-        className={`w-full h-auto  ${mode === 'light'? 'text-gray-900 shadow' : 'text-white'} `} 
+        className={`w-full h-auto  ${mode === 'light'? 'text-gray-900 shadow bg-opacity-50' : 'text-white shadow'} `} 
         
     >
         <div className="hidden md:flex w-full container mx-auto justify-between py-3 items-center ">
