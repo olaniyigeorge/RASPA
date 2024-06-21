@@ -50,10 +50,21 @@ export default function PropertyCard(props: PropertyListing){
     const property = {...props}
     console.log("Prop: ", property)
     
+    
     return <div className="shadow items-start flex flex-col justify-between bg-white relative w-full rounded-lg  p-1">
         <Link to={`/property/${property.id}`} className="w-full">
             <div className="w-full h-[180px] object-contin">
-                <img src={property.listing_type} alt="" className="w-full h-full object-filll hover:scale-[102%] rounded-lg " />
+                <img src={property.listing_type} alt="" className="" />
+
+                {
+                        property?.property?.propertyImages[0] ? (
+                            <img src={`http://localhost:8000${property?.property?.propertyImages[0].image}`} alt={`http://localhost:8000${property?.property?.propertyImages[0].image}`} className="w-full h-full object-fill hover:scale-[102%] rounded-lg "/>
+                        )
+                        :
+                        <span className="flex w-full h-full justify-center bg-red-100 items-center object-filll hover:scale-[102%] rounded-lg ">
+                            <p className="text-gray-800 font-medium"> No Images </p> 
+                        </span>
+                }  
             </div>
 
             <div className=" w-full space-y-1  text-gray-900 mt-2">
@@ -61,7 +72,7 @@ export default function PropertyCard(props: PropertyListing){
                     <p className="font-bold text-lg capitalize">{property.property.name}</p>
                     <p className=" text-sm">{
                     property.property.manager ? 
-                    property.property.manager.display_name : "US"}</p>
+                    property.property.manager.display_name : "RASP"}</p>
                 </span>
                 
                 {

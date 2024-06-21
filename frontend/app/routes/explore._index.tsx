@@ -67,7 +67,7 @@ export async function loader({request, params}: LoaderFunctionArgs) {
     console.log("Endpoint: ",  getUrl('listings',)  ) //getUrl('listings', `${id}`
     
     const args: fetcherProps = {
-        endpoint: "http://localhost:8000/api/listings/", 
+        endpoint: getUrl('listings',), 
         method: 'GET',  
     } 
     console.log("FetchProps: ", args)

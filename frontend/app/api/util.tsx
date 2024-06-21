@@ -27,7 +27,7 @@ export function getEnvVar(key: string): any {
 // const apiDomain: string = getEnvVar('API_DOMAIN') | 'localhost:8000';
 let apiDomain: string
 if (inProduction) {
-  apiDomain = "https://raspa-api-splu.onrender.com/";}
+  apiDomain = "https://raspa-api-splu.onrender.com";}
 else {
   apiDomain = 'http://localhost:8000';
 }

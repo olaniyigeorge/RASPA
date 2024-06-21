@@ -15,11 +15,12 @@ export default function ThisProperty() {
     const data = useLoaderData<typeof loader>();
     const [selectedLandMark, setSelectedLandMark] = useState('')
     const [id, setID] = useState('')
-    const [listing, setListing] = useState<PropertyListing>()
+    const [listing, setListing] = useState<PropertyListing | null | undefined>()
     const [showFullDescription, setShowFullDescription] = useState<boolean>(false)
     
     useEffect(() => {
         setListing(data?.property)
+        console.log("Listing: ", listing)
         
     }, []);
     const description = listing?.property?.description || "";
@@ -30,13 +31,21 @@ export default function ThisProperty() {
         <div className="w-full md:w-3/5  space-y-4 rounded-md">    
             <div className="w-full flex flex-col justify-between items-start gap-2 rounded-md h-[400px]">
                 <div className="w-full border rounded-md h-4/5">
-                    <img src="/images/frame-16.png" className="object-cover rounded-md w-full h-full "/>
+                    {
+                        listing?.property?.propertyImages[0] ? (
+                            <img src={`http://localhost:8000${listing?.property?.propertyImages[0].image}`} alt={`http://localhost:8000${listing?.property?.propertyImages[0].image}`} className="object-cover rounded-md w-full h-full "/>
+                        )
+                        :
+                        <span className="flex w-full h-full justify-center bg-red-100 items-center">
+                            <p className="text-gray-800 font-medium"> No Images </p> 
+                        </span>
+                    }   
                 </div>
                 <div className="flex gap-2 w-full h-1/5">
                     {
-                        ['neighbouhood', 'market', 'schools', 'gyms', 'parks'].map((lm) => (
+                        listing?.property?.propertyImages.map((im) => (
                         <div className="rounded-md flex justify-center items-center w-full h-full border" onClick={() => {}}>
-                            <img src="/images/frame-16.png" className="object-cover rounded-md w-full h-full "/>
+                            <img src={`http://localhost:8000${im.image}`} alt={`http://localhost:8000${im.image}`} className="object-cover text-gray-800 rounded-md w-full h-full "/>
                         </div>
                         ))
                     }
@@ -58,7 +67,7 @@ export default function ThisProperty() {
                     }
                 </div>
 
-                <div className="w-full min-h-[180px] overflow-auto rounded-lg">
+                <div className="w-full min-h-[200px] overflow-auto rounded-lg">
                     <iframe
                         width="600"
                         height="450"
@@ -66,8 +75,10 @@ export default function ThisProperty() {
                         loading="lazy"
                         allowFullScreen
                         referrerPolicy="no-referrer-when-downgrade"
-                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU
-                            &q=Akure,+Ondo+state+NG">
+                        src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU
+                        &center=${listing?.property?.latitude},${listing?.property?.longitude}
+                        &zoom=15`}
+                    >
                     </iframe>
                 </div>
 
@@ -176,11 +187,6 @@ export default function ThisProperty() {
                 </div>
             </div>
 
-            <div className="w-full rounded-lg bg-gray-300">
-                <p className=" ">
-                    Size: {listing?.property?.size} meters square
-                </p>
-            </div>
 
             <div className="w-full h-[100px] rounded-lg bg-gray-100">
                 <img src="/images/ad/promo1.png" className="w-full hover:object-cover h-full object-cover rounded-lg"/>
