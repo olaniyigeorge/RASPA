@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { Feature, ownerType, PropertyListing } from "~/api/interfaces";
 
 
 interface Action {
@@ -23,31 +24,63 @@ export interface IProperty {
     amenities: string; // Amenity[]
 }
 
+export type Property = {
+    id: string;
+  
+    name: string;
+    type: string;
+    size: number;
+    actions: string;
+    propertyImages: Object[];
+    listing_type: string;
+    description: string;
+    owner: ownerType;
+    manager: ownerType;
+    property__type: string;
+    latitude: string;
+    longitude: string;
+    address: string;
+    amenities: Amenity[];
+    features: Feature[];
+  
+  }
 
-export default function PropertyCard(props: IProperty){
+export default function PropertyCard(props: PropertyListing){
+
     const property = {...props}
+    console.log("Prop: ", property)
     
     return <div className="shadow items-start flex flex-col justify-between bg-white relative w-full rounded-lg  p-1">
         <Link to={`/property/${property.id}`} className="w-full">
             <div className="w-full h-[180px] object-contin">
-                <img src={property.cover_image} alt="" className="w-full h-full object-filll hover:scale-[102%] rounded-lg " />
+                <img src={property.listing_type} alt="" className="w-full h-full object-filll hover:scale-[102%] rounded-lg " />
             </div>
 
             <div className=" w-full space-y-1  text-gray-900 mt-2">
                 <span className="w-full flex justify-between items-center ">
-                    <p className="font-bold text-lg">{property.property_name}</p>
-                    <p className=" text-sm">{property.agent}</p>
+                    <p className="font-bold text-lg capitalize">{property.property.name}</p>
+                    <p className=" text-sm">{
+                    property.property.manager ? 
+                    property.property.manager.display_name : "US"}</p>
                 </span>
                 
-                <span className="flex justify-start space-x-2">
-                    <p className=""><b>{property.size}</b> sqft</p>
-                    <p className=""><b>{property.bdr}</b> Bedrooms</p>
-                    <p className=""><b>{property.btr}</b> Bathrooms</p>
-                </span>
+                {
+                    property.property.features ? (
+                    
+                    <span className="flex justify-start space-x-2">
+                        
+                        {property.property.features.map((f: Feature) => (
+                                <p className=""><b>{f.count}</b> {f.name}</p>
+                        ))}
+                    </span>)
+                    :
+                    
+                    ""
+                }   
 
                 <div className="">
                     <p className="font-medium"> Address</p>
-                    <p className="line-clamp-2">{property.address}</p>
+                    <p className="line-clamp-2">{property.property.address}</p>
                 </div>
             </div>
                 
@@ -68,16 +101,16 @@ export default function PropertyCard(props: IProperty){
                         className=" p-1 flex capitalize justify-center items-center w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
                         to={
                             `/property/${property.id}/payment-plans/${
-                                property.action === "sale" ? "buy-now" : 
-                                property.action ==="rent"? "rent" : 
-                                property.action ==="invest"? "invest"
+                                property.listing_type === "sale" ? "buy-now" : 
+                                property.listing_type ==="rent"? "rent" : 
+                                property.listing_type ==="invest"? "invest"
                                 : ""}`
                             }
                     >
                         {
-                                property.action === "sale" ? "buy-now" : 
-                                property.action ==="rent"? "rent" : 
-                                property.action ==="invest"? "invest": ""
+                                property.listing_type === "sale" ? "buy-now" : 
+                                property.listing_type ==="rent"? "rent" : 
+                                property.listing_type ==="invest"? "invest": ""
                         }
                     </Link>
                 </div>
@@ -85,81 +118,11 @@ export default function PropertyCard(props: IProperty){
 
             
         </Link>
-        <button className="absolute  bg-purple-600 text-white p-2 top-2 z-10 left-2 rounded-md capitalize shadow">{property.action}</button>
+        <button className="absolute  bg-purple-600 text-white p-2 top-2 z-10 left-2 rounded-md capitalize shadow">{property.listing_type}</button>
         <button className="absolute bg-purple-600 text-white p-2 top-2 z-10 right-2 rounded-md  shadow">City</button>
             
     </div>
 }
-
-
-
-
-
-
-
-{/* <Link to={`/property/${property.id}`} className="shadow bg-white w-full md:w-[350px] h-[400px] rounded-lg relative  p-1">
-            <div className="h-[200px] w-full">
-                <img src={property.cover_image} alt="" className="hover:scale-[102%] rounded-lg h-[200px] w-full" />
-            </div>
-
-            <div className="h-auto w-full space-y-1 text-gray-900 mt-2">
-                <span className="flex justify-between items-center space-x-2">
-                    <p className="w-2/3 font-bold text-lg">{property.property_name}</p>
-                    <p className="w-1/3 text-sm">{property.agent}</p>
-                </span>
-                
-                <span className="flex justify-start space-x-2">
-                    <p className=""><b>{property.size}</b> sqft</p>
-                    <p className=""><b>{property.bdr}</b> Bedrooms</p>
-                    <p className=""><b>{property.btr}</b> Bathrooms</p>
-                </span>
-
-                <div className="">
-                    <p className="font-medium"> Address</p>
-                    <p className="line-clamp-2">{property.address}</p>
-                </div>
-                
-                <div className="flex justify-between items-center">
-                    <div className="w-[200px]">
-                        <p className="font-medium">NGN {" "}{property.price}</p>
-                        <p className="text-xs ">Spread payments across 6 months</p>
-                    </div>
-
-                    <div className="w-[150px] flex flex-col text-sm gap-1 ">
-                        <Link
-                            className=" p-1 flex justify-center items-center w-full rounded-full bg-gray-200 hover:bg-gray-300 text-gray-900"
-                            to={`/property/${property.id}/payment-plans/installments`}>
-                            Pay in installments
-                        </Link>
- 
-                        <Link 
-                            className=" p-1 flex capitalize justify-center items-center w-full rounded-full bg-green-500 hover:bg-green-600 text-white"
-                            to={
-                                `/property/${property.id}/payment-plans/${
-                                    property.action === "sale" ? "buy-now" : 
-                                    property.action ==="rent"? "rent" : 
-                                    property.action ==="invest"? "invest"
-                                    : ""}`
-                                }
-                        >
-                            {
-                                    property.action === "sale" ? "buy-now" : 
-                                    property.action ==="rent"? "rent" : 
-                                    property.action ==="invest"? "invest": ""
-                            }
-                        </Link>
-                    </div>
-                </div>
-
-                
-            </div> 
-
-            <button className="absolute  bg-purple-600 text-white p-2 md:top-2 z-10 md:left-2 rounded-md capitalize shadow">{property.action}</button>
-            <button className="absolute bg-purple-600 text-white p-2 md:top-2 z-10 md:right-2 rounded-md  shadow">City</button>
-            
-        </Link>
- */}
-
 
 
 

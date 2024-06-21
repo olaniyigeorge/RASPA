@@ -29,7 +29,7 @@ export default function Header(props: IHeader) {
     >
         <div className="hidden md:flex w-full container mx-auto justify-between py-3 items-center ">
             <Link to="/" className="">
-                <img className="h-10 w-auto drop-shadow" src={mode === 'light' ? "/images/rasp-logo-purple.png":"images/rasp-logo-white.png"} alt="rasp" />
+                <img className="h-10 w-auto drop-shadow" src={mode === 'light' ? "/images/rasp-logo-purple.png":"/images/rasp-logo-white.png"} alt="rasp" />
             </Link>
 
             <span className="hidden md:flex space-x-1 md:space-x-4">
