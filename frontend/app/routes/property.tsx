@@ -9,7 +9,7 @@ export default function Property() {
 
 
     return <>
-        <Header mode={'light'} />
+        <Header mode={"light"}/>
 
 
         <div className="">

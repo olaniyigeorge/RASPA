@@ -4,6 +4,7 @@ import { useSubmit, useNavigate  } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { PropertyListing } from "~/api/interfaces";
 import Footer from "~/components/footer";
 import Header from "~/components/header";
 import NewsLetterForm from "~/components/news-letter";
@@ -180,8 +181,8 @@ export default function Landing() {
         </div>
 
         <div className="md:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:items-start w-full overflow-x-aut px-2 h-auto">
-          {akure_property.map((property: IProperty) => (
-            <PropertyCard key={property.address} {...property} />
+          {akure_property.map((property: PropertyListing) => (
+            <PropertyCard key={property.id} {...property} />
           ))}
         </div>
 
@@ -242,19 +243,133 @@ export default function Landing() {
 
 
 
-export async function action({request,}: ActionFunctionArgs) {
-  const currUrl = new URL(request.url)
-  const form = await request.formData()
-  // const destination: string = currUrl.searchParams.get('destination') ?? '/'
-  const action = (form.get("action") || "").toString();
-  const search = (form.get("search") || "").toString();
+
+// import Header from "~/components/header";
+// import PropertyCard from "~/components/property-card";
+// import { AnimatePresence, motion } from "framer-motion";
+// import { IProperty } from "~/components/property-card";         
+// import ListingContainer from "~/components/listings/listings-container";
+// import ListingsFilter from "~/components/listings/filter-tab";
+// import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from "@remix-run/node";
+// import { useEffect, useState } from "react";
+// import { useLoaderData, useLocation } from "@remix-run/react";
+// import { akure_property } from "~/data";
+// import { fetchData, fetcherProps, getUrl } from "~/api/util";
+
+// export default function ExploreIndex() {
+//     const data = useLoaderData<typeof loader>();
+//     const location = useLocation()
+//     console.log(location.pathname)
+//     // console.log("Fetched Listings: ", data?.listings)
+//     // console.log()      add listing url to location.pathname and redirect to url
+//     // console.log()
+//     const [listings, setListings] = useState([]);
+
+//     useEffect(() => {
+//       // Simulate fetching data
+//       const fetchData = async () => {
+//         // JSON string
+//         const jsonString = JSON.stringify(data?.listings)
+//         // Convert JSON string to array of objects
+//         const data = JSON.parse(jsonString);
+//         setListings(data);
+//         console.log("Listings length: ", listings.length)
+//       };
+//       fetchData();
+//     }, []);
+//     const mapOpen = false
+//     return (
+//         // <motion.div
+//         //     initial={{ opacity: 0 }}
+//         //     animate={{ opacity: 1 }}
+//         //     exit={{ opacity: 0 }}
+//         //     transition={{ ease: "easeIn", duration: 1 }}
+//         // >
+//             <div className="w-full flex flex-col justify-between items-center">
+//                 <ListingsFilter />
+            
+//                 <div id="properties" className="w-full  flex justify-between px-2">
+                    
+//                     {
+//                         listings.length > 0 ? 
+//                         <ListingContainer listings={listings} /> : 
+//                         <p>Loading...</p>}
+//                     {
+//                         mapOpen ? (
+//                             <iframe
+//                                 width="600"
+//                                 height="450"
+//                                 className="border hidden lg:flex border-gray-300"
+//                                 loading="lazy"
+//                                 allowFullScreen
+//                                 referrerPolicy="no-referrer-when-downgrade"
+//                                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA7qx8ah0ZVIv43KxUPPspBRG1-fwY6jOU
+//                                     &q=Akure,+Ondo+state+NG">
+//                             </iframe>
+
+//                         ) :
+//                         ""
+//                     }
+                    
+//                 </div>
+//             </div>
+//         // </motion.div>
+//     );
+// }
+
+
+// export async function loader({request, params}: LoaderFunctionArgs) {
+//     console.log("Request URL: ", request.url)
+//     console.log(params.propID)
+//     console.log("Endpoint: ",  getUrl('listings',)  ) //getUrl('listings', `${id}`
+    
+//     const args: fetcherProps = {
+//         endpoint: "http://localhost:8000/api/listings/", 
+//         method: 'GET',  
+//     } 
+//     console.log("FetchProps: ", args)
+//     const listings = await fetchData(args);
+
+//     // console.log("Properties: ", listings)
+    
+//     return json({listings})
+// }
+
+
+// export async function action({request,}: ActionFunctionArgs) {
+//     const currUrl = new URL(request.url)
+//     const form = await request.formData()
+//     // const destination: string = currUrl.searchParams.get('destination') ?? '/'
+//     const action = (form.get("action") || "").toString();
+//     const search = (form.get("search") || "").toString();
+    
+//     // const en = `https://wta-api-build.onrender.com/directory/service-locations/?action=${action}&search=${search}`
+//     const en = `/explore/map/?action=${action}&search=${search}`
   
-  // const en = `https://wta-api-build.onrender.com/directory/service-locations/?action=${action}&search=${search}`
-  const en = `/explore/map/?action=${action}&search=${search}`
+//     console.log("Redirecting to: ", en)
+//     // console log constructed url 
+//     // ....and redirect to it
+  
+//     return redirect(en)
+//   }
 
-  console.log("Redirecting to: ", en)
-  // console log constructed url 
-  // ....and redirect to it
 
-  return redirect(en)
-}
+
+
+
+// export async function action({request,}: ActionFunctionArgs) {
+//   const currUrl = new URL(request.url)
+//   const form = await request.formData()
+//   // const destination: string = currUrl.searchParams.get('destination') ?? '/'
+//   const action = (form.get("action") || "").toString();
+//   const search = (form.get("search") || "").toString();
+  
+//   // const en = `https://wta-api-build.onrender.com/directory/service-locations/?action=${action}&search=${search}`
+//   const en = `/explore/map/?action=${action}&search=${search}`
+
+//   console.log("Redirecting to: ", en)
+//   // console log constructed url 
+//   // ....and redirect to it
+
+//   return redirect(en)
+// }

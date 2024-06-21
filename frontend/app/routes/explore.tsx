@@ -32,14 +32,3 @@ export default function Explore() {
       </div>
 }
 
-
-
-{/* <section
-className={`flex flex-col flex-grow relative h-screen duration-500 ${
-  isSidebarOpen ? "" : ""
-}`}
->
-<section className="w-full flex transparent absolute z-20 top-0 left-0 items-center justify-between">
-    
-
-</section> */}

@@ -4,18 +4,21 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IProperty } from "~/components/property-card";         
 import ListingContainier from "~/components/listings/listings-container";
 import ListingsFilter from "~/components/listings/filter-tab";
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useEffect, useState } from "react";
-import { useLocation } from "@remix-run/react";
+import { useLoaderData, useLocation } from "@remix-run/react";
 import { akure_property } from "~/data";
+import { fetchData, fetcherProps, getUrl } from "~/api/util";
 
 export default function ExploreIndex() {
+    const data = useLoaderData<typeof loader>();
     const location = useLocation()
     console.log(location.pathname)
-    console.log()
+    // console.log("Fetched Listings: ", data?.listings)
     // console.log()      add listing url to location.pathname and redirect to url
     // console.log()
     const [listingsURL, setListingsURL] = useState<any>()
+    console.log("URL", listingsURL)
     // useEffect(() => {
         
 
@@ -32,7 +35,7 @@ export default function ExploreIndex() {
                 <ListingsFilter />
             
                 <div id="properties" className="w-full  flex justify-between px-2">
-                    <ListingContainier {...akure_property} />
+                    <ListingContainier listings={data?.listings} />
                     
                     {
                         mapOpen ? (
@@ -58,7 +61,22 @@ export default function ExploreIndex() {
 }
 
 
+export async function loader({request, params}: LoaderFunctionArgs) {
+    console.log("Request URL: ", request.url)
+    console.log(params.propID)
+    console.log("Endpoint: ",  getUrl('listings',)  ) //getUrl('listings', `${id}`
+    
+    const args: fetcherProps = {
+        endpoint: "http://localhost:8000/api/listings/", 
+        method: 'GET',  
+    } 
+    console.log("FetchProps: ", args)
+    const listings = await fetchData(args);
 
+    // console.log("Properties: ", listings)
+    
+    return json({listings})
+}
 
 
 export async function action({request,}: ActionFunctionArgs) {
@@ -77,3 +95,5 @@ export async function action({request,}: ActionFunctionArgs) {
   
     return redirect(en)
   }
+
+
