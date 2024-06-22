@@ -33,7 +33,7 @@ export default function ThisProperty() {
                 <div className="w-full border rounded-md h-4/5">
                     {
                         listing?.property?.propertyImages[0] ? (
-                            <img src={`http://localhost:8000${listing?.property?.propertyImages[0].image}`} alt={`http://localhost:8000${listing?.property?.propertyImages[0].image}`} className="object-cover rounded-md w-full h-full "/>
+                            <img src={`${listing?.property?.propertyImages[0].image}`} alt={`${listing?.property?.propertyImages[0].image}`} className="object-cover rounded-md w-full h-full "/>
                         )
                         :
                         <span className="flex w-full h-full justify-center bg-red-100 items-center">
@@ -45,7 +45,7 @@ export default function ThisProperty() {
                     {
                         listing?.property?.propertyImages.map((im) => (
                         <div className="rounded-md flex justify-center items-center w-full h-full border" onClick={() => {}}>
-                            <img src={`http://localhost:8000${im.image}`} alt={`http://localhost:8000${im.image}`} className="object-cover text-gray-800 rounded-md w-full h-full "/>
+                            <img src={`${im.image}`} alt={`property image`} className="object-cover text-gray-800 rounded-md w-full h-full text-xs "/>
                         </div>
                         ))
                     }

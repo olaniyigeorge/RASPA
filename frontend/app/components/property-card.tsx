@@ -56,10 +56,10 @@ export default function PropertyCard(props: PropertyListing){
             <div className="w-full h-[180px] object-contin">
                 {
                         property?.property?.propertyImages[0] ? (
-                            <img src={`http://localhost:8000${property?.property?.propertyImages[0].image}`} alt={`http://localhost:8000${property?.property?.propertyImages[0].image}`} className="w-full h-full object-fill hover:scale-[102%] rounded-lg "/>
+                            <img src={`${property?.property?.propertyImages[0].image}`} alt={`${property?.property?.propertyImages[0].image}`} className="w-full h-full object-fill flex justify-center hover:scale-[102%] rounded-lg text-sm text-opacity-20"/>
                         )
                         :
-                        <span className="flex w-full h-full justify-center bg-red-100 items-center object-filll hover:scale-[102%] rounded-lg ">
+                        <span className="flex w-full h-full justify-center bg-red-100 items-center object-fill hover:scale-[102%] rounded-lg ">
                             <p className="text-gray-800 font-medium"> No Images </p> 
                         </span>
                 }  

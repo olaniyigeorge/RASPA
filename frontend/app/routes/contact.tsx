@@ -43,8 +43,8 @@ export default function Contact() {
                 <div className="rounded-md shadow flex justify-between p-2 gap-1 items-start bg-gray-50 border w-full md:1/3">
                     <img src="images/memoji.png" alt="" className="rounded-full w-1/2 h-auto" />
                     <div className="w-1/2 text-wrap h-full flex flex-col">
-                        <h2 className="font-bold text-xl">Olaniyi George</h2>
-                        <p className="text-wrap w-full ">
+                        <h2 className="font-bold w-full text-xl">Olaniyi George</h2>
+                        <p className="text-wrap flex ">
                             cfcfcvevccccrfrrvrvrvrvrvrvvdwrrvvrr
                             cfcfcvevccccrfrrvrvrvrvrvrvv
                         </p>

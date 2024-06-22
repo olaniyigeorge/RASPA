@@ -13,19 +13,9 @@ import { action } from "./explore";
 
 export default function ExploreIndex() {
     const data = useLoaderData<typeof loader>();
-    const actionData = useActionData<typeof action>();
     const location = useLocation()
-    console.log("Action Data: " , actionData)
-    // console.log("Fetched Listings: ", data?.listings)
-    // console.log()      add listing url to location.pathname and redirect to url
-    // console.log()
-    const [listingsURL, setListingsURL] = useState<any>()
-    console.log("URL", listingsURL)
-    // useEffect(() => {
-    //     console.log("Data from loader", data?.listings)
-    //     console.log("Data from action", actionData?.listings)
 
-    // }, [data?.listings, actionData?.listings])
+
     const mapOpen = false
     return (
             <div className="w-full flex flex-col justify-between items-center">
