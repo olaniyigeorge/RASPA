@@ -48,14 +48,12 @@ export type Property = {
 export default function PropertyCard(props: PropertyListing){
 
     const property = {...props}
-    console.log("Prop: ", property)
+    // console.log("Prop: ", property)
     
     
     return <div className="shadow items-start flex flex-col justify-between bg-white relative w-full rounded-lg  p-1">
         <Link to={`/property/${property.id}`} className="w-full">
             <div className="w-full h-[180px] object-contin">
-                <img src={property.listing_type} alt="" className="" />
-
                 {
                         property?.property?.propertyImages[0] ? (
                             <img src={`http://localhost:8000${property?.property?.propertyImages[0].image}`} alt={`http://localhost:8000${property?.property?.propertyImages[0].image}`} className="w-full h-full object-fill hover:scale-[102%] rounded-lg "/>

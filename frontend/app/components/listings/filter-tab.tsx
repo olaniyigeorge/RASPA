@@ -1,11 +1,13 @@
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useEffect, useRef, useState } from "react";
+import { useFetcher } from '@remix-run/react';
+import { getUrl } from "~/api/util";
 
 
 
 
 export default function ListingsFilter() {
-    const [selectedAction, setSelectedAction] = useState<string>('sale')
+    const [selectedAction, setSelectedAction] = useState<string>('')
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [propertyType, setPropertyType] = useState<string>('')
     const [size, setSize] = useState<any>("")
@@ -18,9 +20,23 @@ export default function ListingsFilter() {
     const [maxPriceDropDown, setmaxPriceDropDown] = useState<boolean>(false)
     const [sizeInputVisible, toggleSizeInput] = useState<boolean>(false)
     const [propertyTypeInputVisible, togglePropertyTypeInputVisible] = useState<boolean>(false)
+    const fetcher = useFetcher();
 
+    const baseEndpoint = "/api/listings/?search=&property__size=&price=&property__features__name=&property__type=&property__features__count=&listing_type=&price__lte=&price__gte=";
 
-    const baseEndpoint = "/api/listings/?search=&property__size=&price=&property__features__name=&property__type=&property__features__count=&listing_type=&price__lte=&price__gte="
+    
+    useEffect(() => {
+      const form = new FormData();
+      form.append('search', searchQuery);
+      form.append('property__size', size);
+      form.append('price__lte', maxPrice);
+      form.append('price__gte', minPrice);
+      form.append('property__type', propertyType);
+      form.append('listing_type', selectedAction);
+      fetcher.submit(form, { method: 'post', action: '/explore' });
+    }, [filterEndpoint]);
+  
+
 
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
@@ -36,7 +52,7 @@ export default function ListingsFilter() {
     
       document.addEventListener('mousedown', handleClickOutsideDropdown);
     
-      return () => {
+    return () => {
         document.removeEventListener('mousedown', handleClickOutsideDropdown);
       };
     }, [selectedAction, filterEndpoint, propertyType, searchQuery, minPrice, maxPrice, size]);
@@ -51,8 +67,9 @@ export default function ListingsFilter() {
       };
 
     useEffect(() => {
-    const en = `/api/listings/?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${propertyType}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`
-    setfilterEndpoint(en)
+    const en = `?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${propertyType}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`
+    const end = getUrl('listings', en)
+    setfilterEndpoint(end)
 
     
 
@@ -95,7 +112,7 @@ export default function ListingsFilter() {
                   className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
                     selectedAction === 'invest' ? 'bg-purple-600 text-white shadow-md font-medium' : ''
                   }`}
-                  onClick={() => handleButtonClick('invest')}
+                  onClick={() => handleButtonClick('investment')}
                 >
                   Invest
                 </button>

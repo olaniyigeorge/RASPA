@@ -6,31 +6,28 @@ import ListingContainier from "~/components/listings/listings-container";
 import ListingsFilter from "~/components/listings/filter-tab";
 import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useEffect, useState } from "react";
-import { useLoaderData, useLocation } from "@remix-run/react";
+import { useActionData, useLoaderData, useLocation } from "@remix-run/react";
 import { akure_property } from "~/data";
 import { fetchData, fetcherProps, getUrl } from "~/api/util";
+import { action } from "./explore";
 
 export default function ExploreIndex() {
     const data = useLoaderData<typeof loader>();
+    const actionData = useActionData<typeof action>();
     const location = useLocation()
-    console.log(location.pathname)
+    console.log("Action Data: " , actionData)
     // console.log("Fetched Listings: ", data?.listings)
     // console.log()      add listing url to location.pathname and redirect to url
     // console.log()
     const [listingsURL, setListingsURL] = useState<any>()
     console.log("URL", listingsURL)
     // useEffect(() => {
-        
+    //     console.log("Data from loader", data?.listings)
+    //     console.log("Data from action", actionData?.listings)
 
-    // }, [listingsURL])
+    // }, [data?.listings, actionData?.listings])
     const mapOpen = false
     return (
-        // <motion.div
-        //     initial={{ opacity: 0 }}
-        //     animate={{ opacity: 1 }}
-        //     exit={{ opacity: 0 }}
-        //     transition={{ ease: "easeIn", duration: 1 }}
-        // >
             <div className="w-full flex flex-col justify-between items-center">
                 <ListingsFilter />
             
@@ -52,48 +49,38 @@ export default function ExploreIndex() {
 
                         ) :
                         ""
-                    }
-                    
+                    }                
                 </div>
             </div>
-        // </motion.div>
+
     );
 }
 
 
 export async function loader({request, params}: LoaderFunctionArgs) {
-    console.log("Request URL: ", request.url)
-    console.log(params.propID)
-    console.log("Endpoint: ",  getUrl('listings',)  ) //getUrl('listings', `${id}`
+    const currUrl = new URL(request.url)
+    // Get filters
+    const search: string = currUrl.searchParams.get('search') ?? ''
+    const property__size: string = currUrl.searchParams.get('property__size') ?? ''
+    const property__type: string = currUrl.searchParams.get('property__type') ?? ''
+    const price__lte: string = currUrl.searchParams.get('price__lte') ?? ''
+    const price__gte: string = currUrl.searchParams.get('price__gte') ?? ''
+    const listing_type: string = currUrl.searchParams.get('listing_type') ?? ''
     
-    const args: fetcherProps = {
-        endpoint: getUrl('listings',), 
-        method: 'GET',  
-    } 
-    console.log("FetchProps: ", args)
-    const listings = await fetchData(args);
+    const f = `?search=${search}&property__size=${property__size}&property__type=${property__type}&listing_type=${listing_type}&price__lte=${price__lte}&price__gte=${price__gte}&`
 
-    // console.log("Properties: ", listings)
+    console.log("Fetching: ", getUrl('listings', f))
+    const args: fetcherProps = {
+        endpoint: getUrl('listings', f), 
+        method: 'GET',  
+    }
+    let listings = await fetchData(args);
+
+    if (!listings) {
+        listings = []
+    }
     
     return json({listings})
 }
-
-
-export async function action({request,}: ActionFunctionArgs) {
-    const currUrl = new URL(request.url)
-    const form = await request.formData()
-    // const destination: string = currUrl.searchParams.get('destination') ?? '/'
-    const action = (form.get("action") || "").toString();
-    const search = (form.get("search") || "").toString();
-    
-    // const en = `https://wta-api-build.onrender.com/directory/service-locations/?action=${action}&search=${search}`
-    const en = `/explore/map/?action=${action}&search=${search}`
-  
-    console.log("Redirecting to: ", en)
-    // console log constructed url 
-    // ....and redirect to it
-  
-    return redirect(en)
-  }
 
 

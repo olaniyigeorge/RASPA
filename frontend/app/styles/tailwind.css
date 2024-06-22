@@ -1785,10 +1785,6 @@ video {
   opacity: 0.75;
 }
 
-.opacity-50 {
-  opacity: 0.5;
-}
-
 .bg-blend-multiply {
   background-blend-mode: multiply;
 }

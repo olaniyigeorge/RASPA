@@ -1,7 +1,9 @@
 import { DeviceTabletIcon } from "@heroicons/react/24/solid";
+import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { Link, Outlet } from "@remix-run/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { fetchData, fetcherProps } from "~/api/util";
 import Footer from "~/components/footer";
 import Header from "~/components/header";
 import PropertyCard, { IProperty } from "~/components/property-card";
@@ -29,5 +31,24 @@ export default function Explore() {
           <Outlet />
         </section>
       </div>
+}
+
+
+
+export async function action({request,}: ActionFunctionArgs) {
+  const currUrl = new URL(request.url)
+
+  // Get filter param values from formData
+  const form = await request.formData()
+  const search = (form.get("search") || "").toString();
+  const property__type = (form.get("property__type") || "").toString();
+  const listing_type = (form.get("listing_type") || "").toString();
+  const price__gte = (form.get("price__gte") || "").toString();
+  const price__lte = (form.get("price__lte") || "").toString();
+  const property__size = (form.get("property__size") || "").toString();
+
+  const f = `search=${search}&property__size=${property__size}&property__type=${property__type}&listing_type=${listing_type}&price__lte=${price__lte}&price__gte=${price__gte}`
+
+  return redirect(`/explore?${f}`)
 }
 
