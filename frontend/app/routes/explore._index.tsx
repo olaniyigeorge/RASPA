@@ -59,7 +59,7 @@ export async function loader({request, params}: LoaderFunctionArgs) {
     
     const f = `?search=${search}&property__size=${property__size}&property__type=${property__type}&listing_type=${listing_type}&price__lte=${price__lte}&price__gte=${price__gte}&`
 
-    console.log("Fetching: ", getUrl('listings', f))
+    // console.log("Fetching: ", getUrl('listings', f))
     const args: fetcherProps = {
         endpoint: getUrl('listings', f), 
         method: 'GET',  

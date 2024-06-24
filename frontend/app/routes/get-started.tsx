@@ -13,7 +13,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setMessage] = useState<string>('');
 
-  console.log("Login Page")
+  console.log("Get Started")
   
 
   const handleToggle = () => {
@@ -74,10 +74,22 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <div className="mb-4 ">
+            <label htmlFor="Auth type" className="block text-sm font-medium text-gray-600">
+              Auth type
+            </label>
+            <input
+              type="text"
+              id="auth_type"
+              name="auth_type"
+              className="w-full border focus:outline-purple-600 p-2 rounded-md"
+              value={title}
+              
+            />
+          </div>
           <button
             type="submit"
             className="w-full border p-2 rounded-md hover:bg-purple-700 bg-purple-600 text-white"
-            // onClick={handleSubmit}
           >
             Submit
           </button>
@@ -139,6 +151,7 @@ export async function loader({request,}: LoaderFunctionArgs){
     const form = await request.formData();
     const email = (form.get("email") || "").toString();
     const password = (form.get("password") || "").toString();
+    const auth_type = (form.get("auth_type") || "sign-up")?.toString();
   
     console.log("Validating cred---------------------")
     const res = await validateCredentials({email, password});
@@ -149,7 +162,7 @@ export async function loader({request,}: LoaderFunctionArgs){
       // session.flash("error", "Invalid username/password");
   
         // Redirect back to the login page with errors.
-        return redirect("/login", {
+        return redirect("/get-started", {
           headers: {
             "Set-Cookie": await storage.commitSession(session),
           },

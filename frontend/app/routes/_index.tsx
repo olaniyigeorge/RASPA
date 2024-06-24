@@ -4,6 +4,7 @@ import { useSubmit, useNavigate  } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCurrentUserContext } from "~/api/auth";
 import { PropertyListing } from "~/api/interfaces";
 import Footer from "~/components/footer";
 import Header from "~/components/header";
@@ -35,7 +36,7 @@ export default function Landing() {
   const [selectedButton, setSelectedButton] = useState<string>('rent');
   const [searchQuery, setSearchQUery] = useState<string>("")
   const submit = useSubmit()
-  // console.log(selectedButton)
+
   // console.log(searchQuery)
   
   function handleSearch() {
@@ -48,9 +49,9 @@ export default function Landing() {
       const searchQuery = (formData.get("search") || "").toString();
       console.log("Values appended to formData")
 
-      // submit(formData, { method: 'post', replace: true })
-      const en = `/explore/map/?action=${selectedButton}&search=${searchQuery}/`
-
+      // submit(formData, { method: 'post', replace: true }) `/explore/map/?action=${selectedButton}&search=${searchQuery}/`
+      const en = `/explore?search=${searchQuery}&property__size=&property__type=&listing_type=${selectedButton}&price__lte=&price__gte=`
+    
       console.log("Redirecting to: ", en)
       // console log constructed url 
       // ....and redirect to it
@@ -121,9 +122,9 @@ export default function Landing() {
                 </button>
                 <button
                   className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
-                    selectedButton === 'invest' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
+                    selectedButton === 'investment' ? 'bg-white shadow-md font-bold' : 'font-medium bg-transparent'
                   }`}
-                  onClick={() => handleButtonClick('invest')}
+                  onClick={() => handleButtonClick('investment')}
                 >
                   Invest
                 </button>
@@ -145,7 +146,7 @@ export default function Landing() {
                 Search
               </button> */}
               <Link 
-                  to={`/explore/map?action=${selectedButton}&search=${searchQuery}`}  
+                  to={`/explore?search=${searchQuery}&property__size=&property__type=&listing_type=${selectedButton}&price__lte=&price__gte=`}  
                   className="flex items-center justify-center border-2 text-xs md:text-md border-white bg-purple-600 hover:bg-purple-800 rounded-full text-white text-bold h-full  px-3 md:px-5 "
               > 
                 Search

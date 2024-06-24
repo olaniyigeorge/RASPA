@@ -3,6 +3,7 @@ import { UserIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Link, useLocation } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useCurrentUserContext } from "~/api/auth";
 
 interface IHeader {
     mode?: string
@@ -10,6 +11,7 @@ interface IHeader {
 
 export default function Header(props: IHeader) {
     const location = useLocation()
+    const ctx = useCurrentUserContext()
     const [activeLink, setActiveLink] = useState<string>()
 
     useEffect(() => {
@@ -39,12 +41,22 @@ export default function Header(props: IHeader) {
                 <Link className={`transition ease-in-out delay-100 hover:border-b ${activeLink === "/explore" ? " text-purple-600 border-b" : ""}`} to="/explore"> Explore</Link>
             </span> 
 
-            <span className="hidden md:flex items-center ">
-                <Link to="/get-started" className="mx-2 h-auto flex  text-xs md:text-md items-start text-start">Get Started</Link>
-                <span className="w-8 h-8 border-2 border-black rounded-full p-1">
-                    <UserIcon className="w-full h-full text-black" />
-                </span>
-            </span>
+            {
+                !ctx ? (
+                    <span className="hidden text-gray-900 font-medium md:flex items-center p-2 bg-white rounded-md">
+                        <Link to="/get-started" className="mx-2 h-auto flex  text-xs md:text-md items-start text-start">Get Started</Link>
+                    </span>
+                ) :
+                (
+                    <div className="flex gap-1 items-center justify-start">
+                        <p className="font-medium">{ctx.display_name}</p>
+                        <span className="w-8 h-8 border-2 border-black rounded-full p-1">
+                            <UserIcon className="w-full h-full text-black" />
+                        </span>
+                    </div>
+                )
+            }
+            
         </div>
         
         {/* Mobile header  TODO:  {dropdownOpen ? style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)'}}}*/}

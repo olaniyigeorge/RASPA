@@ -63,6 +63,9 @@ const api_paths: Record<string, string> = {
   // API - Listings
   'listings': 'api/listings/',
 
+    // API - Core
+    'rentals': 'api/rentals/',
+
 };
 
 
@@ -97,16 +100,48 @@ export async function fetchData(args: fetcherProps) {
 
         if (fetchResponse.ok) {
           console.log("Fetch successfull")
-          return await fetchResponse.json()
+          let response: fetchedResponseType
+          const fr = await fetchResponse.json()
+          response = {
+                      status: fetchResponse.status,
+                      body: fr,
+                    }
+          return response
         }
         else {
-          console.log("Fetching Error: ", fetchResponse.status)
-          return null
+          console.log("Fetch unsuccessfull")
+          let response: fetchedResponseType
+          const responseBody = await fetchResponse.json()
+          // console.log("Fetching Error Status: ", fetchResponse.status)
+          // console.log("Fetching Error Body: ", responseBody)
+          response = {
+            status: fetchResponse.status,
+            body: responseBody,
+          }
+          return response
         }
       }
-  catch (error) {
-      console.error('Error while hitting API:', error);
-      return null;
+  catch (error: any) {
+      // console.log('Error while hitting API:', error);
+      let response: fetchedResponseType
+      const responseBody = error.toString().slice(0,150);
+      // console.log("Fetching Error Status: ", 500)
+      // console.log("Fetching Error Body: ", responseBody)
+      response = {
+        status: 500,
+        body: responseBody,
+      }
+      return response
   }
+
+}
+
+
+
+
+
+export type fetchedResponseType = {
+  status: number,
+  body: Object | string,
 
 }

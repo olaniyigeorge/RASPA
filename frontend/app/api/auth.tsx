@@ -97,8 +97,9 @@ export function useCurrentUserContext(): UserContext | null {
   }
     
   
-  const CurrentUserContext = React.createContext<UserContext | null>(null)
-  export default CurrentUserContext
+export const CurrentUserContext = React.createContext<UserContext | null>(null)
+
+
   
   
 

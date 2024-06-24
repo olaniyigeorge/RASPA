@@ -38,29 +38,7 @@ export default function ListingsFilter() {
   
 
 
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
-    useEffect(() => {
-      const handleClickOutsideDropdown = (event: { target: any; }) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-          toggleSizeInput(false)
-          togglePropertyTypeInputVisible(false)
-          setminPriceDropDown(false);
-          setmaxPriceDropDown(false);
-
-        }
-    };
-    
-      document.addEventListener('mousedown', handleClickOutsideDropdown);
-    
-    return () => {
-        document.removeEventListener('mousedown', handleClickOutsideDropdown);
-      };
-    }, [selectedAction, filterEndpoint, propertyType, searchQuery, minPrice, maxPrice, size]);
-    // Gets filter options and generates endpoint send submit(url) to form, redirect to explore/urlsEndpoint stub
-    // search-query, city(location), action(rent,sale,invest), size, min-price, max-price
-
-    // setfilterEndpoint(`/api/listings/?search=${searchQuery}&property__size=${size}&price=${""}&property__features__name=${""}&property__type=${""}&property__features__count=${""}&listing_type=${selectedAction}&price__lte=&${maxPrice}price__gte=${minPrice}`)
-
+  
 
     const handleButtonClick = (button: string) => {
         setSelectedAction(button);
@@ -93,7 +71,7 @@ export default function ListingsFilter() {
             <div className="text-xs  md:text-sm lg:text-md flex justify-center ">
               <div className="p-1 bg-opacity-30 md:space-x-2 bg-white  w-2/3 lg:w-auto shadow flex items-center space-x-2 rounded-full" >            
                 <button
-                  className={`p-2  flex-grow  justify-center items-center rounded-full transition-all ${
+                  className={`p-2  flex-grow hover:bg-purple-600 justify-center items-center rounded-full transition-all ${
                     selectedAction === 'rent' ? 'bg-purple-600 text-white shadow-md font-medium' : ''
                   }`}
                   onClick={() => handleButtonClick('rent')}
@@ -101,7 +79,7 @@ export default function ListingsFilter() {
                   Rent
                 </button>
                 <button
-                  className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
+                  className={`p-2 flex-grow hover:bg-purple-600 justify-center items-center rounded-full transition-all ${
                     selectedAction === 'sale' ? 'bg-purple-600 text-white shadow-md font-medium' : ' '
                   }`}
                   onClick={() => handleButtonClick('sale')}
@@ -109,7 +87,7 @@ export default function ListingsFilter() {
                   Sale
                 </button> 
                 <button
-                  className={`p-2 flex-grow  justify-center items-center rounded-full transition-all ${
+                  className={`p-2 flex-grow hover:bg-purple-600 justify-center items-center rounded-full transition-all ${
                     selectedAction === 'invest' ? 'bg-purple-600 text-white shadow-md font-medium' : ''
                   }`}
                   onClick={() => handleButtonClick('investment')}
@@ -120,19 +98,19 @@ export default function ListingsFilter() {
             </div>  
 
             <div className="w-full justify-between  text-xs md:text-sm lg:text-md flex lg:justify-start lg:space-x-10">  
-                <button className="rounded-md border bg-white p-2 relative">
+                <button onMouseOver={() => {togglePropertyTypeInputVisible(true)}} onMouseOut={() => {togglePropertyTypeInputVisible(false)}}  onClick={() => {togglePropertyTypeInputVisible(!propertyTypeInputVisible)}} className="rounded-md border bg-white p-2 relative">
                     <><span className="flex items-center space-x-2 ">
-                      <p>Houses/Land </p> 
-                      <ChevronDownIcon onClick={() => {togglePropertyTypeInputVisible(!propertyTypeInputVisible)}} className="w-4 h-4" />
+                      <p>Property Type</p> 
+                      <ChevronDownIcon className="w-4 h-4" />
                     </span></>
-                  {propertyTypeInputVisible ?( <div  ref={dropdownRef} className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
+                  {propertyTypeInputVisible ?( <div  className="absolute transform  animate-fadeIn flex flex-col gap-1 justify-start translate-y-0 shadow bg-white bg-opacity-70 z-20 rounded top-10 right-0 w-full">
                   
 
                     
-                      <p onClick={() => {setPropertyType("industrial")}}>Industrial</p>
-                      <p onClick={() => {setPropertyType("commercial")}}>Commercial</p>
-                      <p onClick={() => {setPropertyType("residential")}}>Residential</p>
-                      <p onClick={() => {setPropertyType("land")}}>Land</p>
+                      <p className="flex justify-start font-medium px-1" onClick={() => {setPropertyType("industrial")}}>Industrial</p>
+                      <p className="flex justify-start font-medium px-1" onClick={() => {setPropertyType("commercial")}}>Commercial</p>
+                      <p className="flex justify-start font-medium px-1" onClick={() => {setPropertyType("residential")}}>Residential</p>
+                      <p className="flex justify-start font-medium px-1" onClick={() => {setPropertyType("land")}}>Land</p>
                       
                   
                       {/* <input type="text" className=" text-gray-900 focus:outline-none" onChange={(e) => {setSearchQuery(e.target.value)}} />                  
@@ -142,63 +120,76 @@ export default function ListingsFilter() {
                     ""}
                 </button>
 
-                <button className="rounded-md border bg-white p-2">
+                <button  onMouseOver={() => {toggleSizeInput(true)}} onMouseOut={() => {toggleSizeInput(false)}}  onClick={() => {toggleSizeInput(!sizeInputVisible)}} className="rounded-md border bg-white ">
                   {sizeInputVisible ? <div className="">
-                    <div ref={dropdownRef} className="">
-                      <input type="number" className="text-gray-900 focus:outline-none" onChange={(e) => {setSize(e.target.value)}} />                  
+                    <div onMouseOver={() => {toggleSizeInput(true)}} onMouseOut={() => {toggleSizeInput(false)}} className="">
+                      <input autoFocus type="number" placeholder="Size" className="p-1 w-[30px]  text-gray-900 focus:outline-none" onChange={(e) => {setSize(e.target.value)}} />                  
                     
                     </div>
                     
                   </div>
                     :
-                    <><span className="flex items-center space-x-2 ">
+                    <div  className="flex items-center space-x-2 p-2 ">
                     <p>Size</p> 
-                    <ChevronDownIcon onClick={() => {toggleSizeInput(!sizeInputVisible)}} className="w-4 h-4" />
-                    </span></>}
+                    <ChevronDownIcon  className="w-4 h-4" />
+                    </div>}
                 </button> 
 
-                <button className="rounded-md border bg-white p-2 relative">
-                  <div ref={dropdownRef} className="w-full flex justify-start space-x-2 items-center">
-                    <span className={` justify-start items-center ${minPriceDropDown ? "hidden": "flex"}`}>Min Price</span>
-  
-                    <span className={`justify-start items-center  ${minPriceDropDown ? "flex": "hidden"}`}>
-                      <input type="number" className="w-[12px] focus:outline-none" onChange={(e) => {setMinPrice(e.target.value)}} />
-                    </span>
+                <button onMouseOver={() => {setminPriceDropDown(true)}} onMouseOut={() => {setminPriceDropDown(false)}} onClick={() => {setminPriceDropDown(!minPriceDropDown)}} className="rounded-md border  duration-500 ease-in-out bg-white p-2 relative">
+                  <div className="w-full flex justify-start space-x-2 items-center">
+                    <span className={` justify-start items-center flex`}>Min Price</span>
+                    
+                    {/* {minPriceDropDown ? (
+                      <span className={`justify-start items-center flex`}>
+                        <input type="number" className="w-[25px] focus:outline-none" onChange={(e) => {setMinPrice(e.target.value)}} />
+                      </span>
+                    ):
+                    (
+                      <span className={` justify-start items-center flex`}>Min Price</span>
+                    )
+                    } */}
+                    
                     <ChevronDownIcon  onClick={() => {setminPriceDropDown(!minPriceDropDown)}} className="w-4 h-4" />
                   </div>
                   
               
 
                   {minPriceDropDown? (
-                    <div ref={dropdownRef} className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
-                      <p onClick={() => {setMinPrice(100000)}}>100000</p>
-                      <p onClick={() => {setMinPrice(200000)}}>200000</p>
-                      <p onClick={() => {setMinPrice(300000)}}>300000</p>
-                      <p onClick={() => {setMinPrice(15000000)}}>15000000</p>
-                      <p onClick={() => {setMinPrice(30000000)}}>30000000</p>                    
+                    <div  className="absolute animate-fadeIn flex flex-col gap-1 transform duration-500 justify-start translate-y-0 shadow bg-opacity-70 bg-white z-20 rounded top-10 right-0 w-full">
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMinPrice(0)}}> {`---`} </p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMinPrice(25000)}}>25,000</p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMinPrice(50000)}}>50,000</p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMinPrice(100000)}}>100,000</p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMinPrice(125000)}}>125,000</p>                    
                     </div>
                   ): ""}
                   
                    
                 </button>
                 
-                <button className="rounded-md border bg-white p-2 relative">
+                <button onMouseOver={() => {setmaxPriceDropDown(true)}} onClick={() => {setmaxPriceDropDown(true)}} onMouseOut={() => {setmaxPriceDropDown(false)}} className="rounded-md border bg-white p-2 relative">
                   <div className="w-full flex justify-start space-x-2 items-center">
-                    <span className={` justify-start items-center ${maxPriceDropDown ? "hidden": "flex"}`}>Max Price</span>
-  
-                    <span className={`justify-start items-center  ${maxPriceDropDown ? "flex": "hidden"}`}>
-                      <input type="number" className="w-auto focus:outline-none" onChange={(e) => {setMaxPrice(e.target.value)}} />
-                    </span>
+                    <span className={` justify-start items-center flex}`}>Max Price</span>
+                    
+                    {/* {maxPriceDropDown ? (
+                      <span className={`justify-start items-center flex`}>
+                        <input type="number" className="w-[25px] focus:outline-none" onChange={(e) => {setMaxPrice(e.target.value)}} />
+                      </span>
+                    ):
+                    (
+                      <span className={` justify-start items-center flex`}>Max Price</span>
+                    )
+                    }  */}
                     <ChevronUpIcon onClick={() => {setmaxPriceDropDown(!maxPriceDropDown)}} className="w-4 h-4" />
                   </div>
 
                   {maxPriceDropDown? (
-                    <div ref={dropdownRef} className="absolute transform duration-500 flex flex-col justify-start translate-y-0 border bg-white z-20 rounded top-10 right-0 w-full">
-                      <p onClick={() => {setMaxPrice(minPrice*1.5)}}>{minPrice*1.5}</p>
-                      <p onClick={() => {setMaxPrice(200000)}}>200000</p>
-                      <p onClick={() => {setMaxPrice(75000000)}}>75 million</p>
-                      <p onClick={() => {setMaxPrice(150000000)}}>150 million</p>
-                      <p onClick={() => {setMaxPrice("")}}>No cap</p>                    
+                    <div className="absolute transform animate-fadeIn flex flex-col gap-1 justify-start translate-y-0 shadow bg-opacity-70 bg-white z-20 rounded top-10 right-0 w-full">
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMaxPrice(300000)}}>300,000</p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMaxPrice(500000)}}>500,000</p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMaxPrice(750000)}}>750,000</p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMaxPrice(1500000)}}>1.5m</p>
+                      <p className="flex justify-end font-medium px-1" onClick={() => {setMaxPrice("")}}>Max cap</p>                    
                     </div>
                   ): ""}
                   
@@ -223,6 +214,3 @@ interface filterParams {
 
 }
 
-function constructFilterEndpoint(props: filterParams) {
-  throw new Error("Not Implemented")
-}

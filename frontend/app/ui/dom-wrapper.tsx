@@ -25,7 +25,7 @@ export function DomWrapper(props: IDomWrapper) {
       </head>
       <body>
 
-        <AnimatePresence mode="wait"><Outlet /></AnimatePresence>
+        <AnimatePresence mode="wait">{props.children}</AnimatePresence>
 
         {props.scripts}
         <ScrollRestoration />

@@ -200,19 +200,14 @@ export default function ThisProperty() {
 
 
 export async function loader({request, params}: LoaderFunctionArgs) {
-    console.log("Request URL: ", request.url)
-    console.log(params.propID)
     const id = params.propID
-    console.log("Endpoint: ",  getUrl('listings', `${id}`)  ) //
-    // "http://localhost:8000/api/listings/1d2b9022-51e1-43c7-9d65-e9957b5614b8/",
+
     const args: fetcherProps = {
                                     endpoint: getUrl('listings', `${id}`),
                                     method: 'GET',  
                                 } 
     console.log("FetchProps: ", args)
     const property = await fetchData(args);
-
-    console.log("Property: ", property)
     
     return json({id, property})
 }

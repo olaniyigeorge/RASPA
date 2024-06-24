@@ -81,7 +81,7 @@ export async function getContext(request: Request): Promise<UserContext | null> 
     console.error(`Error fetching user context. Status: ${response.status}`);
     return null;
   } catch (error) {
-    console.log('Error fetching user context:', "FetchError");
+    console.log('Error fetching user context:', error);
     return null;
   }
 }

@@ -1,22 +1,18 @@
 import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from "@remix-run/node"
 import { Form, Link, Outlet, useActionData, useLoaderData, useParams } from "@remix-run/react"
+import { PropertyListing } from "~/api/interfaces";
+import { fetchData, fetcherProps, getUrl } from "~/api/util";
 import { akure_property } from "~/data";
+import property from "./property";
 
 
 
-export default function PaymentPlanRent() {
+export default function PaymentPlanLayout() {
     const params = useParams()
     const loaderData = useLoaderData<typeof loader>();
     const actionData = useActionData<typeof action>();
     
-    let id: any
-     
-    if (loaderData.listing_id) {
-        id = loaderData.listing_id
-    } else {
-        id =1
-    }
-    console.log(id)
+    const property: PropertyListing = loaderData?.property
 
     return <>
 
@@ -26,25 +22,25 @@ export default function PaymentPlanRent() {
                 <div className="w-1/2 flex flex-col p-10 border-r">
                     <div className="">
                         <h1 className="text-3xl font-bold">
-                            {akure_property[id].property_name}
+                            {property.property.name}
                         </h1>
 
 
                         <p className=" ">
-                            Address: {akure_property[id].address}
+                            Address: {property.property.address}
                         </p>
 
                         <p className=" ">
-                            Price: {akure_property[id].price} Naira
+                            Price: {property.price} Naira
                         </p>
                         <p className=" ">
-                            Size: {akure_property[id].size} meters square
+                            Size: {property.property.size} meters square
                         </p>
                         <p className=" ">
-                            Listed by: {akure_property[id].agent}
+                            Listed by: {property.property.manager?.display_name}
                         </p>
                         <p className=" ">
-                            Amenities: {akure_property[id].amenities}
+                            Amenities: {property.property.manager?.display_name}
                         </p>
 
 
@@ -69,9 +65,15 @@ export default function PaymentPlanRent() {
 export async function loader({request, params}: LoaderFunctionArgs) {
     // console.log(request)
     const listing_id = params.propID
-    
-    
-    return json({listing_id})
+
+    const args: fetcherProps = {
+        endpoint: getUrl('listings', `${listing_id}`),
+        method: 'GET',  
+    } 
+    console.log("FetchProps: ", args)
+    const property = await fetchData(args);
+        
+    return json({property})
 }
 
 

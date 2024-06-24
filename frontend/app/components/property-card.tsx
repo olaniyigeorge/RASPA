@@ -53,13 +53,13 @@ export default function PropertyCard(props: PropertyListing){
     
     return <div className="shadow items-start flex flex-col justify-between bg-white relative w-full rounded-lg  p-1">
         <Link to={`/property/${property.id}`} className="w-full">
-            <div className="w-full h-[180px] object-contin">
+            <div className="w-full h-[180px] rounded-lg bg-purple-200 shadow hover:scale-[102%] border-0">
                 {
                         property?.property?.propertyImages[0] ? (
-                            <img src={`${property?.property?.propertyImages[0].image}`} alt={`${property?.property?.propertyImages[0].image}`} className="w-full h-full object-fill flex justify-center hover:scale-[102%] rounded-lg text-sm text-opacity-20"/>
+                            <img src={`${property?.property?.propertyImages[0].image}`} alt="" className="w-full h-full object-fill    rounded-lg  text-sm "/>
                         )
                         :
-                        <span className="flex w-full h-full justify-center bg-red-100 items-center object-fill hover:scale-[102%] rounded-lg ">
+                        <span className="flex w-full h-full justify-center bg-red-100 items-center object-fill rounded-lg ">
                             <p className="text-gray-800 font-medium"> No Images </p> 
                         </span>
                 }  
@@ -127,8 +127,8 @@ export default function PropertyCard(props: PropertyListing){
 
             
         </Link>
-        <button className="absolute  bg-purple-600 text-white p-2 top-2 z-10 left-2 rounded-md capitalize shadow">{property.listing_type}</button>
-        <button className="absolute bg-purple-600 text-white p-2 top-2 z-10 right-2 rounded-md  shadow">City</button>
+        <button className="absolute  bg-purple-500 bg-opacity-70 text-white p-2 top-2 z-10 left-2 rounded-md capitalize shadow">{property.listing_type}</button>
+        <button className="absolute bg-purple-500 bg-opacity-70 text-white p-2 top-2 z-10 right-2 rounded-md  shadow">City</button>
             
     </div>
 }
