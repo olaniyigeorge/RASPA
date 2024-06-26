@@ -12,7 +12,7 @@ export default function PaymentPlanLayout() {
     const loaderData = useLoaderData<typeof loader>();
     const actionData = useActionData<typeof action>();
     
-    const property: PropertyListing = loaderData?.property
+    const property: PropertyListing | null  = loaderData?.listing
 
     return <>
 
@@ -22,25 +22,25 @@ export default function PaymentPlanLayout() {
                 <div className="w-1/2 flex flex-col p-10 border-r">
                     <div className="">
                         <h1 className="text-3xl font-bold">
-                            {property.property.name}
+                            {property?.property.name}
                         </h1>
 
 
                         <p className=" ">
-                            Address: {property.property.address}
+                            Address: {property?.property.address}
                         </p>
 
                         <p className=" ">
-                            Price: {property.price} Naira
+                            Price: {property?.price} Naira
                         </p>
                         <p className=" ">
-                            Size: {property.property.size} meters square
+                            Size: {property?.property.size} meters square
                         </p>
                         <p className=" ">
-                            Listed by: {property.property.manager?.display_name}
+                            Listed by: {property?.property.manager?.display_name}
                         </p>
                         <p className=" ">
-                            Amenities: {property.property.manager?.display_name}
+                            Amenities: {property?.property.manager?.display_name}
                         </p>
 
 
@@ -71,9 +71,17 @@ export async function loader({request, params}: LoaderFunctionArgs) {
         method: 'GET',  
     } 
     console.log("FetchProps: ", args)
+    let listing: PropertyListing | null
     const property = await fetchData(args);
+
+    if (property.status !== 200) {
+        listing = null
+        redirect('/explore')
+    }
+
+    listing = property.body
         
-    return json({property})
+    return json({listing})
 }
 
 

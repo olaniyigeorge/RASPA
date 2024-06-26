@@ -16,13 +16,13 @@ export const akure_property :PropertyListing[] = [
         "actions": "000",
         "propertyImages": [
           {
-            "image": "/media/property-images/commercial-properties.png"
+            "image": "/images/frame-16.png"
           },
           {
-            "image": "/media/property-images/frame-16.png"
+            "image": "/images/frame-16.png"
           },
           {
-            "image": "/media/property-images/frame-15.png"
+            "image": "/images/frame-16.png"
           }
         ],
         "description": "Dr Oluwole Samuel Abeleje 's estate",
@@ -81,13 +81,13 @@ export const akure_property :PropertyListing[] = [
         "actions": "000",
         "propertyImages": [
           {
-            "image": "/media/property-images/commercial-properties.png"
+            "image": "/images/frame-17.png"
           },
           {
-            "image": "/media/property-images/frame-16.png"
+            "image": "/images/frame-17.png"
           },
           {
-            "image": "/media/property-images/frame-15.png"
+            "image": "/images/frame-17.png"
           }
         ],
         "description": "Dr Oluwole Samuel Abeleje 's estate",
@@ -146,10 +146,10 @@ export const akure_property :PropertyListing[] = [
         "actions": "001",
         "propertyImages": [
           {
-            "image": "/media/property-images/industrial-properties.png"
+            "image": "/images/frame-16.png"
           },
           {
-            "image": "/media/property-images/frame-17.png"
+            "image": "/images/frame-16.png"
           }
         ],
         "description": "A very conducive two bedroom flat with POP all through in Alagabka GRA with three toilets, water heater installed, water running, kitchen cabinets, wardrobe, tiled all through, floored compound, fenced, gated and just three appartments in the compound",

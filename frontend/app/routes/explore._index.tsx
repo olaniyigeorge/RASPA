@@ -61,13 +61,18 @@ export async function loader({request, params}: LoaderFunctionArgs) {
 
     // console.log("Fetching: ", getUrl('listings', f))
     const args: fetcherProps = {
+        data_type: "listings",
         endpoint: getUrl('listings', f), 
         method: 'GET',  
     }
-    let listings = await fetchData(args);
+    let listings: {}
+    let listings_response = await fetchData(args);
 
-    if (!listings) {
+    if (listings_response.status !== 200) {
         listings = []
+    }
+    else {
+        listings = listings_response.body
     }
     
     return json({listings})

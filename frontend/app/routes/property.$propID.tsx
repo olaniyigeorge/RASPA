@@ -1,5 +1,5 @@
 import { BookmarkIcon, InboxIcon, PaperAirplaneIcon, ServerIcon } from "@heroicons/react/24/outline";
-import { json, LoaderFunctionArgs } from "@remix-run/node"
+import { json, LoaderFunctionArgs, redirect } from "@remix-run/node"
 import { isRouteErrorResponse, Link, useLoaderData, useParams, useRouteError } from "@remix-run/react"
 import { Component, useEffect, useState } from "react";
 import { PropertyListing } from "~/api/interfaces";
@@ -7,7 +7,6 @@ import { fetchData, fetcherProps, getUrl } from "~/api/util";
 import AmenityCard from "~/components/listings-ui/amenity-card";
 import FeatureMiniCard, { SizeMiniCard } from "~/components/listings-ui/feature-mini";
 
-import { akure_property } from "~/data";
 import { DomWrapper } from "~/ui/dom-wrapper";
 
 
@@ -33,7 +32,7 @@ export default function ThisProperty() {
                 <div className="w-full border rounded-md h-4/5">
                     {
                         listing?.property?.propertyImages[0] ? (
-                            <img src={`${listing?.property?.propertyImages[0].image}`} alt={`${listing?.property?.propertyImages[0].image}`} className="object-cover rounded-md w-full h-full "/>
+                            <img src={`${listing?.property?.propertyImages[0].image}`} alt={`property image`} className="object-cover rounded-md w-full h-full "/>
                         )
                         :
                         <span className="flex w-full h-full justify-center bg-red-100 items-center">
@@ -129,8 +128,21 @@ export default function ThisProperty() {
                     </span>
                 </div>
                 <div className="flex space-x-2">
-                    <Link to="" className="p-2 text-white rounded  bg-purple-700 font-medium">
-                        Rent
+                    <Link 
+                        className="p-2 text-white rounded  bg-purple-700 font-medium"
+                        to={
+                            `/property/${listing?.id}/payment-plans/${
+                                listing?.listing_type === "sale" ? "buy-now" : 
+                                listing?.listing_type ==="rent"? "rent" : 
+                                listing?.listing_type ==="invest"? "invest"
+                                : ""}`
+                            }
+                    >
+                        {
+                                listing?.listing_type === "sale" ? "Buy" : 
+                                listing?.listing_type ==="rent"? "Rent" : 
+                                listing?.listing_type ==="invest"? "Invest": ""
+                        }
                     </Link>
                     <Link to="" className="p-2 text-purple-900 rounded  bg-purple-100 font-medium">
                         View 3D Tour
@@ -201,14 +213,22 @@ export default function ThisProperty() {
 
 export async function loader({request, params}: LoaderFunctionArgs) {
     const id = params.propID
-
+    let property : PropertyListing | null
     const args: fetcherProps = {
                                     endpoint: getUrl('listings', `${id}`),
                                     method: 'GET',  
                                 } 
     console.log("FetchProps: ", args)
-    const property = await fetchData(args);
+    const property_response = await fetchData(args);
     
+    if (property_response.status !== 200) {
+        property = null
+        redirect('/explore')
+    }
+    else {
+        property = property_response.body
+    }
+
     return json({id, property})
 }
 

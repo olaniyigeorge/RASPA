@@ -26,7 +26,7 @@ export default function Blog() {
             transition={{ease: "easeInOut", duration: 1}}
             className="w-full md:w-1/2 flex text-white justify-center items-center rounded-lg h-full "
         >
-            <img src={`images/rasp-logo-purple.png`} alt="logo" />
+            <img src={`/images/rasp-logo-purple.png`} alt="logo" />
         </motion.div>
     </div>
 

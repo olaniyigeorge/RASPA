@@ -65,7 +65,7 @@ export default function Header(props: IHeader) {
             style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}}
         >
             <Link to="/" className="text-white">
-            <img className="h-10 w-auto drop-shadow" src={mode=== 'light' ? "images/rasp-logo-purple.png":"images/rasp-logo-white.png"} alt="rasp" />
+            <img className="h-10 w-auto drop-shadow" src={mode=== 'light' ? "/images/rasp-logo-purple.png":"images/rasp-logo-white.png"} alt="rasp" />
             </Link>
 
 

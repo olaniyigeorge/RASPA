@@ -36,7 +36,7 @@ export default function Sidebar({ isOpen, toggleSidebar }: Props)  {
             to="/"
             className="w-full flex items-center p-4  justify-start "
           >
-            <img src="images/rasp-logo-purple.png" alt="logo" className="w-auto h-12 " />
+            <img src="/images/rasp-logo-purple.png" alt="logo" className="w-auto h-12 " />
           </Link>
   
           <section className="w-full  mt-16 grid grid-rows-2 gap-2 justify-around grid-flow-col ">
