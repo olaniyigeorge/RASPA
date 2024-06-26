@@ -1,3 +1,5 @@
+import { delay } from "./auth";
+import { PropertyListing } from "./interfaces";
 
 export function isServer(): boolean {
   return typeof document === 'undefined'
@@ -64,13 +66,29 @@ const api_paths: Record<string, string> = {
   'listings': 'api/listings/',
 
     // API - Core
-    'rentals': 'api/rentals/',
+  'rentals': 'api/rentals/',
+  'payments': 'api/payments/',
+
+};
+
+
+interface TypeMap {
+  "PropertyListing": PropertyListing;
+  
+}
+
+const api_data_types: Record<string, keyof TypeMap> = {
+
+  // API - Listings
+  'listings': "PropertyListing",
+
 
 };
 
 
 
 export type fetcherProps = {
+  data_type? : string | any;
   endpoint: string;
   method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
   body? : BodyInit | null | undefined
@@ -78,8 +96,10 @@ export type fetcherProps = {
 }
 
 export async function fetchData(args: fetcherProps) {
-  const {endpoint, method, body, token} = args;
+  const {data_type, endpoint, method, body, token} = args;
   let headers : HeadersInit | undefined
+
+
   if (token) {
     headers = {
       'Content-Type': 'application/json',
@@ -92,41 +112,37 @@ export async function fetchData(args: fetcherProps) {
     };
   }
   try {
+        await delay(1000)
         const fetchResponse = await fetch(endpoint, {
             method: method,
             body: body,
             headers: headers
         })
 
+
         if (fetchResponse.ok) {
           console.log("Fetch successfull")
-          let response: fetchedResponseType
           const fr = await fetchResponse.json()
-          response = {
-                      status: fetchResponse.status,
-                      body: fr,
-                    }
-          return response
+          return {
+            status: fetchResponse.status,
+            //body: data_type ? fr as TypeMap[typeof data_type] : fr.body,
+            body: fr
+          };
         }
         else {
           console.log("Fetch unsuccessfull")
-          let response: fetchedResponseType
           const responseBody = await fetchResponse.json()
-          // console.log("Fetching Error Status: ", fetchResponse.status)
-          // console.log("Fetching Error Body: ", responseBody)
-          response = {
+          console.log("Failed res: ", fetchResponse, responseBody)
+          return {
             status: fetchResponse.status,
             body: responseBody,
           }
-          return response
         }
       }
   catch (error: any) {
       // console.log('Error while hitting API:', error);
       let response: fetchedResponseType
       const responseBody = error.toString().slice(0,150);
-      // console.log("Fetching Error Status: ", 500)
-      // console.log("Fetching Error Body: ", responseBody)
       response = {
         status: 500,
         body: responseBody,
@@ -142,6 +158,6 @@ export async function fetchData(args: fetcherProps) {
 
 export type fetchedResponseType = {
   status: number,
-  body: Object | string,
+  body:  PropertyListing | Object | string 
 
 }

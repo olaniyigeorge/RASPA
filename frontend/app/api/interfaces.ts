@@ -16,6 +16,15 @@ export type authCred = {
     password: string,
 }
 
+export type Payment = {
+    id: string;
+    payer: string;
+    amount: number;
+    status: string;
+    payment_provider: string;
+    date: string;
+}
+
 
 export type USERProviderProps = {
   children: React.ReactNode
@@ -87,7 +96,7 @@ const dtx: any = {
               "image": "/media/property-images/industrial-properties.png"
           },
           {
-              "image": "/media/property-images/frame-17.png"
+              "image": "/images/frame-16.png"
           }
       ],
       "description": "A very conducive two bedroom flat with POP all through in Alagabka GRA with three toilets, water heater installed, water running, kitchen cabinets, wardrobe, tiled all through, floored compound, fenced, gated and just three appartments in the compound",

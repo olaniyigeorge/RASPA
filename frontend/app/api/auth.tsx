@@ -42,8 +42,17 @@ export async function validateCredentials(cred: authCred) {
  * @param refreshToken a refresh token
  * @returns boolean
  */
+
+export function delay(ms: number) {
+    return new Promise(resolve => {
+        console.log("Delaying")
+        setTimeout(resolve, ms)
+        console.log("Delayed")
+    })
+}
 export async function fetchNewAccessToken(refreshToken: string): Promise<string | null> {
     try {
+        await delay(2000)
         const tokenRefreshResponse = await fetch(getUrl('sign-in-refresh'), {
             method: 'POST',
             body: JSON.stringify({'refresh': refreshToken}),
