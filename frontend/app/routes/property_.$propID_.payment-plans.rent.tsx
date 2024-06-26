@@ -21,6 +21,10 @@ export default function PaymentPlanRent() {
     if (ctx == null) {
       redirect('/explore')
     }
+
+    let disablePay: boolean = loaderData.payment_id == null
+
+    
     return <>
 
 
@@ -33,7 +37,7 @@ export default function PaymentPlanRent() {
                         <input type='text'  name="ctx_email" defaultValue={`${ctx?.email}`} className="p-2 border" placeholder="Type in here" />
                         <input type='text'  name="price" defaultValue="09" className="p-2" placeholder="Type in here" />
                         <input type='text'  name="payment_id" defaultValue={`${loaderData.payment_id}`} className="p-2" placeholder="Type in here" /> 
-                        <button type='submit' className="rounded-md py-1 px-2 bg-purple-500 text-gray-800 border"> Pay </button> 
+                        <button type='submit' disabled={disablePay} className={`rounded-md font-medium py-1 px-2 ${!disablePay ? 'bg-purple-500 text-white' : 'bg-purple-200 text-gray-900'} text-gray-800 border`}> Pay </button> 
                     </Form>  
 
                     <Link to="" className="rounded-md hidden py-1 px-2 bg-gray-200 text-gray-800  justify-center"> Pay in installments </Link>                  
@@ -61,22 +65,24 @@ export async function loader({request, params}: LoaderFunctionArgs) {
 
     const ctx = await fetchData(context_args);
 
-    // console.log("CTX: ", ctx.body)
+    console.log("BODY: ", JSON.stringify({"tenant": `${ctx.body.id}`, "listing": `${listing_id}`}))
 
     const create_rental_args: fetcherProps = {
-        endpoint: getUrl('rentals'), 
+        endpoint: getUrl('get-create-rentals'), 
         method: 'POST',  
-        body: JSON.stringify({'status': "pending", "amount": "999999999", "duration": "45", "tenant": `${ctx.body.id}`, "listing": `${listing_id}`, "payment": ""})
+        body: JSON.stringify({"tenant": `${ctx.body.id}`, "listing": `${listing_id}`})
    
     }
     const rental = await fetchData(create_rental_args);
 
     let payment_id: string | null
-    if (rental.status == 201) {
+    if (rental.status == 200) {
       console.log("This payment: ", rental.body.payment)
       payment_id = rental.body.payment
     }
     else {
+      console.log("Status: ", rental.status)
+      console.log("Rental body: ", rental.body)
       payment_id = null
     }
     
