@@ -125,7 +125,7 @@ export async function action({request,}: ActionFunctionArgs) {
                   tx_ref: payment_id,
                   amount: price,
                   currency: "NGN",
-                  redirect_url: `http://localhost:3000/confirm-payment/${payment_id}`,
+                  redirect_url: `https://https://raspa-client.onrender.com//confirm-payment/${payment_id}`,
                   meta: {
                       consumer_id: ctx_id,
                       consumer_mac: ctx_email,
