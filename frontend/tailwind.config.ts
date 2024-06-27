@@ -19,11 +19,16 @@ export default {
         fadeIn: {
           '0%': {opacity: '0'},
           '100%': {opacity: '1'},
-          
+
+        },
+        slideTtB: { 
+          '0%, 100%': {transform: 'translateY(-50%)'},
+          '50%': {transform: 'translateY(0%)'},
         },
       },
       animation: {
         fadeIn: 'fadeIn 0.5s ease-in',
+        slideTtB: 'slideTtB 1s ease-in-out infinite',
       }
     },
   },

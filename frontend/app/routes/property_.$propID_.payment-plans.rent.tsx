@@ -17,6 +17,7 @@ export default function PaymentPlanRent() {
 
     const ctx = useCurrentUserContext();
 
+    console.log(loaderData)
 
     if (ctx == null) {
       redirect('/explore')
@@ -33,11 +34,15 @@ export default function PaymentPlanRent() {
 
                 <div className="w-full flex flex-col gap-2 py-2 border">
                     <Form  method="post" className="flex flex-col gap-2 ">
-                        <input type='text'  name="ctx_id" defaultValue={`${ctx?.id}`} className="p-2 border" placeholder="Type in here" />
-                        <input type='text'  name="ctx_email" defaultValue={`${ctx?.email}`} className="p-2 border" placeholder="Type in here" />
-                        <input type='text'  name="price" defaultValue="09" className="p-2" placeholder="Type in here" />
-                        <input type='text'  name="payment_id" defaultValue={`${loaderData.payment_id}`} className="p-2" placeholder="Type in here" /> 
-                        <button type='submit' disabled={disablePay} className={`rounded-md font-medium py-1 px-2 ${!disablePay ? 'bg-purple-500 text-white' : 'bg-purple-200 text-gray-900'} text-gray-800 border`}> Pay </button> 
+                        <input type='text' hidden name="ctx_id" defaultValue={`${ctx?.id}`} className="p-2 border" placeholder="Type in here" />
+                        <input type='text' hidden name="ctx_email" defaultValue={`${ctx?.email}`} className="p-2 border" placeholder="Type in here" />
+                        <input type='text' hidden name="price" defaultValue="09" className="p-2" placeholder="Type in here" />
+                        <input type='text' hidden name="payment_id" defaultValue={`${loaderData.payment_id}`} className="p-2" placeholder="Type in here" /> 
+                        <button type='submit' disabled={disablePay} className={`rounded-md font-medium py-1 px-2 ${!disablePay ? 'bg-purple-500 text-white' : 'bg-purple-200 text-gray-900'} text-gray-800 border`}> 
+                        
+                          Pay
+                        
+                        </button> 
                     </Form>  
 
                     <Link to="" className="rounded-md hidden py-1 px-2 bg-gray-200 text-gray-800  justify-center"> Pay in installments </Link>                  
@@ -65,13 +70,18 @@ export async function loader({request, params}: LoaderFunctionArgs) {
 
     const ctx = await fetchData(context_args);
 
-    console.log("BODY: ", JSON.stringify({"tenant": `${ctx.body.id}`, "listing": `${listing_id}`}))
+    const id = `${ctx.body.id}` 
+
+    if (ctx.body.id==null) {
+      return redirect(`/property/${listing_id}`)
+    }
+      
+    
+    console.log("endp: ", getUrl('get-create-rentals', `${ctx.body.id}/${listing_id}`))
 
     const create_rental_args: fetcherProps = {
-        endpoint: getUrl('get-create-rentals'), 
-        method: 'POST',  
-        body: JSON.stringify({"tenant": `${ctx.body.id}`, "listing": `${listing_id}`})
-   
+        endpoint: getUrl('get-create-rentals', `${ctx.body.id}/${listing_id}`), 
+        method: 'GET',  
     }
     const rental = await fetchData(create_rental_args);
 

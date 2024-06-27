@@ -1,4 +1,5 @@
 
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "react-router"
 import { currentSession, storage } from "~/session.server";
 
@@ -13,7 +14,7 @@ export default function() {
 
 
 export async function loader({request,}: LoaderFunctionArgs){
-    const session = await currentSession(args.request);
+    const session = await currentSession(request);
     
     const signout: string = await storage.destroySession(session)
 

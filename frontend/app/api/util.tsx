@@ -143,7 +143,7 @@ export async function fetchData(args: fetcherProps) {
   catch (error: any) {
       // console.log('Error while hitting API:', error);
       let response: fetchedResponseType
-      const responseBody = error.toString().slice(0,150);
+      const responseBody = error.toString().slice(0,350);
       response = {
         status: 500,
         body: responseBody,
