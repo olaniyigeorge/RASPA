@@ -867,10 +867,6 @@ video {
   height: 180px;
 }
 
-.h-\[200px\] {
-  height: 200px;
-}
-
 .h-\[400px\] {
   height: 400px;
 }
@@ -975,10 +971,6 @@ video {
   width: 24rem;
 }
 
-.w-\[200px\] {
-  width: 200px;
-}
-
 .w-\[25px\] {
   width: 25px;
 }
@@ -1073,17 +1065,6 @@ video {
 
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.animate-ping {
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 @keyframes pulse {
@@ -1478,20 +1459,16 @@ video {
   --tw-bg-opacity: 0.3;
 }
 
+.bg-opacity-40 {
+  --tw-bg-opacity: 0.4;
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
 
-.bg-opacity-60 {
-  --tw-bg-opacity: 0.6;
-}
-
 .bg-opacity-70 {
   --tw-bg-opacity: 0.7;
-}
-
-.bg-opacity-40 {
-  --tw-bg-opacity: 0.4;
 }
 
 .bg-\[url\(\'\/images\/rendering-house-model\.png\'\)\] {
@@ -1760,6 +1737,11 @@ video {
   color: rgb(96 165 250 / var(--tw-text-opacity));
 }
 
+.text-blue-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+
 .text-blue-800 {
   --tw-text-opacity: 1;
   color: rgb(30 64 175 / var(--tw-text-opacity));
@@ -1860,11 +1842,6 @@ video {
   color: rgb(250 204 21 / var(--tw-text-opacity));
 }
 
-.text-blue-600 {
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -1926,10 +1903,6 @@ video {
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
-}
-
-.outline {
-  outline-style: solid;
 }
 
 .ring-0 {
@@ -2220,6 +2193,10 @@ video {
     width: 50%;
   }
 
+  .sm\:w-3\/5 {
+    width: 60%;
+  }
+
   .sm\:w-8 {
     width: 2rem;
   }
@@ -2230,10 +2207,6 @@ video {
 
   .sm\:w-full {
     width: 100%;
-  }
-
-  .sm\:w-3\/5 {
-    width: 60%;
   }
 
   .sm\:max-w-lg {
@@ -2279,12 +2252,20 @@ video {
     position: absolute;
   }
 
-  .md\:right-36 {
-    right: 9rem;
-  }
-
   .md\:right-0 {
     right: 0px;
+  }
+
+  .md\:right-40 {
+    right: 10rem;
+  }
+
+  .md\:right-3 {
+    right: 0.75rem;
+  }
+
+  .md\:right-24 {
+    right: 6rem;
   }
 
   .md\:mb-0 {

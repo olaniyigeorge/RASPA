@@ -56,7 +56,7 @@ const api_paths: Record<string, string> = {
   'context': 'accounts/user-context/',
   'sign-in': 'accounts/auth/login/',
   'sign-in-refresh': 'accounts/auth/login/refresh/',
-  'sign-up': 'accounts/users/',
+  'sign-up': 'accounts/register/',
   
   // API
   'developed-properties': 'api/developed-properties/',
@@ -114,7 +114,7 @@ export async function fetchData(args: fetcherProps) {
     };
   }
   try {
-        await delay(1000)
+        await delay(150)
         const fetchResponse = await fetch(endpoint, {
             method: method,
             body: body,

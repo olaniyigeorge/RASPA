@@ -2,7 +2,7 @@ import { ActionFunctionArgs, json, LoaderFunction, LoaderFunctionArgs, redirect 
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { validateCredentials } from '~/api/auth';
-import { getEnvVar, getUrl } from '~/api/util';
+import { fetchData, fetcherProps, getEnvVar, getUrl } from '~/api/util';
 import { currentSession, enableAuthenticableServerApiRequests, storage } from '~/session.server';
 
 
@@ -146,43 +146,75 @@ export async function loader({request,}: LoaderFunctionArgs){
 
   export async function action({request,}: ActionFunctionArgs) {
     console.log("---- In actions ----")
-    //const session = await currentSession(request);
+    const session = await currentSession(request);
+    if (session.has("bearer")) {
+      // Redirect to the home page if they are already signed in.
+      return redirect("");
+    }
 
     const form = await request.formData();
     const email = (form.get("email") || "").toString();
     const password = (form.get("password") || "").toString();
     const auth_type = (form.get("auth_type") || "sign-up")?.toString();
   
-    console.log("Validating cred---------------------")
-    const res = await validateCredentials({email, password});
-    console.log(`Cred Validation Response:  ${res}`)
-  
-    if (res == false) {
-      const session = await currentSession(request);
-      // session.flash("error", "Invalid username/password");
-  
-        // Redirect back to the login page with errors.
-        return redirect("/get-started", {
+    if (auth_type === 'sign-in') {
+      console.log("Validating cred---------------------")
+      const res = await validateCredentials({email, password});
+      console.log(`Cred Validation Response:  ${res}`)
+    
+      if (res == false) {
+        const session = await currentSession(request);
+        // session.flash("error", "Invalid username/password");
+    
+          // Redirect back to the login page with errors.
+          return redirect("/get-started", {
+            headers: {
+              "Set-Cookie": await storage.commitSession(session),
+            },
+          });
+      }
+
+
+      const session = await enableAuthenticableServerApiRequests(request, {
+        token: res.access, refresh: res.refresh
+      })
+
+      // Login succeeded, send them to the home page.
+      console.log("Login successful")
+      return redirect("/", {
+        headers: {
+          "Set-Cookie": await storage.commitSession(session),
+        },
+      });
+
+    }
+    else {
+      // 1. call registrations endpoint
+      console.log("-------------- 1. call registrations endpoint --------------")
+      const kwargs: fetcherProps = {
+          endpoint: getUrl('sign-up'), 
+          method: "POST",
+          body: JSON.stringify({"email": `${email}`, "password": `${password}`}),
+      
+      };
+
+      const registration_response= await fetchData(kwargs);
+
+
+      console.log(`Registration response:  ${registration_response}`)
+      if (registration_response.status == 201) {
+        console.log("Created ")
+        return redirect("")
+      }
+      else{
+        console.log("Error: ", registration_response.status)
+        return redirect('', {
           headers: {
-            "Set-Cookie": await storage.commitSession(session),
+            "Set-Cookie": await storage.destroySession(session),
           },
         });
+      }
     }
-
-    // console.log(`Access: ${res.access}`)
-    // console.log(`Refresh: ${res.refresh}`)
-
-    const session = await enableAuthenticableServerApiRequests(request, {
-      token: res.access, refresh: res.refresh
-    })
-
-    // Login succeeded, send them to the home page.
-    console.log("Login successful")
-    return redirect("/", {
-      headers: {
-        "Set-Cookie": await storage.commitSession(session),
-      },
-    });
-
+    
 
   }
