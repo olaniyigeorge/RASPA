@@ -121,11 +121,13 @@ export async function action({request,}: ActionFunctionArgs) {
     console.log("Price: ", price)
     console.log("Payment: ", payment_id)
 
+    const redirect_url = `/confirm-payment/${payment_id}`
+    console.log("Re: ", redirect_url)
     const pay = {
                   tx_ref: payment_id,
                   amount: price,
                   currency: "NGN",
-                  redirect_url: `https://https://raspa-client.onrender.com//confirm-payment/${payment_id}`,
+                  redirect_url: `/confirm-payment/${payment_id}`,
                   meta: {
                       consumer_id: ctx_id,
                       consumer_mac: ctx_email,
@@ -137,7 +139,7 @@ export async function action({request,}: ActionFunctionArgs) {
                   },
                   customizations: {
                       title: "Rent A Space, Akure",
-                      logo: "http://localhost:3000/images/rasp-logo-purple.png"
+                      logo: '/images/rasp-logo-purple.png'
                   }
               }
     console.log("Making payemnt with........ ", pay)

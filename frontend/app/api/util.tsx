@@ -69,6 +69,7 @@ const api_paths: Record<string, string> = {
   'rentals': 'api/rentals/',
   'payments': 'api/payments/',
   'get-create-rentals': 'api/get-create-rentals/',
+  'confirm-payment': 'confirm-payment/'
 
 };
 
