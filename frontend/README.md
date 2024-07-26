@@ -4,8 +4,8 @@
 My goal for this is to build a solution to address three major problems, namely;
 - the lengthy time clients spend house hunting.
 - the significant stress associated with house hunting.
-- the extortive charge agent charge
-- - the lack of a comprehensive database of real estate properties.
+- the extortionate charges imposed by agents, and
+- the lack of a comprehensive database of real estate properties.
 
 
 ## Target Users
