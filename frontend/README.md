@@ -4,10 +4,12 @@
 My goal for this is to build a solution to address three major problems, namely;
 - the lengthy time clients spend house hunting.
 - the significant stress associated with house hunting.
-- the lack of a comprehensive database of real estate properties.
+- the extortive charge agent charge
+- - the lack of a comprehensive database of real estate properties.
+
 
 ## Target Users
-Generally speaking, we expect most of our clients to be people who are looking to either rent, buy, sell or invest a property. From the mission of this project its evident that of all our clients we'll be focusing on home renters and home owners.
+Generally speaking, we expect most of our clients to be people who are looking to either rent, buy, sell or invest in properties. From the mission of this project its evident that of all our clients we'll be focusing more on connecting home renters and buyers with home owners.
 
 ## Approach 
 To profer solutions to these problems, RASP is an app that lets users explore all available properties in their region. Armed with this, and a host of other requirements they deem fit, they can make a choice to rent, buy or invest in a property through a very seamless click-through procedure on our platform. This process might include booking an appointment to see the property, paying for the property online [long shot: take an immersive VR tour of the property], putting up a flag for requirements.
