@@ -1,0 +1,272 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "./prisma-client"
+  binaryTargets = ["native", "darwin", "darwin-arm64"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Auth / Users ----------
+
+enum UserRole {
+  BUYER
+  AGENT
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          UserRole  @default(BUYER)
+  phone         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  properties     Property[]      @relation("AgentProperties")
+  favorites      Favorite[]
+  payments       Payment[]
+  portfolioItems PortfolioItem[]
+  reviews        Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// Auth.js required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ---------- Properties ----------
+
+enum PropertyType {
+  RESIDENTIAL
+  COMMERCIAL
+  INDUSTRIAL
+  LANDED
+}
+
+enum ListingPurpose {
+  SALE
+  RENT
+  INVEST
+  INSTALLMENT
+}
+
+enum PropertyStatus {
+  DRAFT
+  PUBLISHED
+  UNDER_OFFER
+  SOLD
+  RENTED
+  ARCHIVED
+}
+
+model Property {
+  id          String         @id @default(cuid())
+  title       String
+  slug        String         @unique
+  description String         @db.Text
+  type        PropertyType
+  purpose     ListingPurpose
+  status      PropertyStatus @default(DRAFT)
+
+  price    Decimal @db.Decimal(14, 2)
+  currency String  @default("NGN")
+
+  // For installment/investment plans
+  minDownPaymentPct Int?
+  installmentMonths Int?
+  expectedRoiPct    Decimal? @db.Decimal(5, 2)
+
+  bedrooms  Int?
+  bathrooms Int?
+  areaSqm   Decimal? @db.Decimal(10, 2)
+
+  address   String
+  city      String
+  state     String
+  country   String   @default("Nigeria")
+  latitude  Decimal? @db.Decimal(9, 6)
+  longitude Decimal? @db.Decimal(9, 6)
+
+  agentId String
+  agent   User   @relation("AgentProperties", fields: [agentId], references: [id])
+
+  images         PropertyImage[]
+  amenities      PropertyAmenity[]
+  favorites      Favorite[]
+  payments       Payment[]
+  portfolioItems PortfolioItem[]
+  reviews        Review[]
+
+  featured  Boolean @default(false)
+  viewCount Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, purpose, status])
+  @@index([city, state])
+  @@map("properties")
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url        String
+  alt        String?
+  position   Int      @default(0)
+
+  @@index([propertyId])
+  @@map("property_images")
+}
+
+model Amenity {
+  id         String            @id @default(cuid())
+  name       String            @unique
+  icon       String?
+  properties PropertyAmenity[]
+
+  @@map("amenities")
+}
+
+model PropertyAmenity {
+  propertyId String
+  amenityId  String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  amenity    Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([propertyId, amenityId])
+  @@map("property_amenities")
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  userId     String
+  propertyId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, propertyId])
+  @@map("favorites")
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  userId     String
+  propertyId String
+  rating     Int
+  comment    String?  @db.Text
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([propertyId])
+  @@map("reviews")
+}
+
+// ---------- Payments / Portfolio ----------
+
+enum PaymentPlanType {
+  BUY_NOW
+  INSTALLMENTS
+  INVEST
+  RENT
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCESSFUL
+  FAILED
+  REFUNDED
+}
+
+model Payment {
+  id         String          @id @default(cuid())
+  userId     String
+  propertyId String
+  planType   PaymentPlanType
+  status     PaymentStatus   @default(PENDING)
+  amount     Decimal         @db.Decimal(14, 2)
+  currency   String          @default("NGN")
+
+  provider    String // e.g. "paystack", "flutterwave"
+  providerRef String? @unique
+
+  user     User     @relation(fields: [userId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([propertyId])
+  @@map("payments")
+}
+
+model PortfolioItem {
+  id         String          @id @default(cuid())
+  userId     String
+  propertyId String
+  planType   PaymentPlanType
+  totalPaid  Decimal         @default(0) @db.Decimal(14, 2)
+  totalDue   Decimal         @db.Decimal(14, 2)
+
+  user     User     @relation(fields: [userId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, propertyId])
+  @@map("portfolio_items")
+}
