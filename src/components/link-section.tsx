@@ -1,4 +1,11 @@
-import { FooterLink, FooterLinkSection } from './interfaces'
+interface FooterLink {
+  title: string
+  url: string
+}
+
+interface FooterLinkSection {
+  title: string
+}
 
 export function LinkSection(props: FooterLinkSection) {
   const { title } = props
