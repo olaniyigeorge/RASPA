@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import ScrollDownAnimation from "../../componentss/scroll-down";
+import ScrollDownAnimation from "../scroll-down";
 
 type ListingType = "sale" | "rent" | "investment";
 

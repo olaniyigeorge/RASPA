@@ -1,5 +1,5 @@
 import { PropertyListing } from "../../interfaces";
-import { IProperty } from "../componentss/property-card";
+import { IProperty } from "./property-card";
 
 export interface PropertyTypeItem {
   title: string;

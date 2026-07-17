@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Header from "../../componentss/header";
+import Header from "../../components/header";
 
 
 export default function Blog() {
