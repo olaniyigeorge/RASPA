@@ -1,12 +1,23 @@
-export default function GetStartedPage() {
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { Container, PageHeader } from "@/components/ui";
+import { getCurrentUser } from "@/modules/identity";
+import { ListingWizard } from "./listing-wizard";
+
+export const metadata: Metadata = { title: "List a property" };
+
+export default async function GetStartedPage() {
+  const user = await getCurrentUser();
+  if (!user) redirect("/accounts?callbackUrl=/get-started");
+
   return (
-    <div className="mx-auto max-w-xl px-6 py-16">
-      <h1 className="text-3xl font-bold text-gray-900">List a property</h1>
-      <p className="mt-4 text-gray-600">
-        This is where agents create listings. Hook this up to a multi-step
-        form (mirroring your CoopWise onboarding-wizard pattern) that POSTs
-        to <code className="rounded bg-gray-100 px-1.5 py-0.5">/api/properties</code>.
-      </p>
-    </div>
+    <Container size="md" className="py-10">
+      <PageHeader
+        eyebrow="Direct listing, no agents"
+        title="List a property"
+        description="Three quick steps. Afterwards you'll upload proof of ownership and media, which is what earns the Verified badge."
+      />
+      <ListingWizard />
+    </Container>
   );
 }

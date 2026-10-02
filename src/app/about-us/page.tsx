@@ -1,77 +1,29 @@
-import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
+import type { Metadata } from "next";
+import { BadgeCheck, Handshake, Video } from "lucide-react";
+import { Container, LinkButton, PageHeader } from "@/components/ui";
 
+export const metadata: Metadata = { title: "About" };
 
+const POINTS = [
+  { icon: Handshake, title: "No agents", body: "Finding a place in Nigeria usually means paying inspection fees to agents who profit from showing you homes you never wanted. On RASPA only owners, or tenants naming their owner, can list." },
+  { icon: BadgeCheck, title: "Proof, not promises", body: "Listings are verified against real documents: CofO, utility bills, tenancy agreements. Competing claims on the same address are resolved by our team." },
+  { icon: Video, title: "Visit only what you love", body: "Photos, walkthrough video and 3D scans, captured to a published standard, mean you can judge a place from your phone before you travel." },
+];
 
-
-export default function AboutUs() {
-
-
-    return <div className="p-10 w-full h-screen flex flex-col justify-center">
-        <Link href="/">Home</Link>
-        <AnimatePresence>
-            <motion.div
-                animate={{ opacity: 1, x: 0}}
-                className="p-10 text-sm text-white overflow-y-auto bg-gradient-to-r from-purple-900 to-purple-700 w-full rounded-r rounded-[40px] shadow"
-                exit={{ opacity: 0 }}
-                initial={{ opacity: 0, x: -50}}
-                transition={{ease: "easeOut", duration: 1.5}}
-
-            >
-                
-                <h1 className=" text-3xl font-bold flex w-full justify-center items-center">
-                    About RASP (Rent A Space)
-                </h1>
-
-                <p className="text-lg item-center text-center">At RASP, we're dedicated to facilitating seamless connections between renters, buyers, and investors and the spaces that perfectly align with their needs. Our commitment lies in simplifying the property search process and empowering our users to find their ideal spaces effortlessly. </p>
-
-
-            <section className=" space-y-3">
-                <div className="">
-                    <h1 className="font-bold text-xl">
-                    Our Vision
-                    </h1>
-
-                    <p> Our vision at RASP is to redefine the real estate experience by making it effortless and enjoyable for individuals and businesses to find their perfect spaces. We strive to be the leading platform that offers comprehensive solutions tailored to meet the diverse needs of our clients.</p>
-                </div>
-
-
-
-                <div className="">
-                    <h1 className="font-bold text-xl">
-                        What Sets Us Apart
-                    </h1>
-                
-                
-
-                        
-                    <li> Extensive Listings: RASP offers a wide array of listings, ranging from residential properties to commercial spaces and investment opportunities, ensuring that there's something for everyone. </li>
-                    <li> User-Centric Approach*: With a focus on user experience, our platform features intuitive search filters, detailed property descriptions, and interactive tools to enhance the search process.</li>
-                    <li> Expert Support: Our team of real estate professionals is committed to providing personalized assistance and expert guidance, ensuring that our clients feel supported throughout their journey.</li>
-                </div>    
-
-
-                <div className="">
-                    <h1 className="font-bold text-xl">
-                        Why Choose RASP
-                    </h1>
-
-                    <li> Trustworthiness*: With a reputation built on reliability and integrity, RASP is the trusted choice for individuals and businesses seeking real estate solutions.
-                    </li> 
-                    <li> Diverse Options*: Whether you're searching for a rental property, a new home, or a lucrative investment, RASP offers a diverse range of options to suit every need and preference.
-                    </li> 
-                    <li> Innovation*: At RASP, we're constantly innovating and leveraging cutting-edge technology to deliver unparalleled service and convenience to our clients.
-                    </li> 
-                </div>
-            </section>
-                
-
-            <span className="">
-                Ready to find your ideal space? Explore our listings today or reach out to our team for personalized assistance. At RASP, we're committed to helping you find the perfect space that meets your requirements and exceeds your expectations.
-            </span>
-            </motion.div>
-        </AnimatePresence>
-
-
-    </div>
+export default function AboutPage() {
+  return (
+    <Container size="lg" className="space-y-10 py-12">
+      <PageHeader eyebrow="About RASPA" title="Real estate that works for the people in it" description="We connect renters, buyers and investors directly to the people who own and live in the spaces, and do the work agents used to do ourselves." />
+      <div className="grid gap-5 md:grid-cols-3">
+        {POINTS.map((p) => (
+          <div key={p.title} className="rounded-card border border-line bg-surface p-6 shadow-card">
+            <span className="flex size-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600"><p.icon className="size-5" /></span>
+            <h2 className="mt-4 text-lg font-semibold">{p.title}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-ink-muted">{p.body}</p>
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-3"><LinkButton href="/explore">Explore properties</LinkButton><LinkButton href="/get-started" variant="outline">List a property</LinkButton></div>
+    </Container>
+  );
 }

@@ -1,9 +1,12 @@
-import { listProperties } from "@/lib/properties";
+import type { Metadata } from "next";
+import { Alert, Container, LinkButton, PageHeader } from "@/components/ui";
+import { searchListings } from "@/modules/listings";
 import { ExploreMapClient } from "./map-client";
 
-export default async function ExploreMapPage() {
-  const properties = await listProperties({}, 100);
+export const metadata: Metadata = { title: "Map view" };
 
+export default async function ExploreMapPage() {
+  const properties = await searchListings({}, 100);
   const points = properties
     .filter((p) => p.latitude && p.longitude)
     .map((p) => ({
@@ -17,8 +20,14 @@ export default async function ExploreMapPage() {
     }));
 
   return (
-    <div className="h-[calc(100vh-73px)]">
-      <ExploreMapClient points={points} />
-    </div>
+    <Container size="lg" className="py-10">
+      <PageHeader
+        title="Map view"
+        description={`${points.length} geocoded properties.`}
+        actions={<LinkButton href="/explore" variant="outline" size="sm">List view</LinkButton>}
+      />
+      <div className="mt-4"><Alert tone="info">The interactive map is coming soon. For now, here are the properties with locations.</Alert></div>
+      <div className="mt-6"><ExploreMapClient points={points} /></div>
+    </Container>
   );
 }

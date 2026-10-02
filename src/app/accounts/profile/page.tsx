@@ -1,36 +1,52 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { Camera } from "lucide-react";
+import { Badge, Card, CardBody, CardHeader, Container, LinkButton, PageHeader } from "@/components/ui";
+import { getCurrentUser } from "@/modules/identity";
+import { prisma } from "@/shared/infrastructure/prisma";
+import { PayoutForm } from "./payout-form";
+
+export const metadata: Metadata = { title: "Profile & payouts" };
 
 export default async function ProfilePage() {
-  const session = await auth();
-  if (!session?.user) redirect("/accounts");
-
-  const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+  const user = await getCurrentUser();
   if (!user) redirect("/accounts");
 
-  return (
-    <div className="mx-auto max-w-xl px-6 py-10">
-      <h1 className="text-2xl font-bold text-gray-900">Your profile</h1>
+  const [account, contractor] = await Promise.all([
+    prisma.payoutAccount.findUnique({ where: { userId: user.id } }),
+    prisma.contractor.findUnique({ where: { userId: user.id } }),
+  ]);
 
-      <div className="mt-6 space-y-4 rounded-2xl border border-gray-100 p-6">
-        <div>
-          <p className="text-xs uppercase tracking-wide text-gray-400">Name</p>
-          <p className="mt-1 text-gray-900">{user.name ?? "—"}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-wide text-gray-400">Email</p>
-          <p className="mt-1 text-gray-900">{user.email}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-wide text-gray-400">Phone</p>
-          <p className="mt-1 text-gray-900">{user.phone ?? "—"}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-wide text-gray-400">Role</p>
-          <p className="mt-1 text-gray-900">{user.role}</p>
-        </div>
-      </div>
-    </div>
+  return (
+    <Container size="md" className="space-y-6 py-10">
+      <PageHeader title="Profile & payouts" />
+
+      <Card>
+        <CardHeader title="Account" />
+        <CardBody className="grid gap-4 sm:grid-cols-2">
+          {[["Name", user.name ?? "-"], ["Email", user.email], ["Phone", user.phone ?? "-"]].map(([k, v]) => (
+            <div key={k}><p className="text-xs uppercase tracking-wide text-ink-subtle">{k}</p><p className="mt-1">{v}</p></div>
+          ))}
+          <div><p className="text-xs uppercase tracking-wide text-ink-subtle">Role</p><div className="mt-1"><Badge tone="brand">{user.role.toLowerCase()}</Badge></div></div>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader title="Payout account" description="Where we send your tenant commissions and contractor earnings." />
+        <CardBody>
+          {account && <p className="mb-4 text-sm text-ink-muted">Current account: <span className="font-medium text-ink">{account.accountName}</span> · •••• {account.accountNumber.slice(-4)}</p>}
+          <PayoutForm />
+        </CardBody>
+      </Card>
+
+      {user.role !== "ADMIN" && (
+        <Card>
+          <CardHeader title="Work with us" description="Videographers, drone operators and 3D scanners earn per property captured." />
+          <CardBody>
+            <LinkButton href="/contractor" variant="outline"><Camera className="size-4" /> {contractor ? "Contractor dashboard" : "Become a contractor"}</LinkButton>
+          </CardBody>
+        </Card>
+      )}
+    </Container>
   );
 }

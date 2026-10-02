@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RASPA — Real Estate, Simplified",
+  title: { default: "RASPA — Real estate without the middleman", template: "%s · RASPA" },
   description:
-    "Find, invest in, and manage residential, commercial, and industrial real estate.",
+    "Verified rentals and homes in Nigeria, direct from owners and tenants. No agents, no inspection fees: view every property remotely first.",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
         <Providers>

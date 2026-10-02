@@ -1,54 +1,99 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { Camera, Handshake, Heart, Home, Plus, ShieldCheck, Wallet } from "lucide-react";
+import { Card, CardHeader, Container, EmptyState, LinkButton, PageHeader, Stat, StatusBadge, Table, VerificationBadge } from "@/components/ui";
+import { formatCurrency } from "@/lib/utils";
+import { getCurrentUser } from "@/modules/identity";
+import { prisma } from "@/shared/infrastructure/prisma";
+
+export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
-  const session = await auth();
-  if (!session?.user) return null; // middleware already redirects
+  const user = await getCurrentUser();
+  if (!user) return null; // proxy redirects signed-out visitors
 
-  const isAgent = session.user.role === "AGENT" || session.user.role === "ADMIN";
-
-  const [favoriteCount, paymentCount, propertyCount] = await Promise.all([
-    prisma.favorite.count({ where: { userId: session.user.id } }),
-    prisma.payment.count({ where: { userId: session.user.id } }),
-    isAgent ? prisma.property.count({ where: { agentId: session.user.id } }) : Promise.resolve(0),
+  const [listings, favoriteCount, paymentCount, sublistings, payouts] = await Promise.all([
+    prisma.property.findMany({
+      where: { listerId: user.id },
+      orderBy: { createdAt: "desc" },
+      include: { claims: { orderBy: { createdAt: "desc" }, take: 1, select: { status: true } } },
+    }),
+    prisma.favorite.count({ where: { userId: user.id } }),
+    prisma.payment.count({ where: { userId: user.id } }),
+    prisma.sublisting.findMany({ where: { tenantId: user.id }, orderBy: { createdAt: "desc" }, take: 5, include: { property: { select: { title: true } } } }),
+    prisma.payout.findMany({ where: { recipientId: user.id }, orderBy: { createdAt: "desc" }, take: 5 }),
   ]);
 
-  const stats = [
-    { label: "Saved properties", value: favoriteCount, href: "/portfolio" },
-    { label: "Payments made", value: paymentCount, href: "/portfolio" },
-    ...(isAgent ? [{ label: "Your listings", value: propertyCount, href: "/dashboard/listings" }] : []),
-  ];
+  const needsAttention = listings.filter((l) => l.status === "DRAFT" || (l.status === "UNVERIFIED" && (!l.claims[0] || l.claims[0].status === "REJECTED"))).length;
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="text-2xl font-bold text-gray-900">
-        Welcome back{session.user.name ? `, ${session.user.name.split(" ")[0]}` : ""}
-      </h1>
+    <Container className="space-y-8 py-10">
+      <PageHeader
+        title={`Welcome back${user.name ? `, ${user.name.split(" ")[0]}` : ""}`}
+        description="Your listings, rentals and earnings in one place."
+        actions={
+          <>
+            {user.role === "CONTRACTOR" && <LinkButton href="/contractor" variant="outline"><Camera className="size-4" /> Contractor tasks</LinkButton>}
+            {user.role === "ADMIN" && <LinkButton href="/admin" variant="outline"><ShieldCheck className="size-4" /> Admin console</LinkButton>}
+            <LinkButton href="/get-started"><Plus className="size-4" /> List a property</LinkButton>
+          </>
+        }
+      />
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        {stats.map((stat) => (
-          <Link
-            key={stat.label}
-            href={stat.href}
-            className="rounded-2xl border border-gray-100 p-6 hover:border-purple-300"
-          >
-            <p className="text-3xl font-bold text-purple-700">{stat.value}</p>
-            <p className="mt-1 text-sm text-gray-500">{stat.label}</p>
-          </Link>
-        ))}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Stat label="Your listings" value={listings.length} icon={<Home className="size-5" />} hint={needsAttention ? `${needsAttention} need attention` : undefined} />
+        <Stat label="Saved" value={favoriteCount} icon={<Heart className="size-5" />} />
+        <Stat label="Payments made" value={paymentCount} icon={<Wallet className="size-5" />} />
+        <Stat label="Re-listings" value={sublistings.length} icon={<Handshake className="size-5" />} />
       </div>
 
-      {isAgent && (
-        <div className="mt-8">
-          <Link
-            href="/get-started"
-            className="inline-block rounded-full bg-purple-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-purple-800"
-          >
-            + List a new property
-          </Link>
+      <Card>
+        <CardHeader title="Your listings" description="Complete verification to earn the green badge." />
+        {listings.length === 0 ? (
+          <div className="p-6"><EmptyState icon={<Home className="size-5" />} title="You haven't listed anything yet" description="Owners and current tenants can list directly, with no agent." action={<LinkButton href="/get-started">List a property</LinkButton>} /></div>
+        ) : (
+          <Table>
+            <thead><tr><th>Property</th><th>Status</th><th>Latest proof</th><th /></tr></thead>
+            <tbody>
+              {listings.map((l) => (
+                <tr key={l.id}>
+                  <td><p className="font-medium">{l.title}</p><p className="text-xs text-ink-muted">{l.city} · {formatCurrency(l.price.toString(), l.currency)}</p></td>
+                  <td><VerificationBadge status={l.status} /></td>
+                  <td>{l.claims[0] ? <StatusBadge status={l.claims[0].status} /> : <span className="text-ink-subtle">Not submitted</span>}</td>
+                  <td className="text-right"><Link href={`/dashboard/listings/${l.id}`} className="text-sm font-medium text-brand-700 hover:underline">Manage</Link></td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Card>
+
+      {(sublistings.length > 0 || payouts.length > 0) && (
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Card>
+            <CardHeader title="Re-listed rentals" />
+            <Table>
+              <tbody>
+                {sublistings.map((s) => (
+                  <tr key={s.id}><td className="font-medium">{s.property.title}</td><td className="text-right"><StatusBadge status={s.status} /></td></tr>
+                ))}
+                {sublistings.length === 0 && <tr><td className="text-ink-subtle">None</td></tr>}
+              </tbody>
+            </Table>
+          </Card>
+          <Card>
+            <CardHeader title="Earnings" description="Commissions and contractor payouts" action={<Link href="/accounts/profile" className="text-sm font-medium text-brand-700 hover:underline">Payout account</Link>} />
+            <Table>
+              <tbody>
+                {payouts.map((p) => (
+                  <tr key={p.id}><td>{p.kind === "TENANT_COMMISSION" ? "Commission" : "Capture task"}</td><td className="font-medium">{formatCurrency(p.amount.toString())}</td><td className="text-right"><StatusBadge status={p.status} /></td></tr>
+                ))}
+                {payouts.length === 0 && <tr><td className="text-ink-subtle">No payouts yet</td></tr>}
+              </tbody>
+            </Table>
+          </Card>
         </div>
       )}
-    </div>
+    </Container>
   );
 }

@@ -1,82 +1,75 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { PropertyCard } from "@/components/property/property-card";
-import { listProperties, type PropertyFilters } from "@/lib/properties";
-import { cn } from "@/lib/utils";
-import { ListingPurpose } from "../../../prisma/prisma-client";
+import { Map, SearchX } from "lucide-react";
+import { Suspense } from "react";
+import { ExploreFilters } from "@/components/listings/explore-filters";
+import { PropertyGrid } from "@/components/listings/property-card";
+import { Container, EmptyState, LinkButton, PageHeader } from "@/components/ui";
+import { discovery } from "@/modules/discovery";
+import { getCurrentUser } from "@/modules/identity";
+import { searchListings, type ListingPurpose, type PropertyType } from "@/modules/listings";
 
+export const metadata: Metadata = { title: "Explore properties" };
 
-const PURPOSE_TABS: { label: string; value?: ListingPurpose }[] = [
-  { label: "All" },
-  { label: "Buy", value: "SALE" },
-  { label: "Rent", value: "RENT" },
-  { label: "Invest", value: "INVEST" },
-  { label: "Installments", value: "INSTALLMENT" },
-];
-
-interface ExplorePageProps {
-  searchParams: Promise<{ purpose?: string; type?: string; city?: string; q?: string }>;
+interface Props {
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function ExplorePage({ searchParams }: ExplorePageProps) {
-  const params = await searchParams;
+export default async function ExplorePage({ searchParams }: Props) {
+  const p = await searchParams;
+  const num = (v?: string) => (v && !Number.isNaN(Number(v)) ? Number(v) : undefined);
 
-  const filters: PropertyFilters = {
-    purpose: params.purpose as ListingPurpose | undefined,
-    city: params.city,
-    q: params.q,
+  const filters = {
+    purpose: p.purpose as ListingPurpose | undefined,
+    type: p.type as PropertyType | undefined,
+    city: p.city,
+    q: p.q,
+    minPrice: num(p.minPrice),
+    maxPrice: num(p.maxPrice),
+    ...(p.verified === "1" && { statuses: ["VERIFIED" as const] }),
   };
 
-  const properties = await listProperties(filters);
+  const properties = await searchListings(filters, 48);
+
+  // search/filter history feeds recommendations
+  const user = await getCurrentUser();
+  if (user && (filters.q || filters.city || filters.purpose || filters.type || filters.minPrice || filters.maxPrice)) {
+    await discovery.record(user.id, {
+      kind: filters.q ? "SEARCH" : "FILTER",
+      query: filters.q,
+      city: filters.city,
+      filters: { type: filters.type, purpose: filters.purpose, minPrice: filters.minPrice, maxPrice: filters.maxPrice },
+    });
+  }
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-10">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Explore properties</h1>
-        <Link
-          href="/explore/map"
-          className="text-sm font-medium text-purple-700 hover:underline"
-        >
-          View on map →
-        </Link>
+    <Container className="py-10">
+      <PageHeader
+        title="Explore properties"
+        description={`${properties.length} ${properties.length === 1 ? "listing" : "listings"}. Verified listings appear first.`}
+        actions={
+          <LinkButton href="/explore/map" variant="outline" size="sm">
+            <Map className="size-4" /> Map view
+          </LinkButton>
+        }
+      />
+      <div className="mt-6">
+        <Suspense>
+          <ExploreFilters />
+        </Suspense>
       </div>
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        {PURPOSE_TABS.map((tab) => {
-          const isActive = params.purpose === tab.value || (!params.purpose && !tab.value);
-          const href = tab.value ? `/explore?purpose=${tab.value}` : "/explore";
-          return (
-            <Link
-              key={tab.label}
-              href={href}
-              className={cn(
-                "rounded-full border px-4 py-2 text-sm font-medium transition",
-                isActive
-                  ? "border-purple-700 bg-purple-700 text-white"
-                  : "border-gray-200 text-gray-600 hover:border-purple-300"
-              )}
-            >
-              {tab.label}
-            </Link>
-          );
-        })}
-      </div>
-
       <div className="mt-8">
         {properties.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-gray-200 p-12 text-center text-gray-400">
-            No properties match these filters yet.
-          </p>
+          <EmptyState
+            icon={<SearchX className="size-5" />}
+            title="No properties match these filters"
+            description="Try widening your price range or clearing a filter."
+            action={<Link href="/explore" className="text-sm font-medium text-brand-700 hover:underline">Clear all filters</Link>}
+          />
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {properties.map((property) => (
-              <PropertyCard
-                key={property.id}
-                property={{ ...property, price: property.price.toString() }}
-              />
-            ))}
-          </div>
+          <PropertyGrid properties={properties.map((x) => ({ ...x, price: x.price.toString() }))} />
         )}
       </div>
-    </div>
+    </Container>
   );
 }

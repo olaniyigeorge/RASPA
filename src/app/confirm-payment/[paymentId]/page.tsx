@@ -1,55 +1,50 @@
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import Link from "next/link";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { CheckCircle2, Clock3, RotateCcw, XCircle } from "lucide-react";
+import { Card, CardBody, Container, LinkButton } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
+import { getCurrentUser } from "@/modules/identity";
+import { prisma } from "@/shared/infrastructure/prisma";
+import { RefreshWhilePending } from "./refresh-while-pending";
 
-const STATUS_COPY: Record<string, { title: string; tone: string }> = {
-  PENDING: { title: "Payment pending", tone: "text-amber-600" },
-  PROCESSING: { title: "Processing your payment…", tone: "text-amber-600" },
-  SUCCESSFUL: { title: "Payment successful 🎉", tone: "text-green-600" },
-  FAILED: { title: "Payment failed", tone: "text-red-600" },
-  REFUNDED: { title: "Payment refunded", tone: "text-gray-600" },
-};
+export const metadata: Metadata = { title: "Payment status" };
 
-export default async function ConfirmPaymentPage({
-  params,
-}: {
-  params: Promise<{ paymentId: string }>;
-}) {
+const STATUS = {
+  PENDING: { title: "Confirming your payment…", icon: Clock3, tone: "text-warning-600 bg-warning-50" },
+  PROCESSING: { title: "Processing your payment…", icon: Clock3, tone: "text-warning-600 bg-warning-50" },
+  SUCCESSFUL: { title: "Payment successful", icon: CheckCircle2, tone: "text-success-600 bg-success-50" },
+  FAILED: { title: "Payment failed", icon: XCircle, tone: "text-danger-600 bg-danger-50" },
+  REFUNDED: { title: "Payment refunded", icon: RotateCcw, tone: "text-ink-muted bg-canvas" },
+} as const;
+
+export default async function ConfirmPaymentPage({ params }: { params: Promise<{ paymentId: string }> }) {
   const { paymentId } = await params;
-  const session = await auth();
-  if (!session?.user) redirect("/accounts");
+  const user = await getCurrentUser();
+  if (!user) redirect("/accounts");
 
-  const payment = await prisma.payment.findUnique({
-    where: { id: paymentId },
-    include: { property: true },
-  });
+  const payment = await prisma.payment.findUnique({ where: { id: paymentId }, include: { property: true } });
+  if (!payment || payment.userId !== user.id) notFound();
 
-  if (!payment || payment.userId !== session.user.id) notFound();
-
-  const status = STATUS_COPY[payment.status];
+  const s = STATUS[payment.status];
+  const waiting = payment.status === "PENDING" || payment.status === "PROCESSING";
 
   return (
-    <div className="mx-auto max-w-md px-6 py-16 text-center">
-      <h1 className={`text-2xl font-bold ${status.tone}`}>{status.title}</h1>
-      <p className="mt-2 text-gray-500">{payment.property.title}</p>
-      <p className="mt-1 text-3xl font-bold text-gray-900">
-        {formatCurrency(payment.amount.toString(), payment.currency)}
-      </p>
-
-      <p className="mt-6 text-sm text-gray-400">
-        {/* Wire this up to poll GET /api/payments/[id] or a webhook-driven
-            revalidation once a real provider is connected. */}
-        Reference: {payment.providerRef ?? payment.id}
-      </p>
-
-      <Link
-        href="/portfolio"
-        className="mt-8 inline-block rounded-full bg-purple-700 px-6 py-3 text-sm font-semibold text-white hover:bg-purple-800"
-      >
-        Go to portfolio
-      </Link>
-    </div>
+    <Container size="md" className="py-16">
+      {waiting && <RefreshWhilePending />}
+      <Card className="mx-auto max-w-md text-center shadow-raised">
+        <CardBody className="p-8">
+          <span className={`mx-auto flex size-14 items-center justify-center rounded-full ${s.tone}`}><s.icon className="size-7" /></span>
+          <h1 className="mt-5 text-2xl font-semibold">{s.title}</h1>
+          <p className="mt-1 text-sm text-ink-muted">{payment.property.title}</p>
+          <p className="mt-4 text-3xl font-semibold">{formatCurrency(payment.amount.toString(), payment.currency)}</p>
+          <p className="mt-4 text-xs text-ink-subtle">Reference: {payment.providerRef ?? payment.id}</p>
+          {waiting && <p className="mt-2 text-xs text-ink-muted">This page updates automatically once Paystack confirms.</p>}
+          <div className="mt-6 flex justify-center gap-2">
+            <LinkButton href="/portfolio">Go to portfolio</LinkButton>
+            <LinkButton href="/dashboard" variant="outline">Dashboard</LinkButton>
+          </div>
+        </CardBody>
+      </Card>
+    </Container>
   );
 }

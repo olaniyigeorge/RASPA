@@ -1,63 +1,56 @@
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
+import { Briefcase } from "lucide-react";
+import { Badge, Card, CardBody, Container, EmptyState, LinkButton, PageHeader } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
+import { getCurrentUser } from "@/modules/identity";
+import { prisma } from "@/shared/infrastructure/prisma";
+
+export const metadata: Metadata = { title: "Your portfolio" };
+
+const PLAN_LABEL: Record<string, string> = { BUY_NOW: "Purchase", INSTALLMENTS: "Installments", INVEST: "Investment", RENT: "Rent" };
 
 export default async function PortfolioPage() {
-  const session = await auth();
-  if (!session?.user) redirect("/accounts");
+  const user = await getCurrentUser();
+  if (!user) redirect("/accounts");
 
   const items = await prisma.portfolioItem.findMany({
-    where: { userId: session.user.id },
-    include: { property: { include: { images: { take: 1 } } } },
+    where: { userId: user.id },
+    include: { property: true },
     orderBy: { updatedAt: "desc" },
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="text-2xl font-bold text-gray-900">Your portfolio</h1>
-
+    <Container size="lg" className="space-y-6 py-10">
+      <PageHeader title="Your portfolio" description="Properties you're buying, renting or investing in." />
       {items.length === 0 ? (
-        <p className="mt-8 rounded-2xl border border-dashed border-gray-200 p-12 text-center text-gray-400">
-          No active plans yet.{" "}
-          <Link href="/explore" className="text-purple-700 hover:underline">
-            Explore properties
-          </Link>{" "}
-          to get started.
-        </p>
+        <EmptyState icon={<Briefcase className="size-5" />} title="No active plans yet" description="When you pay for a property it appears here with your progress." action={<LinkButton href="/explore">Explore properties</LinkButton>} />
       ) : (
-        <div className="mt-6 space-y-4">
+        <div className="space-y-4">
           {items.map((item) => {
-            const pct = item.totalDue.toNumber()
-              ? Math.min(100, Math.round((item.totalPaid.toNumber() / item.totalDue.toNumber()) * 100))
-              : 0;
-
+            const paid = item.totalPaid.toNumber();
+            const due = item.totalDue.toNumber();
+            const pct = due ? Math.min(100, Math.round((paid / due) * 100)) : 0;
             return (
-              <Link
-                key={item.id}
-                href={`/property/${item.property.slug}`}
-                className="block rounded-2xl border border-gray-100 p-5 hover:border-purple-300"
-              >
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-gray-900">{item.property.title}</p>
-                  <span className="text-xs font-medium text-gray-500">{item.planType}</span>
-                </div>
-                <div className="mt-3 h-2 w-full rounded-full bg-gray-100">
-                  <div
-                    className="h-2 rounded-full bg-purple-700"
-                    style={{ width: `${pct}%` }}
-                  />
-                </div>
-                <p className="mt-2 text-sm text-gray-500">
-                  {formatCurrency(item.totalPaid.toString(), item.property.currency)} of{" "}
-                  {formatCurrency(item.totalDue.toString(), item.property.currency)} paid ({pct}%)
-                </p>
+              <Link key={item.id} href={`/property/${item.property.slug}`} className="block">
+                <Card className="transition-colors hover:border-brand-300">
+                  <CardBody>
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="font-semibold">{item.property.title}</p>
+                      <Badge tone="brand">{PLAN_LABEL[item.planType] ?? item.planType}</Badge>
+                    </div>
+                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-brand-50" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+                      <div className="h-full rounded-full bg-brand-600" style={{ width: `${pct}%` }} />
+                    </div>
+                    <p className="mt-2 text-sm text-ink-muted">{formatCurrency(paid, item.property.currency)} of {formatCurrency(due, item.property.currency)} paid ({pct}%)</p>
+                  </CardBody>
+                </Card>
               </Link>
             );
           })}
         </div>
       )}
-    </div>
+    </Container>
   );
 }

@@ -1,89 +1,62 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPropertyBySlugOrId } from "@/lib/properties";
+import { ChevronLeft, ShieldCheck } from "lucide-react";
+import { Alert, Card, CardBody, Container, VerificationBadge } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
+import { getListingDetail } from "@/modules/listings";
 import { PaymentPlanForm } from "./payment-plan-form";
-import type { PaymentPlanType } from "@prisma/client";
+import { PLAN_COPY } from "./plans";
 
-const PLAN_COPY: Record<PaymentPlanType, { title: string; blurb: string }> = {
-  BUY_NOW: {
-    title: "Buy now",
-    blurb: "Pay the full amount upfront and take ownership immediately.",
-  },
-  INSTALLMENTS: {
-    title: "Installments",
-    blurb: "Spread payment across a fixed number of months.",
-  },
-  INVEST: {
-    title: "Invest",
-    blurb: "Put capital into this property and earn a projected return.",
-  },
-  RENT: {
-    title: "Rent",
-    blurb: "Pay a recurring rent to occupy this property.",
-  },
-};
+type PlanType = keyof typeof PLAN_COPY;
 
-export async function PaymentPlanDetail({
-  propId,
-  planType,
-}: {
-  propId: string;
-  planType: PaymentPlanType;
-}) {
-  const property = await getPropertyBySlugOrId(propId);
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between py-3 text-sm">
+      <span className="text-ink-muted">{label}</span>
+      <span className="font-semibold">{value}</span>
+    </div>
+  );
+}
+
+export async function PaymentPlanDetail({ propId, planType }: { propId: string; planType: PlanType }) {
+  const property = await getListingDetail(propId);
   if (!property) notFound();
-
   const copy = PLAN_COPY[planType];
+  const price = property.price.toString();
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-10">
-      <p className="text-sm text-gray-400">{property.title}</p>
-      <h1 className="mt-1 text-2xl font-bold text-gray-900">{copy.title}</h1>
-      <p className="mt-2 text-gray-600">{copy.blurb}</p>
+    <Container size="md" className="py-10">
+      <Link href={`/property/${property.slug}`} className="inline-flex items-center gap-1 text-sm text-ink-muted hover:text-brand-700">
+        <ChevronLeft className="size-4" /> {property.title}
+      </Link>
+      <h1 className="mt-3 text-3xl font-semibold">{copy.title}</h1>
+      <p className="mt-2 text-ink-muted">{copy.blurb}</p>
 
-      <div className="mt-6 rounded-2xl border border-gray-100 p-6">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-500">List price</span>
-          <span className="font-semibold text-gray-900">
-            {formatCurrency(property.price.toString(), property.currency)}
-          </span>
+      <Card className="mt-6">
+        <CardBody className="divide-y divide-line py-3">
+          <div className="flex items-center justify-between py-3 text-sm">
+            <span className="text-ink-muted">Property</span>
+            <VerificationBadge status={property.status} />
+          </div>
+          <Row label="List price" value={formatCurrency(price, property.currency)} />
+          {planType === "INSTALLMENTS" && property.installmentMonths && <Row label="Term" value={`${property.installmentMonths} months`} />}
+          {planType === "INVEST" && property.expectedRoiPct && <Row label="Projected ROI" value={`${property.expectedRoiPct.toString()}%`} />}
+          {property.minDownPaymentPct && planType !== "BUY_NOW" && planType !== "RENT" && <Row label="Minimum down payment" value={`${property.minDownPaymentPct}%`} />}
+        </CardBody>
+      </Card>
+
+      {property.status !== "VERIFIED" && (
+        <div className="mt-4">
+          <Alert tone="warning" title="This listing is not verified yet">
+            The lister has not completed proof of ownership. You can still continue, but consider waiting for verification.
+          </Alert>
         </div>
+      )}
 
-        {planType === "INSTALLMENTS" && property.installmentMonths && (
-          <div className="mt-2 flex items-center justify-between text-sm">
-            <span className="text-gray-500">Term</span>
-            <span className="font-semibold text-gray-900">
-              {property.installmentMonths} months
-            </span>
-          </div>
-        )}
-
-        {planType === "INVEST" && property.expectedRoiPct && (
-          <div className="mt-2 flex items-center justify-between text-sm">
-            <span className="text-gray-500">Projected ROI</span>
-            <span className="font-semibold text-gray-900">
-              {property.expectedRoiPct.toString()}%
-            </span>
-          </div>
-        )}
-
-        {property.minDownPaymentPct && planType !== "BUY_NOW" && (
-          <div className="mt-2 flex items-center justify-between text-sm">
-            <span className="text-gray-500">Minimum down payment</span>
-            <span className="font-semibold text-gray-900">
-              {property.minDownPaymentPct}%
-            </span>
-          </div>
-        )}
-      </div>
-
-      <PaymentPlanForm
-        propertyId={property.id}
-        planType={planType}
-        price={property.price.toString()}
-        currency={property.currency}
-        minDownPaymentPct={property.minDownPaymentPct}
-      />
-    </div>
+      <PaymentPlanForm propertyId={property.id} planType={planType} price={price} currency={property.currency} minDownPaymentPct={property.minDownPaymentPct} />
+      <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-ink-subtle">
+        <ShieldCheck className="size-3.5" /> Payments are processed securely by Paystack.
+      </p>
+    </Container>
   );
 }

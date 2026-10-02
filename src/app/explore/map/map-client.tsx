@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
 interface MapPoint {
@@ -14,34 +15,27 @@ interface MapPoint {
 }
 
 export function ExploreMapClient({ points }: { points: MapPoint[] }) {
-  // TODO: swap this list-fallback for an actual map (react-map-gl + Mapbox,
-  // or @react-google-maps/api). Kept dependency-free so the scaffold builds
-  // without an API key. Coordinates are already wired up via lat/lng below.
+  // The interactive map is not built yet (it needs a Mapbox/Google key). Until then this
+  // is a list of geocoded listings; lat/lng are already wired through for the map.
   return (
-    <div className="mx-auto h-full max-w-3xl overflow-y-auto px-6 py-10">
-      <p className="mb-4 text-sm text-gray-500">
-        Map integration pending — showing {points.length} geocoded properties.
-      </p>
-      <ul className="space-y-3">
-        {points.map((point) => (
-          <li key={point.id}>
-            <Link
-              href={`/property/${point.slug}`}
-              className="flex items-center justify-between rounded-xl border border-gray-100 p-4 hover:border-purple-300"
-            >
+    <ul className="space-y-3">
+      {points.map((point) => (
+        <li key={point.id}>
+          <Link
+            href={`/property/${point.slug}`}
+            className="flex items-center justify-between gap-4 rounded-card border border-line bg-surface p-4 shadow-card transition-colors hover:border-brand-300"
+          >
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-full bg-brand-50 text-brand-600"><MapPin className="size-4.5" /></span>
               <div>
-                <p className="font-medium text-gray-900">{point.title}</p>
-                <p className="text-xs text-gray-400">
-                  {point.lat.toFixed(4)}, {point.lng.toFixed(4)}
-                </p>
+                <p className="font-medium text-ink">{point.title}</p>
+                <p className="text-xs text-ink-subtle">{point.lat.toFixed(4)}, {point.lng.toFixed(4)}</p>
               </div>
-              <p className="font-semibold text-purple-700">
-                {formatCurrency(point.price, point.currency)}
-              </p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+            </div>
+            <p className="font-semibold text-ink">{formatCurrency(point.price, point.currency)}</p>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

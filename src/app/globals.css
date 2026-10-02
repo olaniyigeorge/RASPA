@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * RASPA design system — tokens.
+ * One purple brand, warm-neutral ink, and four semantic tones. Components in
+ * src/components/ui read these tokens; do not hardcode colours in pages.
+ */
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* brand */
+  --color-brand-50: #f7f2ff;
+  --color-brand-100: #ede2ff;
+  --color-brand-200: #dac4ff;
+  --color-brand-300: #c09bff;
+  --color-brand-400: #a46cf7;
+  --color-brand-500: #8a46e8;
+  --color-brand-600: #7329cf;
+  --color-brand-700: #5e20ab;
+  --color-brand-800: #4c1a8a;
+  --color-brand-900: #3b1569;
+  --color-brand-950: #230b3f;
+
+  /* neutrals */
+  --color-canvas: #faf8fd;
+  --color-surface: #ffffff;
+  --color-line: #e8e4f0;
+  --color-line-strong: #d4cfe0;
+  --color-ink: #16121f;
+  --color-ink-muted: #5a5568;
+  --color-ink-subtle: #8c879a;
+
+  /* semantic */
+  --color-success-50: #e8f6ee;
+  --color-success-600: #15803d;
+  --color-success-700: #116b34;
+  --color-warning-50: #fdf3dc;
+  --color-warning-600: #b45309;
+  --color-warning-700: #92400e;
+  --color-danger-50: #fdecea;
+  --color-danger-600: #c0281c;
+  --color-danger-700: #a02116;
+  --color-info-50: #e8f1fd;
+  --color-info-600: #1d62d1;
+  --color-info-700: #184fa8;
+
+  --radius-control: 0.75rem;
+  --radius-card: 1.125rem;
+
+  --shadow-card: 0 1px 2px rgb(22 18 31 / 0.04), 0 4px 16px rgb(22 18 31 / 0.05);
+  --shadow-raised: 0 2px 4px rgb(22 18 31 / 0.05), 0 12px 32px rgb(22 18 31 / 0.1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-brand-200);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---- motion ---------------------------------------------------------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+@utility animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+@utility animate-scale-in {
+  animation: scale-in 0.16s ease-out both;
+  transform-origin: top right;
+}
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-brand-50) 25%, var(--color-brand-100) 37%, var(--color-brand-50) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: var(--radius-control);
+}
+
+/* scroll reveal (see components/ui/reveal.tsx) */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 70ms); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-delay: 0ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
 }
