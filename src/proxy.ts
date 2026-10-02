@@ -1,20 +1,19 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const PROTECTED_PREFIXES = ["/dashboard", "/portfolio", "/accounts/profile"];
+// Optimistic check only: the cookie must exist. The signature/revocation check
+// happens server-side in getCurrentUser(), where firebase-admin can run.
+const SESSION_COOKIE = "raspa_session";
 
-export default auth((req) => {
-  const isProtected = PROTECTED_PREFIXES.some((p) =>
-    req.nextUrl.pathname.startsWith(p)
-  );
-
-  if (isProtected && !req.auth) {
+export function proxy(req: NextRequest) {
+  if (!req.cookies.has(SESSION_COOKIE)) {
     const signInUrl = new URL("/accounts", req.nextUrl.origin);
     signInUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
     return NextResponse.redirect(signInUrl);
   }
-});
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/portfolio/:path*", "/accounts/profile/:path*"],
+  matcher: ["/dashboard/:path*", "/portfolio/:path*", "/accounts/profile/:path*", "/contractor/:path*", "/admin/:path*"],
 };

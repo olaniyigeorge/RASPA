@@ -1,44 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { getPropertyBySlugOrId } from "@/lib/properties";
+import { z } from "zod";
+import { discovery } from "@/modules/discovery";
+import { getCurrentUser, requireUser } from "@/modules/identity";
+import { getListingDetail, listings } from "@/modules/listings";
+import { NotFoundError } from "@/shared/kernel/errors";
+import { route } from "@/shared/infrastructure/http";
 
-interface RouteParams {
-  params: Promise<{ propId: string }>;
-}
+type Ctx = { params: Promise<{ propId: string }> };
 
-export async function GET(_req: NextRequest, { params }: RouteParams) {
+const patchSchema = z
+  .object({
+    title: z.string().min(3),
+    description: z.string().min(10),
+    type: z.enum(["RESIDENTIAL", "COMMERCIAL", "INDUSTRIAL", "LANDED"]),
+    purpose: z.enum(["SALE", "RENT", "INVEST", "INSTALLMENT"]),
+    price: z.number().positive(),
+    address: z.string(),
+    city: z.string(),
+    state: z.string(),
+    bedrooms: z.number().int(),
+    bathrooms: z.number().int(),
+    areaSqm: z.number(),
+    latitude: z.number(),
+    longitude: z.number(),
+  })
+  .partial()
+  .strict(); // status, verification and ownership fields are not editable here
+
+export const GET = route(async (_req: NextRequest, { params }: Ctx) => {
   const { propId } = await params;
-  const property = await getPropertyBySlugOrId(propId);
-  if (!property) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const property = await getListingDetail(propId);
+  if (!property) throw new NotFoundError("Property");
+
+  const user = await getCurrentUser();
+  const isPublic = property.status === "UNVERIFIED" || property.status === "VERIFIED";
+  if (!isPublic && property.listerId !== user?.id && user?.role !== "ADMIN") throw new NotFoundError("Property");
+  if (user) await discovery.record(user.id, { kind: "VIEW", propertyId: property.id, city: property.city });
   return NextResponse.json({ property });
-}
+});
 
-export async function PATCH(req: NextRequest, { params }: RouteParams) {
-  const session = await auth();
+export const PATCH = route(async (req: NextRequest, { params }: Ctx) => {
+  const user = await requireUser();
   const { propId } = await params;
-  const property = await prisma.property.findUnique({ where: { id: propId } });
-
-  if (!property) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (!session?.user || (session.user.id !== property.agentId && session.user.role !== "ADMIN")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const body = await req.json();
-  const updated = await prisma.property.update({ where: { id: propId }, data: body });
-  return NextResponse.json({ property: updated });
-}
-
-export async function DELETE(_req: NextRequest, { params }: RouteParams) {
-  const session = await auth();
-  const { propId } = await params;
-  const property = await prisma.property.findUnique({ where: { id: propId } });
-
-  if (!property) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (!session?.user || (session.user.id !== property.agentId && session.user.role !== "ADMIN")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  await prisma.property.delete({ where: { id: propId } });
+  await listings.update(user, propId, patchSchema.parse(await req.json()));
   return NextResponse.json({ success: true });
-}
+});
+
+export const DELETE = route(async (_req: NextRequest, { params }: Ctx) => {
+  const user = await requireUser();
+  const { propId } = await params;
+  await listings.remove(user, propId);
+  return NextResponse.json({ success: true });
+});
