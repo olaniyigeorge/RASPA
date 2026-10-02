@@ -72,7 +72,7 @@ The platform tailors recommendations to what a seeker is looking for, rather tha
 ### 7.1 Stack
 - **Framework:** Next.js (full-stack, single project), TypeScript.
 - **ORM / DB:** Prisma + PostgreSQL (Supabase).
-- **Auth:** Google sign-in via Firebase Auth. Server verifies Firebase ID tokens and maps them to a local `User`.
+- **Auth:** Google sign-in via Firebase Auth (public client config only). The server verifies the Firebase ID token against Google's public keys, then issues its own session cookie signed with `AUTH_SECRET`; no service-account key is needed. Trade-off: disabling a user in Firebase does not end an existing session until it expires (5 days).
 - **Media storage:** Cloudinary (photos, video, 3D scans).
 - **Payments:** Paystack (initialize + webhook verification).
 - **Hosting:** Vercel.

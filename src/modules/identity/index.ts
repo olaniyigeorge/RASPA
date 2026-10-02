@@ -1,7 +1,7 @@
 // Public API of the identity context.
 import "server-only";
 import { makeSignInWithIdToken } from "./application/sign-in";
-import { firebaseIdentityProvider } from "./infrastructure/firebase-admin";
+import { firebaseIdentityProvider } from "./infrastructure/firebase-identity";
 import { prismaUserRepository } from "./infrastructure/prisma-user-repository";
 
 export type { User, UserRole } from "./domain/user";

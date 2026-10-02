@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { ForbiddenError, UnauthorizedError } from "../../../shared/kernel/errors";
 import { makeResolveSessionUser } from "../application/sign-in";
 import type { User, UserRole } from "../domain/user";
-import { firebaseIdentityProvider } from "./firebase-admin";
+import { firebaseIdentityProvider } from "./firebase-identity";
 import { prismaUserRepository } from "./prisma-user-repository";
 
 export const SESSION_COOKIE = "raspa_session";
