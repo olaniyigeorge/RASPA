@@ -1,19 +1,20 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { PrismaClient } from "./prisma-client";
 
 const prisma = new PrismaClient();
 
-async function main() {
-  const passwordHash = await bcrypt.hash("password123", 12);
+const normalizeAddress = (address: string, city: string, state: string) =>
+  [address, city, state].join(" ").toLowerCase().replace(/\b(street|st|road|rd|avenue|ave|close|crescent|cres)\b/g, "").replace(/[^a-z0-9]+/g, " ").trim();
 
-  const agent = await prisma.user.upsert({
-    where: { email: "agent@raspa.dev" },
+async function main() {
+  // Seeded owner has no real Firebase account; signing in with Google as this
+  // email adopts the row (see prismaUserRepository.upsertFromIdentity).
+  const owner = await prisma.user.upsert({
+    where: { email: "owner@raspa.dev" },
     update: {},
     create: {
+      firebaseUid: "seed-owner",
       name: "Ada Okafor",
-      email: "agent@raspa.dev",
-      passwordHash,
-      role: "AGENT",
+      email: "owner@raspa.dev",
       phone: "+2348012345678",
     },
   });
@@ -32,7 +33,7 @@ async function main() {
       description: "A modern, fully-serviced duplex with premium finishing in the heart of Lekki Phase 1.",
       type: "RESIDENTIAL" as const,
       purpose: "SALE" as const,
-      status: "PUBLISHED" as const,
+      status: "VERIFIED" as const,
       price: 185_000_000,
       bedrooms: 3,
       bathrooms: 4,
@@ -50,7 +51,7 @@ async function main() {
       description: "Rent-ready serviced apartment with concierge, gym, and rooftop access.",
       type: "RESIDENTIAL" as const,
       purpose: "RENT" as const,
-      status: "PUBLISHED" as const,
+      status: "VERIFIED" as const,
       price: 6_500_000,
       bedrooms: 2,
       bathrooms: 2,
@@ -68,7 +69,7 @@ async function main() {
       description: "Investment-grade commercial plaza with existing retail tenants and stable yield.",
       type: "COMMERCIAL" as const,
       purpose: "INVEST" as const,
-      status: "PUBLISHED" as const,
+      status: "UNVERIFIED" as const,
       price: 420_000_000,
       expectedRoiPct: 14.5,
       minDownPaymentPct: 30,
@@ -85,7 +86,7 @@ async function main() {
       description: "500sqm dry land with governor's consent, available on a 12-month installment plan.",
       type: "LANDED" as const,
       purpose: "INSTALLMENT" as const,
-      status: "PUBLISHED" as const,
+      status: "UNVERIFIED" as const,
       price: 12_000_000,
       installmentMonths: 12,
       minDownPaymentPct: 25,
@@ -105,10 +106,17 @@ async function main() {
       update: {},
       create: {
         ...data,
-        agentId: agent.id,
-        images: {
+        addressKey: normalizeAddress(data.address, data.city, data.state),
+        listerId: owner.id,
+        ownerUserId: owner.id,
+        listerCapacity: "OWNER",
+        cofoVerified: data.status === "VERIFIED",
+        media: {
           create: [
             {
+              uploadedById: owner.id,
+              kind: "PHOTO",
+              publicId: `seed/${data.slug}`,
               url: `https://picsum.photos/seed/${data.slug}/800/600`,
               position: 0,
             },
@@ -120,6 +128,17 @@ async function main() {
       },
     });
     console.log(`Seeded property: ${property.title}`);
+  }
+
+  // Management plans (subscription-based property dashboard). Set paystackPlanCode
+  // after creating the matching plans in the Paystack dashboard.
+  const plans = [
+    { code: "basic", name: "Basic", amount: 15_000, features: ["Bills & utilities tracking", "Waste collection scheduling"] },
+    { code: "standard", name: "Standard", amount: 35_000, features: ["Everything in Basic", "Dispute resolution", "Maintenance tickets"] },
+    { code: "full", name: "Full management", amount: 80_000, features: ["Everything in Standard", "On-the-ground personnel", "Monthly condition report"] },
+  ];
+  for (const plan of plans) {
+    await prisma.managementPlan.upsert({ where: { code: plan.code }, update: {}, create: plan });
   }
 }
 

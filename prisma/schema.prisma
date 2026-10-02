@@ -9,80 +9,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ---------- Auth / Users ----------
+// =====================================================================
+// identity
+// =====================================================================
 
 enum UserRole {
-  BUYER
-  AGENT
+  USER
+  CONTRACTOR
   ADMIN
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String   @id @default(cuid())
+  firebaseUid   String   @unique
+  email         String   @unique
+  emailVerified Boolean  @default(false)
   name          String?
-  email         String    @unique
-  emailVerified DateTime?
   image         String?
-  passwordHash  String?
-  role          UserRole  @default(BUYER)
   phone         String?
+  role          UserRole @default(USER)
 
-  accounts      Account[]
-  sessions      Session[]
+  listings        Property[]               @relation("ListerProperties")
+  ownedProperties Property[]               @relation("OwnerProperties")
+  favorites       Favorite[]
+  payments        Payment[]
+  portfolioItems  PortfolioItem[]
+  reviews         Review[]
+  contractor      Contractor?
+  claims          OwnershipClaim[]
+  tenancies       Tenancy[]
+  sublistings     Sublisting[]             @relation("SublistingTenant")
+  payouts         Payout[]
+  subscriptions   ManagementSubscription[]
+  tickets         ManagementTicket[]
+  activities      UserActivity[]
 
-  properties    Property[]      @relation("AgentProperties")
-  favorites     Favorite[]
-  payments      Payment[]
-  portfolioItems PortfolioItem[]
-  reviews       Review[]
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }
 
-// Auth.js required models
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-  @@map("verification_tokens")
-}
-
-// ---------- Properties ----------
+// =====================================================================
+// listings
+// =====================================================================
 
 enum PropertyType {
   RESIDENTIAL
@@ -98,74 +68,88 @@ enum ListingPurpose {
   INSTALLMENT
 }
 
+// DRAFT -> UNVERIFIED (submitted, awaiting proof) -> VERIFIED (ownership approved)
 enum PropertyStatus {
   DRAFT
-  PUBLISHED
+  UNVERIFIED
+  VERIFIED
   UNDER_OFFER
-  SOLD
   RENTED
+  SOLD
+  SUSPENDED
   ARCHIVED
 }
 
-model Property {
-  id           String         @id @default(cuid())
-  title        String
-  slug         String         @unique
-  description  String         @db.Text
-  type         PropertyType
-  purpose      ListingPurpose
-  status       PropertyStatus @default(DRAFT)
+enum ListerCapacity {
+  OWNER
+  TENANT
+}
 
-  price        Decimal        @db.Decimal(14, 2)
-  currency     String         @default("NGN")
+model Property {
+  id          String         @id @default(cuid())
+  title       String
+  slug        String         @unique
+  description String         @db.Text
+  type        PropertyType
+  purpose     ListingPurpose
+  status      PropertyStatus @default(DRAFT)
+
+  price    Decimal @db.Decimal(14, 2)
+  currency String  @default("NGN")
 
   // For installment/investment plans
   minDownPaymentPct Int?
   installmentMonths Int?
-  expectedRoiPct    Decimal?  @db.Decimal(5, 2)
+  expectedRoiPct    Decimal? @db.Decimal(5, 2)
 
-  bedrooms     Int?
-  bathrooms    Int?
-  areaSqm      Decimal?       @db.Decimal(10, 2)
+  bedrooms  Int?
+  bathrooms Int?
+  areaSqm   Decimal? @db.Decimal(10, 2)
 
-  address      String
-  city         String
-  state        String
-  country      String         @default("Nigeria")
-  latitude     Decimal?       @db.Decimal(9, 6)
-  longitude    Decimal?       @db.Decimal(9, 6)
+  address    String
+  addressKey String // normalised address, used to detect duplicate claims
+  city       String
+  state      String
+  country    String   @default("Nigeria")
+  latitude   Decimal? @db.Decimal(9, 6)
+  longitude  Decimal? @db.Decimal(9, 6)
 
-  agentId      String
-  agent        User           @relation("AgentProperties", fields: [agentId], references: [id])
+  // Who listed it, and in what capacity. Tenants must supply owner details.
+  listerId       String
+  lister         User           @relation("ListerProperties", fields: [listerId], references: [id])
+  listerCapacity ListerCapacity @default(OWNER)
+  ownerUserId    String?
+  owner          User?          @relation("OwnerProperties", fields: [ownerUserId], references: [id])
+  ownerName      String?
+  ownerPhone     String?
+  ownerEmail     String?
 
-  images       PropertyImage[]
-  amenities    PropertyAmenity[]
-  favorites    Favorite[]
-  payments     Payment[]
+  cofoVerified Boolean   @default(false)
+  verifiedAt   DateTime?
+
+  media          MediaAsset[]
+  amenities      PropertyAmenity[]
+  favorites      Favorite[]
+  payments       Payment[]
   portfolioItems PortfolioItem[]
-  reviews      Review[]
+  reviews        Review[]
+  claims         OwnershipClaim[]
+  captureTasks   CaptureTask[]
+  tenancies      Tenancy[]
+  sublistings    Sublisting[]
+  subscriptions  ManagementSubscription[]
+  tickets        ManagementTicket[]
 
-  featured     Boolean        @default(false)
-  viewCount    Int            @default(0)
+  featured  Boolean @default(false)
+  viewCount Int     @default(0)
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([type, purpose, status])
   @@index([city, state])
+  @@index([addressKey])
   @@map("properties")
-}
-
-model PropertyImage {
-  id         String   @id @default(cuid())
-  propertyId String
-  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  url        String
-  alt        String?
-  position   Int      @default(0)
-
-  @@index([propertyId])
-  @@map("property_images")
 }
 
 model Amenity {
@@ -213,13 +197,264 @@ model Review {
   @@map("reviews")
 }
 
-// ---------- Payments / Portfolio ----------
+// =====================================================================
+// verification (proof of ownership)
+// =====================================================================
+
+enum ClaimStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  DISPUTED
+  APPROVED
+  REJECTED
+}
+
+enum EvidenceType {
+  COFO
+  UTILITY_BILL
+  OWNER_ID
+  TENANCY_AGREEMENT
+  VIDEO
+  SCAN_3D
+  IMAGE
+  OTHER
+}
+
+model OwnershipClaim {
+  id         String         @id @default(cuid())
+  propertyId String
+  claimantId String
+  capacity   ListerCapacity
+  status     ClaimStatus    @default(SUBMITTED)
+
+  reviewerId String?
+  reviewNote String?   @db.Text
+  decidedAt  DateTime?
+
+  disputeId String?
+  dispute   ClaimDispute? @relation(fields: [disputeId], references: [id])
+
+  property Property           @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  claimant User               @relation(fields: [claimantId], references: [id])
+  evidence EvidenceDocument[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyId, status])
+  @@map("ownership_claims")
+}
+
+model EvidenceDocument {
+  id           String         @id @default(cuid())
+  claimId      String
+  uploadedById String
+  type         EvidenceType
+  publicId     String         @unique
+  url          String
+  resourceType String         @default("image")
+  note         String?
+  claim        OwnershipClaim @relation(fields: [claimId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([claimId])
+  @@map("evidence_documents")
+}
+
+// Two or more listers claiming the same property; resolved by platform staff.
+model ClaimDispute {
+  id             String           @id @default(cuid())
+  addressKey     String
+  winningClaimId String?
+  resolvedById   String?
+  resolutionNote String?          @db.Text
+  resolvedAt     DateTime?
+  claims         OwnershipClaim[]
+
+  createdAt DateTime @default(now())
+
+  @@index([addressKey])
+  @@map("claim_disputes")
+}
+
+// =====================================================================
+// media (Cloudinary) and contractor capture tasks
+// =====================================================================
+
+enum MediaKind {
+  PHOTO
+  VIDEO
+  SCAN_3D
+}
+
+enum MediaSource {
+  SELF
+  PROFESSIONAL
+}
+
+model MediaAsset {
+  id            String      @id @default(cuid())
+  propertyId    String
+  uploadedById  String
+  kind          MediaKind
+  source        MediaSource @default(SELF)
+  publicId      String      @unique
+  url           String
+  resourceType  String      @default("image")
+  format        String?
+  width         Int?
+  height        Int?
+  durationSec   Float?
+  bytes         Int?
+  position      Int         @default(0)
+  captureTaskId String?
+
+  property    Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  captureTask CaptureTask? @relation(fields: [captureTaskId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([propertyId, kind])
+  @@map("media_assets")
+}
+
+enum ContractorStatus {
+  APPLIED
+  ACTIVE
+  SUSPENDED
+}
+
+model Contractor {
+  id     String           @id @default(cuid())
+  userId String           @unique
+  status ContractorStatus @default(APPLIED)
+  skills CaptureKind[]
+  city   String?
+  state  String?
+
+  user  User          @relation(fields: [userId], references: [id])
+  tasks CaptureTask[]
+
+  createdAt DateTime @default(now())
+
+  @@map("contractors")
+}
+
+enum CaptureKind {
+  PHOTOS
+  VIDEO
+  DRONE_VIDEO
+  SCAN_3D
+}
+
+enum CaptureTaskStatus {
+  AWAITING_PAYMENT
+  OPEN
+  CLAIMED
+  SUBMITTED
+  APPROVED
+  CANCELLED
+}
+
+model CaptureTask {
+  id            String            @id @default(cuid())
+  propertyId    String
+  requestedById String
+  contractorId  String?
+  kind          CaptureKind
+  status        CaptureTaskStatus @default(OPEN)
+  payoutAmount  Decimal           @db.Decimal(14, 2)
+  instructions  String?           @db.Text
+  scheduledFor  DateTime?
+  reviewNote    String?           @db.Text
+
+  property   Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  contractor Contractor?  @relation(fields: [contractorId], references: [id])
+  media      MediaAsset[]
+  payout     Payout?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, kind])
+  @@map("capture_tasks")
+}
+
+// =====================================================================
+// rentals (tenancy + tenant-to-tenant re-listing with commission)
+// =====================================================================
+
+enum TenancyStatus {
+  ACTIVE
+  ENDED
+}
+
+model Tenancy {
+  id         String        @id @default(cuid())
+  propertyId String
+  tenantId   String
+  status     TenancyStatus @default(ACTIVE)
+  startsAt   DateTime      @default(now())
+  endsAt     DateTime?
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  tenant   User     @relation(fields: [tenantId], references: [id])
+
+  @@index([propertyId, status])
+  @@map("tenancies")
+}
+
+enum SublistingStatus {
+  LISTED
+  RENTER_PAID
+  APPROVED
+  COMMISSION_PAID
+  CANCELLED
+}
+
+// A tenant re-lists a property ("retweet"). The commission is paid to that
+// tenant by the platform once the new renter has paid AND the platform AND
+// the owner have approved. Where the tenant is also the original lister and
+// the listing lacks a verified CofO, the platform must pass a critical review.
+model Sublisting {
+  id                     String           @id @default(cuid())
+  propertyId             String
+  tenantId               String
+  status                 SublistingStatus @default(LISTED)
+  commissionAmount       Decimal          @db.Decimal(14, 2)
+  requiresCriticalReview Boolean          @default(false)
+
+  incomingRenterId     String?
+  renterPaymentId      String?   @unique
+  renterPaidAt         DateTime?
+  platformApprovedById String?
+  platformApprovedAt   DateTime?
+  criticalReviewPassed Boolean   @default(false)
+  ownerApprovedAt      DateTime?
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  tenant   User     @relation("SublistingTenant", fields: [tenantId], references: [id])
+  payout   Payout?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyId, status])
+  @@map("sublistings")
+}
+
+// =====================================================================
+// payments (Paystack) and payouts
+// =====================================================================
 
 enum PaymentPlanType {
   BUY_NOW
   INSTALLMENTS
   INVEST
   RENT
+  SUBSCRIPTION
+  MEDIA_CAPTURE
 }
 
 enum PaymentStatus {
@@ -231,42 +466,218 @@ enum PaymentStatus {
 }
 
 model Payment {
-  id           String          @id @default(cuid())
-  userId       String
-  propertyId   String
-  planType     PaymentPlanType
-  status       PaymentStatus   @default(PENDING)
-  amount       Decimal         @db.Decimal(14, 2)
-  currency     String          @default("NGN")
+  id         String          @id @default(cuid())
+  userId     String
+  propertyId String
+  planType   PaymentPlanType
+  status     PaymentStatus   @default(PENDING)
+  amount     Decimal         @db.Decimal(14, 2)
+  currency   String          @default("NGN")
 
-  provider     String          // e.g. "paystack", "flutterwave"
-  providerRef  String?         @unique
+  provider    String // "paystack"
+  providerRef String? @unique
 
-  user         User            @relation(fields: [userId], references: [id])
-  property     Property        @relation(fields: [propertyId], references: [id])
+  // What this payment settles, when it is not a plain property payment.
+  sublistingId   String?
+  subscriptionId String?
+  captureTaskId  String?
 
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
+  user     User     @relation(fields: [userId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([propertyId])
   @@map("payments")
 }
 
+enum PayoutKind {
+  CONTRACTOR_TASK
+  TENANT_COMMISSION
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+}
+
+model Payout {
+  id            String       @id @default(cuid())
+  recipientId   String
+  kind          PayoutKind
+  status        PayoutStatus @default(PENDING)
+  amount        Decimal      @db.Decimal(14, 2)
+  currency      String       @default("NGN")
+  providerRef   String?      @unique
+  failureReason String?
+
+  captureTaskId String? @unique
+  sublistingId  String? @unique
+
+  recipient   User         @relation(fields: [recipientId], references: [id])
+  captureTask CaptureTask? @relation(fields: [captureTaskId], references: [id])
+  sublisting  Sublisting?  @relation(fields: [sublistingId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([recipientId, status])
+  @@map("payouts")
+}
+
+// Bank account a user is paid out to (contractor tasks, tenant commissions).
+model PayoutAccount {
+  id            String @id @default(cuid())
+  userId        String @unique
+  bankCode      String
+  accountNumber String
+  accountName   String
+  recipientCode String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("payout_accounts")
+}
+
 model PortfolioItem {
-  id          String          @id @default(cuid())
-  userId      String
-  propertyId  String
-  planType    PaymentPlanType
-  totalPaid   Decimal         @default(0) @db.Decimal(14, 2)
-  totalDue    Decimal         @db.Decimal(14, 2)
+  id         String          @id @default(cuid())
+  userId     String
+  propertyId String
+  planType   PaymentPlanType
+  totalPaid  Decimal         @default(0) @db.Decimal(14, 2)
+  totalDue   Decimal         @db.Decimal(14, 2)
 
-  user        User            @relation(fields: [userId], references: [id])
-  property    Property        @relation(fields: [propertyId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
 
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, propertyId])
   @@map("portfolio_items")
+}
+
+// =====================================================================
+// management (subscription-based property dashboard)
+// =====================================================================
+
+enum PlanInterval {
+  MONTHLY
+  QUARTERLY
+  ANNUALLY
+}
+
+model ManagementPlan {
+  id               String       @id @default(cuid())
+  code             String       @unique
+  name             String
+  description      String?      @db.Text
+  amount           Decimal      @db.Decimal(14, 2)
+  interval         PlanInterval @default(MONTHLY)
+  paystackPlanCode String?
+  features         String[]
+  active           Boolean      @default(true)
+
+  subscriptions ManagementSubscription[]
+
+  @@map("management_plans")
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+}
+
+model ManagementSubscription {
+  id                       String             @id @default(cuid())
+  propertyId               String
+  subscriberId             String
+  planId                   String
+  status                   SubscriptionStatus @default(PENDING)
+  paystackSubscriptionCode String?
+  currentPeriodEnd         DateTime?
+
+  property   Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  subscriber User           @relation(fields: [subscriberId], references: [id])
+  plan       ManagementPlan @relation(fields: [planId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyId, status])
+  @@map("management_subscriptions")
+}
+
+enum TicketCategory {
+  DISPUTE
+  BILL
+  WASTE
+  UTILITY
+  MAINTENANCE
+  OTHER
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+model ManagementTicket {
+  id          String         @id @default(cuid())
+  propertyId  String
+  raisedById  String
+  assigneeId  String?
+  category    TicketCategory
+  status      TicketStatus   @default(OPEN)
+  title       String
+  description String?        @db.Text
+  amountDue   Decimal?       @db.Decimal(14, 2)
+  dueDate     DateTime?
+  resolvedAt  DateTime?
+
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  raisedBy User     @relation(fields: [raisedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyId, status])
+  @@map("management_tickets")
+}
+
+// =====================================================================
+// discovery (signals for recommendations)
+// =====================================================================
+
+enum ActivityKind {
+  SEARCH
+  FILTER
+  VIEW
+}
+
+model UserActivity {
+  id         String       @id @default(cuid())
+  userId     String
+  kind       ActivityKind
+  query      String?
+  filters    Json?
+  propertyId String?
+  city       String?
+  latitude   Float?
+  longitude  Float?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("user_activities")
 }

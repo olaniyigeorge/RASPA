@@ -123,43 +123,15 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  firebaseUid: 'firebaseUid',
   email: 'email',
   emailVerified: 'emailVerified',
+  name: 'name',
   image: 'image',
-  passwordHash: 'passwordHash',
-  role: 'role',
   phone: 'phone',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.AccountScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  type: 'type',
-  provider: 'provider',
-  providerAccountId: 'providerAccountId',
-  refresh_token: 'refresh_token',
-  access_token: 'access_token',
-  expires_at: 'expires_at',
-  token_type: 'token_type',
-  scope: 'scope',
-  id_token: 'id_token',
-  session_state: 'session_state'
-};
-
-exports.Prisma.SessionScalarFieldEnum = {
-  id: 'id',
-  sessionToken: 'sessionToken',
-  userId: 'userId',
-  expires: 'expires'
-};
-
-exports.Prisma.VerificationTokenScalarFieldEnum = {
-  identifier: 'identifier',
-  token: 'token',
-  expires: 'expires'
 };
 
 exports.Prisma.PropertyScalarFieldEnum = {
@@ -179,24 +151,24 @@ exports.Prisma.PropertyScalarFieldEnum = {
   bathrooms: 'bathrooms',
   areaSqm: 'areaSqm',
   address: 'address',
+  addressKey: 'addressKey',
   city: 'city',
   state: 'state',
   country: 'country',
   latitude: 'latitude',
   longitude: 'longitude',
-  agentId: 'agentId',
+  listerId: 'listerId',
+  listerCapacity: 'listerCapacity',
+  ownerUserId: 'ownerUserId',
+  ownerName: 'ownerName',
+  ownerPhone: 'ownerPhone',
+  ownerEmail: 'ownerEmail',
+  cofoVerified: 'cofoVerified',
+  verifiedAt: 'verifiedAt',
   featured: 'featured',
   viewCount: 'viewCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.PropertyImageScalarFieldEnum = {
-  id: 'id',
-  propertyId: 'propertyId',
-  url: 'url',
-  alt: 'alt',
-  position: 'position'
 };
 
 exports.Prisma.AmenityScalarFieldEnum = {
@@ -226,6 +198,113 @@ exports.Prisma.ReviewScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.OwnershipClaimScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  claimantId: 'claimantId',
+  capacity: 'capacity',
+  status: 'status',
+  reviewerId: 'reviewerId',
+  reviewNote: 'reviewNote',
+  decidedAt: 'decidedAt',
+  disputeId: 'disputeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EvidenceDocumentScalarFieldEnum = {
+  id: 'id',
+  claimId: 'claimId',
+  uploadedById: 'uploadedById',
+  type: 'type',
+  publicId: 'publicId',
+  url: 'url',
+  resourceType: 'resourceType',
+  note: 'note',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ClaimDisputeScalarFieldEnum = {
+  id: 'id',
+  addressKey: 'addressKey',
+  winningClaimId: 'winningClaimId',
+  resolvedById: 'resolvedById',
+  resolutionNote: 'resolutionNote',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.MediaAssetScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  uploadedById: 'uploadedById',
+  kind: 'kind',
+  source: 'source',
+  publicId: 'publicId',
+  url: 'url',
+  resourceType: 'resourceType',
+  format: 'format',
+  width: 'width',
+  height: 'height',
+  durationSec: 'durationSec',
+  bytes: 'bytes',
+  position: 'position',
+  captureTaskId: 'captureTaskId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ContractorScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  status: 'status',
+  skills: 'skills',
+  city: 'city',
+  state: 'state',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.CaptureTaskScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  requestedById: 'requestedById',
+  contractorId: 'contractorId',
+  kind: 'kind',
+  status: 'status',
+  payoutAmount: 'payoutAmount',
+  instructions: 'instructions',
+  scheduledFor: 'scheduledFor',
+  reviewNote: 'reviewNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TenancyScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  tenantId: 'tenantId',
+  status: 'status',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt'
+};
+
+exports.Prisma.SublistingScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  tenantId: 'tenantId',
+  status: 'status',
+  commissionAmount: 'commissionAmount',
+  requiresCriticalReview: 'requiresCriticalReview',
+  incomingRenterId: 'incomingRenterId',
+  renterPaymentId: 'renterPaymentId',
+  renterPaidAt: 'renterPaidAt',
+  platformApprovedById: 'platformApprovedById',
+  platformApprovedAt: 'platformApprovedAt',
+  criticalReviewPassed: 'criticalReviewPassed',
+  ownerApprovedAt: 'ownerApprovedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -236,6 +315,35 @@ exports.Prisma.PaymentScalarFieldEnum = {
   currency: 'currency',
   provider: 'provider',
   providerRef: 'providerRef',
+  sublistingId: 'sublistingId',
+  subscriptionId: 'subscriptionId',
+  captureTaskId: 'captureTaskId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PayoutScalarFieldEnum = {
+  id: 'id',
+  recipientId: 'recipientId',
+  kind: 'kind',
+  status: 'status',
+  amount: 'amount',
+  currency: 'currency',
+  providerRef: 'providerRef',
+  failureReason: 'failureReason',
+  captureTaskId: 'captureTaskId',
+  sublistingId: 'sublistingId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PayoutAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  bankCode: 'bankCode',
+  accountNumber: 'accountNumber',
+  accountName: 'accountName',
+  recipientCode: 'recipientCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -251,9 +359,67 @@ exports.Prisma.PortfolioItemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ManagementPlanScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  amount: 'amount',
+  interval: 'interval',
+  paystackPlanCode: 'paystackPlanCode',
+  features: 'features',
+  active: 'active'
+};
+
+exports.Prisma.ManagementSubscriptionScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  subscriberId: 'subscriberId',
+  planId: 'planId',
+  status: 'status',
+  paystackSubscriptionCode: 'paystackSubscriptionCode',
+  currentPeriodEnd: 'currentPeriodEnd',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ManagementTicketScalarFieldEnum = {
+  id: 'id',
+  propertyId: 'propertyId',
+  raisedById: 'raisedById',
+  assigneeId: 'assigneeId',
+  category: 'category',
+  status: 'status',
+  title: 'title',
+  description: 'description',
+  amountDue: 'amountDue',
+  dueDate: 'dueDate',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserActivityScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  kind: 'kind',
+  query: 'query',
+  filters: 'filters',
+  propertyId: 'propertyId',
+  city: 'city',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -265,9 +431,15 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.UserRole = exports.$Enums.UserRole = {
-  BUYER: 'BUYER',
-  AGENT: 'AGENT',
+  USER: 'USER',
+  CONTRACTOR: 'CONTRACTOR',
   ADMIN: 'ADMIN'
 };
 
@@ -287,18 +459,92 @@ exports.ListingPurpose = exports.$Enums.ListingPurpose = {
 
 exports.PropertyStatus = exports.$Enums.PropertyStatus = {
   DRAFT: 'DRAFT',
-  PUBLISHED: 'PUBLISHED',
+  UNVERIFIED: 'UNVERIFIED',
+  VERIFIED: 'VERIFIED',
   UNDER_OFFER: 'UNDER_OFFER',
-  SOLD: 'SOLD',
   RENTED: 'RENTED',
+  SOLD: 'SOLD',
+  SUSPENDED: 'SUSPENDED',
   ARCHIVED: 'ARCHIVED'
+};
+
+exports.ListerCapacity = exports.$Enums.ListerCapacity = {
+  OWNER: 'OWNER',
+  TENANT: 'TENANT'
+};
+
+exports.ClaimStatus = exports.$Enums.ClaimStatus = {
+  SUBMITTED: 'SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  DISPUTED: 'DISPUTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+exports.EvidenceType = exports.$Enums.EvidenceType = {
+  COFO: 'COFO',
+  UTILITY_BILL: 'UTILITY_BILL',
+  OWNER_ID: 'OWNER_ID',
+  TENANCY_AGREEMENT: 'TENANCY_AGREEMENT',
+  VIDEO: 'VIDEO',
+  SCAN_3D: 'SCAN_3D',
+  IMAGE: 'IMAGE',
+  OTHER: 'OTHER'
+};
+
+exports.MediaKind = exports.$Enums.MediaKind = {
+  PHOTO: 'PHOTO',
+  VIDEO: 'VIDEO',
+  SCAN_3D: 'SCAN_3D'
+};
+
+exports.MediaSource = exports.$Enums.MediaSource = {
+  SELF: 'SELF',
+  PROFESSIONAL: 'PROFESSIONAL'
+};
+
+exports.ContractorStatus = exports.$Enums.ContractorStatus = {
+  APPLIED: 'APPLIED',
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED'
+};
+
+exports.CaptureKind = exports.$Enums.CaptureKind = {
+  PHOTOS: 'PHOTOS',
+  VIDEO: 'VIDEO',
+  DRONE_VIDEO: 'DRONE_VIDEO',
+  SCAN_3D: 'SCAN_3D'
+};
+
+exports.CaptureTaskStatus = exports.$Enums.CaptureTaskStatus = {
+  AWAITING_PAYMENT: 'AWAITING_PAYMENT',
+  OPEN: 'OPEN',
+  CLAIMED: 'CLAIMED',
+  SUBMITTED: 'SUBMITTED',
+  APPROVED: 'APPROVED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.TenancyStatus = exports.$Enums.TenancyStatus = {
+  ACTIVE: 'ACTIVE',
+  ENDED: 'ENDED'
+};
+
+exports.SublistingStatus = exports.$Enums.SublistingStatus = {
+  LISTED: 'LISTED',
+  RENTER_PAID: 'RENTER_PAID',
+  APPROVED: 'APPROVED',
+  COMMISSION_PAID: 'COMMISSION_PAID',
+  CANCELLED: 'CANCELLED'
 };
 
 exports.PaymentPlanType = exports.$Enums.PaymentPlanType = {
   BUY_NOW: 'BUY_NOW',
   INSTALLMENTS: 'INSTALLMENTS',
   INVEST: 'INVEST',
-  RENT: 'RENT'
+  RENT: 'RENT',
+  SUBSCRIPTION: 'SUBSCRIPTION',
+  MEDIA_CAPTURE: 'MEDIA_CAPTURE'
 };
 
 exports.PaymentStatus = exports.$Enums.PaymentStatus = {
@@ -309,19 +555,75 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   REFUNDED: 'REFUNDED'
 };
 
+exports.PayoutKind = exports.$Enums.PayoutKind = {
+  CONTRACTOR_TASK: 'CONTRACTOR_TASK',
+  TENANT_COMMISSION: 'TENANT_COMMISSION'
+};
+
+exports.PayoutStatus = exports.$Enums.PayoutStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  PAID: 'PAID',
+  FAILED: 'FAILED'
+};
+
+exports.PlanInterval = exports.$Enums.PlanInterval = {
+  MONTHLY: 'MONTHLY',
+  QUARTERLY: 'QUARTERLY',
+  ANNUALLY: 'ANNUALLY'
+};
+
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  PAST_DUE: 'PAST_DUE',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.TicketCategory = exports.$Enums.TicketCategory = {
+  DISPUTE: 'DISPUTE',
+  BILL: 'BILL',
+  WASTE: 'WASTE',
+  UTILITY: 'UTILITY',
+  MAINTENANCE: 'MAINTENANCE',
+  OTHER: 'OTHER'
+};
+
+exports.TicketStatus = exports.$Enums.TicketStatus = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED'
+};
+
+exports.ActivityKind = exports.$Enums.ActivityKind = {
+  SEARCH: 'SEARCH',
+  FILTER: 'FILTER',
+  VIEW: 'VIEW'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
-  Account: 'Account',
-  Session: 'Session',
-  VerificationToken: 'VerificationToken',
   Property: 'Property',
-  PropertyImage: 'PropertyImage',
   Amenity: 'Amenity',
   PropertyAmenity: 'PropertyAmenity',
   Favorite: 'Favorite',
   Review: 'Review',
+  OwnershipClaim: 'OwnershipClaim',
+  EvidenceDocument: 'EvidenceDocument',
+  ClaimDispute: 'ClaimDispute',
+  MediaAsset: 'MediaAsset',
+  Contractor: 'Contractor',
+  CaptureTask: 'CaptureTask',
+  Tenancy: 'Tenancy',
+  Sublisting: 'Sublisting',
   Payment: 'Payment',
-  PortfolioItem: 'PortfolioItem'
+  Payout: 'Payout',
+  PayoutAccount: 'PayoutAccount',
+  PortfolioItem: 'PortfolioItem',
+  ManagementPlan: 'ManagementPlan',
+  ManagementSubscription: 'ManagementSubscription',
+  ManagementTicket: 'ManagementTicket',
+  UserActivity: 'UserActivity'
 };
 
 /**
