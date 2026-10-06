@@ -32,3 +32,9 @@ export class ConflictError extends DomainError {
     super(message, "CONFLICT", 409);
   }
 }
+
+export class TooManyRequestsError extends DomainError {
+  constructor(public readonly retryAfterSeconds?: number) {
+    super("Too many requests. Please try again shortly.", "RATE_LIMITED", 429);
+  }
+}

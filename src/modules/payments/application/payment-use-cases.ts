@@ -8,6 +8,7 @@ import {
   type PayoutKind,
 } from "../../../shared/kernel/settlement";
 import { amountMatches, markSuccessful } from "../domain/payment";
+import { logger, reportError } from "../../../shared/infrastructure/logger";
 import type {
   PaymentGateway,
   PaymentRepository,
@@ -116,7 +117,7 @@ export const makePaymentUseCases = (d: Deps) => {
       sublistingId?: string;
     }) {
       const payout = await d.payouts.create(input);
-      await processPayout(payout.id).catch((err) => console.error("payout transfer failed", err));
+      await processPayout(payout.id).catch((err) => reportError(err, { message: "payout transfer failed", payoutId: payout.id }));
       return payout;
     },
 
@@ -133,7 +134,7 @@ export const makePaymentUseCases = (d: Deps) => {
       await d.accounts.upsert({ userId: actor.id, ...input, recipientCode });
       // anything that was waiting on bank details can go out now
       for (const p of await d.payouts.findPendingFor(actor.id)) {
-        await processPayout(p.id).catch((err) => console.error("payout transfer failed", err));
+        await processPayout(p.id).catch((err) => reportError(err, { message: "payout transfer failed", payoutId: p.id }));
       }
     },
 
@@ -154,7 +155,7 @@ export const makePaymentUseCases = (d: Deps) => {
           if (!changed) return;
           if (!amountMatches(payment, Number(data.amount))) {
             await d.payments.setStatus(payment.id, "FAILED");
-            console.error(`Paystack amount mismatch for payment ${payment.id}: got ${data.amount}`);
+            logger.error("Paystack amount mismatch", { paymentId: payment.id, receivedKobo: data.amount });
             return;
           }
           await d.payments.setStatus(next.id, "SUCCESSFUL");

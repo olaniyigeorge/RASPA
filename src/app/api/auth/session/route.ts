@@ -3,8 +3,10 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { SESSION_COOKIE, signInWithIdToken } from "@/modules/identity";
 import { route } from "@/shared/infrastructure/http";
+import { rateLimit } from "@/shared/infrastructure/rate-limit";
 
 export const POST = route(async (req: Request) => {
+  await rateLimit(req, { key: "auth:session", limit: 20, windowMs: 60_000 });
   const { idToken } = z.object({ idToken: z.string().min(10) }).parse(await req.json());
   const { user, sessionCookie, maxAgeMs } = await signInWithIdToken(idToken);
 

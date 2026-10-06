@@ -26,7 +26,9 @@ export default async function ExploreMapPage() {
         description={`${points.length} geocoded properties.`}
         actions={<LinkButton href="/explore" variant="outline" size="sm">List view</LinkButton>}
       />
-      <div className="mt-4"><Alert tone="info">The interactive map is coming soon. For now, here are the properties with locations.</Alert></div>
+      {!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && (
+        <div className="mt-4"><Alert tone="info">The interactive map is not configured yet. For now, here are the properties with locations.</Alert></div>
+      )}
       <div className="mt-6"><ExploreMapClient points={points} /></div>
     </Container>
   );

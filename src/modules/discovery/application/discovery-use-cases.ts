@@ -1,3 +1,4 @@
+import { logger, serializeError } from "../../../shared/infrastructure/logger";
 import { buildProfile, rank, type Activity, type Candidate } from "../domain/scoring";
 
 export interface ActivityInput {
@@ -22,7 +23,7 @@ interface Deps {
 export const makeDiscoveryUseCases = (d: Deps) => ({
   async record(userId: string, a: ActivityInput) {
     // best-effort signal: never fail the user's request because history could not be saved
-    await d.activities.record(userId, a).catch((err) => console.error("activity not recorded", err));
+    await d.activities.record(userId, a).catch((err) => logger.warn("activity not recorded", { userId, error: serializeError(err) }));
   },
 
   /** Ranked listings for this user; falls back to location + verified + freshness on a cold start. */

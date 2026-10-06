@@ -133,7 +133,6 @@ Tokens live in `src/app/globals.css` (`@theme`): brand purple scale, neutral ink
 - Write the verification SLA shown to listers.
 - Confirm media spec numbers, the capture rate card (price vs. contractor payout) and the commission rate/cap.
 - Owner approval of a takeover when the owner is not on the platform (currently requires an account matched to `ownerUserId`).
-- Interactive map view (needs a map provider decision).
-- Contact form is not wired to an email provider.
 - Paystack subscription webhook payloads (`subscription.create`, `invoice.update`) need verifying against a sandbox account.
-- Management-context application code still queries Prisma directly; move behind repository ports.
+- Rate limiting (`shared/infrastructure/rate-limit.ts`) is in-memory and per instance; swap in a shared store (Upstash/Redis) behind `RateLimitStore` before scaling out.
+- CSP is vendor-allowlisted, not nonce-based; validate it against live sign-in, Paystack and Maps flows (`CSP_REPORT_ONLY=true`) before relying on enforcement.

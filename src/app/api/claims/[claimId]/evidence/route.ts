@@ -3,6 +3,7 @@ import { z } from "zod";
 import { requireUser } from "@/modules/identity";
 import { verification } from "@/modules/verification";
 import { route } from "@/shared/infrastructure/http";
+import { rateLimit } from "@/shared/infrastructure/rate-limit";
 
 const schema = z.object({
   type: z.enum(["COFO", "UTILITY_BILL", "OWNER_ID", "TENANCY_AGREEMENT", "VIDEO", "SCAN_3D", "IMAGE", "OTHER"]),
@@ -13,6 +14,7 @@ const schema = z.object({
 });
 
 export const POST = route(async (req: NextRequest, { params }: { params: Promise<{ claimId: string }> }) => {
+  await rateLimit(req, { key: "claims:evidence", limit: 30, windowMs: 60_000 });
   const user = await requireUser();
   const { claimId } = await params;
   const evidence = await verification.addEvidence(user, claimId, schema.parse(await req.json()));

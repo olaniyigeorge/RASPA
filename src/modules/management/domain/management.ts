@@ -54,3 +54,68 @@ export function periodEndFor(interval: "MONTHLY" | "QUARTERLY" | "ANNUALLY", fro
   d.setMonth(d.getMonth() + (interval === "MONTHLY" ? 1 : interval === "QUARTERLY" ? 3 : 12));
   return d;
 }
+
+// ---- persistence port ------------------------------------------------------
+
+export type PlanInterval = "MONTHLY" | "QUARTERLY" | "ANNUALLY";
+
+/** A management plan; `amount` is in naira (see shared/kernel/money). */
+export interface Plan {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  amount: number;
+  interval: PlanInterval;
+  paystackPlanCode: string | null;
+  features: string[];
+  active: boolean;
+}
+
+export interface TicketRecord extends Ticket {
+  raisedById: string;
+  assigneeId: string | null;
+  category: TicketCategory;
+  title: string;
+  description: string | null;
+  amountDue: number | null;
+  dueDate: Date | null;
+  resolvedAt: Date | null;
+  createdAt: Date;
+}
+
+export interface NewTicket {
+  propertyId: string;
+  raisedById: string;
+  category: TicketCategory;
+  title: string;
+  description?: string;
+  amountDue?: number;
+  dueDate?: Date;
+}
+
+export interface ManagementRepository {
+  listActivePlans(): Promise<Plan[]>;
+  findPlanByCode(code: string): Promise<Plan | null>;
+
+  /** Latest ACTIVE or PAST_DUE subscription of a property. */
+  findActiveSubscription(propertyId: string): Promise<Subscription | null>;
+  createSubscription(i: { propertyId: string; subscriberId: string; planId: string }): Promise<Subscription>;
+  findSubscriptionWithPlan(id: string): Promise<(Subscription & { plan: Plan }) | null>;
+  updateSubscription(id: string, data: Partial<Pick<Subscription, "status" | "currentPeriodEnd">>): Promise<void>;
+  /** Latest subscription of this customer on this Paystack plan not yet linked to a Paystack subscription. */
+  findPendingSubscription(customerEmail: string | undefined, paystackPlanCode: string | undefined): Promise<Subscription | null>;
+  linkPaystackSubscription(id: string, subscriptionCode: string, currentPeriodEnd: Date | null | undefined): Promise<void>;
+  updateSubscriptionsByPaystackCode(
+    subscriptionCode: string,
+    data: Partial<Pick<Subscription, "status" | "currentPeriodEnd">>
+  ): Promise<void>;
+
+  listTickets(propertyId: string): Promise<TicketRecord[]>;
+  createTicket(i: NewTicket): Promise<TicketRecord>;
+  findTicket(id: string): Promise<TicketRecord | null>;
+  updateTicket(id: string, data: { status: TicketStatus; resolvedAt: Date | null }): Promise<void>;
+
+  /** Lister, owner or active tenant of the property. */
+  canManage(propertyId: string, userId: string): Promise<boolean>;
+}

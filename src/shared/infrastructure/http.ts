@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { DomainError } from "../kernel/errors";
+import { DomainError, TooManyRequestsError } from "../kernel/errors";
+import { reportError } from "./logger";
 
 type Handler<A extends unknown[]> = (...args: A) => Promise<Response>;
 
@@ -11,12 +12,17 @@ export function route<A extends unknown[]>(handler: Handler<A>): Handler<A> {
       return await handler(...args);
     } catch (err) {
       if (err instanceof DomainError) {
-        return NextResponse.json({ error: err.message, code: err.code }, { status: err.status });
+        const headers =
+          err instanceof TooManyRequestsError && err.retryAfterSeconds
+            ? { "Retry-After": String(err.retryAfterSeconds) }
+            : undefined;
+        return NextResponse.json({ error: err.message, code: err.code }, { status: err.status, headers });
       }
       if (err instanceof ZodError) {
         return NextResponse.json({ error: err.flatten() }, { status: 400 });
       }
-      console.error(err);
+      const req = args[0] instanceof Request ? args[0] : undefined;
+      reportError(err, { message: "route handler failed", method: req?.method, url: req?.url });
       return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
   };
